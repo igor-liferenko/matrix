@@ -698,9 +698,10 @@ U8 btn = 0;
       DDRF |= 1 << i;
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
         previous column, wait
-        for pullup of it to charge the stray capacitance or ground of \\{PFi} to
-        discharge the stray
-        capacitance if button is pressed in this row */
+        for pullup of it to charge the stray capacitance and before reading input
+        pin for which row
+        a button may be pressed, wait ground of \\{PFi} to
+        discharge the stray capacitance */
       switch (~PINB & (1 << PB4 | 1 << PB5) | ~PINE & 1 << PE6 | ~PIND & 1 << PD7) {
       case 1 << PB4:
         switch (i) {
