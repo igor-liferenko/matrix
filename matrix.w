@@ -114,20 +114,24 @@ and add it to TeX-part of section
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
-        DDRD &= ~(1 << PD1); /* off-line (do the same as on base station,
-          where off-line automatically happens when base station is un-powered) */
+        DDRD &= ~(1 << PD1); /* off-line (|PD2| floating in the air)---do the same
+          as on base station,
+          where off-line automatically happens when base station is un-powered */
+        _delay_us(1); /* wait for the pullup of |PD2| to charge the stray capacitance */
       }
       PORTB |= 1 << PB0; /* led on */
     }
     @<Get button@>@;
     if (line_status.DTR && btn == 'A') { // 'A' is special button, which does not use
       // indicator led on PB6 - it has its own - PD5
-      if (DDRD & 1 << PD1)
-        DDRD &= ~(1 << PD1);
-      else
-        DDRD |= 1 << PD1; /* ground (on-line) */
-      _delay_ms(1); /* eliminate capacitance\footnote\dag{This corresponds to ``2)'' in
-        |@<Eliminate capacitance@>|.} */
+      if (DDRD & 1 << PD1) {
+        DDRD &= ~(1 << PD1); /* off-line (|PD2| floating in the air) */
+        _delay_us(1); /* wait for the pullup of |PD2| to charge the stray capacitance */
+      }
+      else {
+        DDRD |= 1 << PD1; /* on-line (|PD2| to ground) */
+        _delay_us(1); /* wait for ground of |PD1| to discharge the stray capacitance */
+      }
     }
     @<Check |PD2| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
       (the latter only if DTR)@>@;
@@ -148,7 +152,7 @@ and add it to TeX-part of section
           continues to increase (decrease);
           TODO: find minimum possible |timeout| value by setting it to `0' and
           doing this: run tel in foreground, set volume to 0, press + button,
-          when volume will approach 90%, release button - if volume will keep
+          when volume will approach 90 percent, release button - if volume will keep
           changing for some time - |timeout| must be increased */
       else timeout = 2000;
       // do not allow one button to be pressed more frequently than
@@ -692,7 +696,11 @@ U8 btn = 0;
 @<Get button@>=
     for (int i = PF4, done = 0; i <= PF7 && !done; i++) {
       DDRF |= 1 << i;
-      @<Eliminate capacitance@>@;
+      _delay_us(1); /* before reading input pin for row which showed a LOW reading on
+        previous column, wait
+        for pullup of it to charge the stray capacitance or ground of \\{PFi} to
+        discharge the stray
+        capacitance if button is pressed in this row */
       switch (~PINB & (1 << PB4 | 1 << PB5) | ~PINE & 1 << PE6 | ~PIND & 1 << PD7) {
       case 1 << PB4:
         switch (i) {
@@ -735,42 +743,6 @@ U8 btn = 0;
       }
       DDRF &= ~(1 << i);
     }
-
-@ Delay to eliminate capacitance on the wire which may be open-ended on
-the side of input pin (i.e., when button is not pressed), and capacitance
-on the longer wire (i.e., when button is pressed).
-
-To adjust the number of no-ops, remove all no-ops from here,
-then do this: 1)\footnote*{In contrast with usual \\{\_delay\_us(1)}, here we need
-to use minimum possible delay because it is done repeatedly.}
-If symbol(s) will appear by themselves (FIXME: under which conditions?),
-add one no-op. Repeat until this does not happen. 2) If
-symbol does not appear after pressing a key, add one no-op.
-Repeat until this does not happen.
-
-FIXME: maybe do |_delay_us(1);| in |@<Pullup input pins@>| and use only 2) here?
-(and then change references to this section from everywhere)
-
-one more way to test: use |@<Get button@>| in a `|while (1) ... _delay_us(1);|' loop
-and when you detect a certain button, after a debounce delay (via |i++; ... if (i<delay) ...|),
-check if btn==0 in the cycle and if yes, turn on led - while you are holding the button,
-led must not turn on - if it does, add nop's
-
-NOTE: in above methods add some more nops after testing to depass border state
-
-FIXME: maybe just use |_delay_us(1);| instead of adjustments with nop's
-
-@d nop() __asm__ __volatile__ ("nop")
-
-@<Eliminate capacitance@>=
-nop();
-nop();
-nop();
-nop();
-nop();
-nop();
-nop();
-nop();
 
 @i ../usb/CONTROL-endpoint-management.w
 @i ../usb/IN-endpoint-management.w
