@@ -13,6 +13,9 @@ flash:
 clean:
 	@git clean -X -d -f
 
+imgs:
+	@perl -ne 'if (/^(.*\.eps): (.*)/) { system "convert $$2 $$1" }' Makefile
+
 .PHONY: $(wildcard *.eps)
 
 keypad.eps: keypad.png
