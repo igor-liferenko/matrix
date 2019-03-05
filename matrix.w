@@ -111,7 +111,9 @@ and add it to TeX-part of section
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
-        on_line = 0;
+        on_line = 0; /* do the same as in \.{avrtel},
+          where off-line automatically happens when base station is un-powered */
+@^avrtel@>
       }
       PORTB |= 1 << PB0; /* led on */
     }
@@ -201,13 +203,14 @@ and add it to TeX-part of section
 For on-line indication we send `\.@@' character to \.{tel}---to put
 it to initial state.
 For off-line indication we send `\.\%' character to \.{tel}---to disable
-power reset on base station after timeout.
+DTR/RTS reset after timeout (it is used for \.{avrtel} to reset power on base station).
+@^avrtel@>
 
 @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
   (the latter only if DTR)@>=
 if (!on_line) {
   if (PORTD & 1 << PD5) { /* transition happened */
-    if (line_status.DTR) { /* off-line was not caused by un-powering base station */
+    if (line_status.DTR) { /* off-line was not caused by DTR/RTS reset */
       while (!(UEINTX & 1 << TXINI)) ;
       UEINTX &= ~(1 << TXINI);
       UEDATX = '%';
