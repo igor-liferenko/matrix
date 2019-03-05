@@ -52,9 +52,9 @@ void main(void)
       @<Process SETUP request@>@;
   UENUM = EP1;
 
+  int on_line = 0;
   DDRD |= 1 << PD5; /* |PD5| is used to show on-line/off-line state
                        and to determine when transition happens */
-  @<Set |PD2| to pullup mode@>@;
   DDRB |= 1 << PB0; /* |PB0| is used to show DTR state and and to determine
     when transition happens */
   PORTB |= 1 << PB0; /* led on */
@@ -64,6 +64,7 @@ void main(void)
     PORTD |= 1 << PD5;
     return;
   }
+
   @<Handle matrix@>@;
 }
 
@@ -84,12 +85,8 @@ call has not been done in application yet (i.e., it is buffered)
 We set debounce delay and thus cannot increase volume quickly, whereas
 in DTMF pulse duration is permitted to be short.
 
-TODO: increase debounce on A? This is useful when we switch off (when done with a router) and
-then immediately switch on to go to another router - for this maybe use separate
-button to go off-line instead of pressing A second time (for this
-do not use saying time in ru and in fr - and use button B to go
-off-line, and use C and D for volume (as B
-and C now) and switch off all routers manually)
+TODO: decrease debounce on A. This is useful when we switch off (when done with a router) and
+then immediately switch on to go to another router
 
 NOTE: if necessary, you may set 16-bit timers here as if interrupts are not
 enabled at all (if USB RESET interrupt happens, device is going to be reset anyway,
@@ -114,29 +111,19 @@ and add it to TeX-part of section
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
-        DDRD &= ~(1 << PD1); /* off-line (|PD2| floating in the air)---do the same
-          as on base station,
-          where off-line automatically happens when base station is un-powered */
-        _delay_us(1); /* wait for the pullup of |PD2| to charge the stray capacitance */
+        on_line = 0;
       }
       PORTB |= 1 << PB0; /* led on */
     }
     @<Get button@>@;
     if (line_status.DTR && btn == 'A') { // 'A' is special button, which does not use
       // indicator led on PB6 - it has its own - PD5
-      if (DDRD & 1 << PD1) {
-        DDRD &= ~(1 << PD1); /* off-line (|PD2| floating in the air) */
-        _delay_us(1); /* wait for the pullup of |PD2| to charge the stray capacitance */
-      }
-      else {
-        DDRD |= 1 << PD1; /* on-line (|PD2| to ground) */
-        _delay_us(1); /* wait for ground of |PD1| to discharge the stray capacitance */
-      }
+      on_line = !on_line;
     }
-    @<Check |PD2| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
+    @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
       (the latter only if DTR)@>@;
     if (line_status.DTR && btn) {
-      if (btn != 'A' && !(PIND & 1 << PD2)) {
+      if (btn != 'A' && on_line) {
         PORTB |= 1 << PB6;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
@@ -209,19 +196,16 @@ and add it to TeX-part of section
   }
 #endif
 
-@ We check if handset is in use by using a switch. The switch (PD2) is
-controlled by the program itself by connecting it to another pin (PD1).
-This is to minimalize the amount of changes in this change-file.
-TODO: do not use PD1 and PD2 --- use just a variable
+@ We check if buttons must be sent by using the variable |on_line|.
 
 For on-line indication we send `\.@@' character to \.{tel}---to put
 it to initial state.
 For off-line indication we send `\.\%' character to \.{tel}---to disable
 power reset on base station after timeout.
 
-@<Check |PD2| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
+@<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
   (the latter only if DTR)@>=
-if (PIND & 1 << PD2) { /* off-line */
+if (!on_line) {
   if (PORTD & 1 << PD5) { /* transition happened */
     if (line_status.DTR) { /* off-line was not caused by un-powering base station */
       while (!(UEINTX & 1 << TXINI)) ;
@@ -241,27 +225,6 @@ else { /* on-line */
   }
   PORTD |= 1 << PD5;
 }
-
-@ The pull-up resistor is connected to the high voltage (this is usually 3.3V or 5V and is
-often refereed to as VCC).
-
-Pull-ups are often used with buttons and switches.
-
-With a pull-up resistor, the input pin will read a high state when the photo-transistor
-is not opened. In other words, a small amount of current is flowing between VCC and the input
-pin (not to ground), thus the input pin reads close to VCC. When the photo-transistor is
-opened, it connects the input pin directly to ground. The current flows through the resistor
-to ground, thus the input pin reads a low state.
-
-Since pull-up resistors are so commonly needed, our MCU has internal pull-ups
-that can be enabled and disabled.
-
-$$\hbox to7.54cm{\vbox to3.98638888888889cm{\vfil\special{psfile=avrtel.2
-  clip llx=0 lly=0 urx=214 ury=113 rwi=2140}}\hfil}$$
-
-@<Set |PD2| to pullup mode@>=
-PORTD |= 1 << PD2;
-_delay_us(1); /* after enabling pullup, wait for the pin to settle before reading it */
 
 @ No other requests except {\caps set control line state} come
 after connection is established (speed is not set in \.{tel}).
@@ -675,7 +638,24 @@ $$\vbox{\halign{\tt#\cr
 
 Where 1,2,3,4 are |PB4|,|PB5|,|PE6|,|PD7| and 5,6,7 are |PF4|,|PF5|,|PF6|.
 
-@ @<Pullup input pins@>=
+@ The pull-up resistor is connected to the high voltage (this is usually 3.3V or 5V and is
+often refereed to as VCC).
+
+Pull-ups are often used with buttons and switches.
+
+With a pull-up resistor, the input pin will read a high state when the photo-transistor
+is not opened. In other words, a small amount of current is flowing between VCC and the input
+pin (not to ground), thus the input pin reads close to VCC. When the photo-transistor is
+opened, it connects the input pin directly to ground. The current flows through the resistor
+to ground, thus the input pin reads a low state.
+
+Since pull-up resistors are so commonly needed, our MCU has internal pull-ups
+that can be enabled and disabled.
+
+$$\hbox to7.54cm{\vbox to3.98638888888889cm{\vfil\special{psfile=avrtel.2
+  clip llx=0 lly=0 urx=214 ury=113 rwi=2140}}\hfil}$$
+
+@<Pullup input pins@>=
 PORTB |= 1 << PB4 | 1 << PB5;
 PORTE |= 1 << PE6;
 PORTD |= 1 << PD7;
