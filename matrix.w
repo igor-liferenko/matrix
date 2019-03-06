@@ -11,7 +11,8 @@
 
 @* Program.
 The interface here is preserved the same as in \.{avrtel}, in order to use the same
-\.{tel} program for both (each on its own router).
+\.{tel} program for both (each on its own router). The relevant places are marked
+with ``avrtel'' in index.
 
 @d EP0 0
 @d EP1 1
@@ -98,10 +99,6 @@ indication timeout
 must not increase debounce delay (so that when next key is pressed, the timer is guaranteed
 to expire - before it is set again)
 
-TODO: draw flowchart on graph paper and draw it in metapost
-and add it to TeX-part of section
-|@<Handle matrix@>| and add thorough explanation of its C-part there
-
 @<Handle matrix@>=
   DDRB |= 1 << PB6; /* to indicate keypresses */
   @<Pullup input pins@>@;
@@ -147,13 +144,18 @@ and add it to TeX-part of section
       else timeout = 2000;
       // do not allow one button to be pressed more frequently than
       // debounce (i.e., if I mean to hold it, but it bounces,
-      // and the interval between bounces exceeds "eliminate capacitance" delay,
+      // and the interval between bounces exceeds 1 $\mu s$ delay (used in matrix scanning code
+      // to eliminate capacitance),
       // which is very small); also, the debounce interval must be a little greater
       // than the blink time of the button press indicator led
 
-      /* HINT: see debounce handling in usb/kbd.ch and usb/cdc.ch */
-      while (--timeout) {
-        // FIXME: call |@<Get |line_status|@>| and check |line_status.DTR| here?
+      while (--timeout) { /* HINT: see debounce
+        handling in below preprocessor `if' (maybe also in git lg usb/kbd.ch */
+        /* FIXME: call |@<Get |line_status|@>| and check |line_status.DTR| here?
+           draw flowchart on graph paper and draw it in metapost
+           and add it to TeX-part of this section
+           (and add thorough explanation of code of this section to its TeX part)
+        */
         if (!(prev_button == 'B' || prev_button == 'C')) {
           @<Get button@>@;
           if (btn == 0 && timeout < 1500) break; /* timeout - debounce, you can't
@@ -682,10 +684,14 @@ U8 btn = 0;
       DDRF |= 1 << i;
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
         previous column, wait
-        for pullup of it to charge the stray capacitance and before reading input
-        pin for which row
+        for pullup of it to charge the stray capacitance\footnote\dag{mind that
+        open-ended wire may be longer wire (where button is pressed)} and before reading input
+        pin for whose row
         a button may be pressed, wait ground of \\{PFi} to
-        discharge the stray capacitance */
+        discharge the stray capacitance\footnote\ddag{Do test like on
+        https://arduino.stackexchange.com/questions/54919/, but check transition
+        not from not-pulled-up to pulled-up, but from
+        not-grounded to grounded (with pullup enabled)} */
       switch (~PINB & (1 << PB4 | 1 << PB5) | ~PINE & 1 << PE6 | ~PIND & 1 << PD7) {
       case 1 << PB4:
         switch (i) {
