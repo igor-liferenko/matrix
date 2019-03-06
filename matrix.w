@@ -644,8 +644,7 @@ To unset output pin, do this;
 |DDRx.y = 0|.
 
 Note, that input pin A is pulled-up.
-The pull-up resistor is connected to the high voltage (this is usually 3.3V or 5V and is
-often refereed to as VCC).
+The pull-up resistor is connected to the high voltage (5V).
 
 With a pull-up resistor, the input pin will read a high state when button is not pressed.
 In other words, a small amount of current is flowing between VCC and the input
