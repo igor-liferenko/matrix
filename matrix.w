@@ -688,7 +688,7 @@ U8 btn = 0;
         open-ended wire may be longer wire (where button is pressed)} and before reading input
         pin for whose row
         a button may be pressed, wait ground of \\{PFi} to
-        discharge the stray capacitance\footnote\ddag{Do test like on
+        discharge the stray capacitance\footnote\ddag{TODO: confirm this by doing test like on
         https://arduino.stackexchange.com/questions/54919/, but check transition
         not from not-pulled-up to pulled-up, but from
         not-grounded to grounded (with pullup enabled)} */
