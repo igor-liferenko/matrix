@@ -599,8 +599,26 @@ while (!(UEINTX & 1 << RXOUTI)) ; /* wait for STATUS stage */
 UEINTX &= ~(1 << RXOUTI);
 
 @* Matrix.
+This is how keypad is connected:
 
-$$\hbox to6cm{\vbox to6.59cm{\vfil\special{psfile=keymap.eps
+\chardef\ttv='174 % vertical line
+$$\vbox{\halign{\tt#\cr
++---------------+ \cr
+{\ttv} 1 {\ttv} 2 {\ttv} 3 {\ttv} A {\ttv} \cr
+{\ttv} 4 {\ttv} 5 {\ttv} 6 {\ttv} B {\ttv} \cr
+{\ttv} 7 {\ttv} 8 {\ttv} 9 {\ttv} C {\ttv} \cr
+{\ttv} * {\ttv} 0 {\ttv} \char`#\ {\ttv} D {\ttv} \cr
++---------------+ \cr
+\ \ \ \ \ \ \ {\ttv} {\ttv} \cr
+\ \ \ \ \ \ \ {\ttv} {\ttv} \cr
+\ \ \ +--------+ \cr
+\ \ \ {\ttv}12345678{\ttv} \cr
+\ \ \ +--------+ \cr
+}}$$
+
+Where 1,2,3,4 are |PB4|,|PB5|,|PE6|,|PD7| and 5,6,7,8 are |PF4|,|PF5|,|PF6|,|PF7|.
+
+@ $$\hbox to6cm{\vbox to6.59cm{\vfil\special{psfile=keymap.eps
   clip llx=0 lly=0 urx=321 ury=353 rwi=1700}}\hfil}$$
 
 This is the working principle:
@@ -625,40 +643,20 @@ To set output pin, do this:
 To unset output pin, do this;
 |DDRx.y = 0|.
 
-@ This is how keypad is connected:
-
-\chardef\ttv='174 % vertical line
-$$\vbox{\halign{\tt#\cr
-+-----------+ \cr
-{\ttv} 1 {\ttv} 2 {\ttv} 3 {\ttv} \cr
-{\ttv} 4 {\ttv} 5 {\ttv} 6 {\ttv} \cr
-{\ttv} 7 {\ttv} 8 {\ttv} 9 {\ttv} \cr
-{\ttv} * {\ttv} 0 {\ttv} \char`#\ {\ttv} \cr
-+-----------+ \cr
-\ \ \ \ \ {\ttv} {\ttv} \cr
-\ \ \ \ \ {\ttv} {\ttv} \cr
-\ \ +-------+ \cr
-\ \ {\ttv}1234567{\ttv} \cr
-\ \ +-------+ \cr
-}}$$
-
-Where 1,2,3,4 are |PB4|,|PB5|,|PE6|,|PD7| and 5,6,7 are |PF4|,|PF5|,|PF6|.
-
-@ The pull-up resistor is connected to the high voltage (this is usually 3.3V or 5V and is
+Note, that input pin A is pulled-up.
+The pull-up resistor is connected to the high voltage (this is usually 3.3V or 5V and is
 often refereed to as VCC).
 
-Pull-ups are often used with buttons and switches.
-
-With a pull-up resistor, the input pin will read a high state when the photo-transistor
-is not opened. In other words, a small amount of current is flowing between VCC and the input
-pin (not to ground), thus the input pin reads close to VCC. When the photo-transistor is
-opened, it connects the input pin directly to ground. The current flows through the resistor
+With a pull-up resistor, the input pin will read a high state when button is not pressed.
+In other words, a small amount of current is flowing between VCC and the input
+pin (not to ground), thus the input pin reads close to VCC. When button is pressed,
+it connects the input pin directly to ground. The current flows through the resistor
 to ground, thus the input pin reads a low state.
 
 Since pull-up resistors are so commonly needed, our MCU has internal pull-ups
 that can be enabled and disabled.
 
-$$\hbox to7.54cm{\vbox to3.98638888888889cm{\vfil\special{psfile=avrtel.2
+$$\hbox to7.54cm{\vbox to3.98638888888889cm{\vfil\special{psfile=../avrtel/avrtel.2
   clip llx=0 lly=0 urx=214 ury=113 rwi=2140}}\hfil}$$
 
 @<Pullup input pins@>=
