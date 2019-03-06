@@ -2,6 +2,10 @@
 
 input rboxes;
 
+verbatimtex
+\font\tenss=cmss10 \tenss
+etex
+
 beginfig(1);
 r:=5mm;
 
@@ -26,7 +30,7 @@ circA.c=circ3.c+right*2cm;
 drawboxed(circA);
 draw circ3.c -- circA.c cutbefore bpath.circ3 cutafter bpath.circA;
 draw circ1.c -- origin cutbefore bpath.circ1 -- (0,-8cm) -- (2cm,-8cm) -- (2cm,-10cm);
-label.bot(btex PB4 etex, (2cm,-10cm));
+label.bot(btex \tt PB4 etex, (2cm,-10cm));
 
 % row2
 circleit.circ4(btex 4 etex);
@@ -49,7 +53,7 @@ circB.c=circ6.c+right*2cm;
 drawboxed(circB);
 draw circ6.c -- circB.c cutbefore bpath.circ6 cutafter bpath.circB;
 draw circ4.c -- (.5cm,ypart(circ4.c)) cutbefore bpath.circ4 -- (.5cm,-7.5cm) -- (3cm,-7.5cm) -- (3cm,-10cm);
-label.bot(btex PB5 etex, (3cm,-10cm));
+label.bot(btex \tt PB5 etex, (3cm,-10cm));
 
 % row3
 circleit.circ7(btex 7 etex);
@@ -72,7 +76,7 @@ circC.c=circ9.c+right*2cm;
 drawboxed(circC);
 draw circ9.c -- circC.c cutbefore bpath.circ9 cutafter bpath.circC;
 draw circ7.c -- (1cm,ypart(circ7.c)) cutbefore bpath.circ7 -- (1cm,-7cm) -- (4cm,-7cm) -- (4cm,-10cm);
-label.bot(btex PE6 etex, (4cm,-10cm));
+label.bot(btex \tt PE6 etex, (4cm,-10cm));
 
 % row4
 circleit.circ_ast(btex * etex);
@@ -95,7 +99,7 @@ circD.c=circ_hash.c+right*2cm;
 drawboxed(circD);
 draw circ_hash.c -- circD.c cutbefore bpath.circ_hash cutafter bpath.circD;
 draw circ_ast.c -- (1.5cm,ypart(circ_ast.c)) cutbefore bpath.circ_ast -- (1.5cm,-6.5cm) -- (5cm,-6.5cm) -- (5cm,-10cm);
-label.bot(btex PD7 etex, (5cm,-10cm));
+label.bot(btex \tt PD7 etex, (5cm,-10cm));
 
 endfig;
 
@@ -123,7 +127,7 @@ circ_ast.c=origin+right*2.5cm+down*5.25cm;
 drawboxed(circ_ast);
 draw circ7.c -- circ_ast.c cutbefore bpath.circ7 cutafter bpath.circ_ast;
 draw circ_ast.c -- (xpart(circ_ast.c),-8cm) cutbefore bpath.circ_ast -- (6cm,-8cm) -- (6cm,-10cm);
-label.bot(btex PF4 etex, (6cm,-10cm));
+label.bot(btex \tt PF4 etex, (6cm,-10cm));
 
 % col2
 circleit.circ2(btex 2 etex);
@@ -146,7 +150,7 @@ circ0.c=circ_ast.c+right*2cm;
 drawboxed(circ0);
 draw circ8.c -- circ0.c cutbefore bpath.circ8 cutafter bpath.circ0;
 draw circ0.c -- (xpart(circ0.c),-7.5cm) cutbefore bpath.circ0 -- (7cm,-7.5cm) -- (7cm,-10cm);
-label.bot(btex PF5 etex, (7cm,-10cm));
+label.bot(btex \tt PF5 etex, (7cm,-10cm));
 
 % col3
 circleit.circ3(btex 3 etex);
@@ -169,7 +173,7 @@ circ_hash.c=circ0.c+right*2cm;
 drawboxed(circ_hash);
 draw circ9.c -- circ_hash.c cutbefore bpath.circ9 cutafter bpath.circ_hash;
 draw circ_hash.c -- (xpart(circ_hash.c),-7cm) cutbefore bpath.circ_hash -- (8cm,-7cm) -- (8cm,-10cm);
-label.bot(btex PF6 etex, (8cm,-10cm));
+label.bot(btex \tt PF6 etex, (8cm,-10cm));
 
 % col4
 circleit.circA(btex A etex);
@@ -192,7 +196,7 @@ circD.c=circ_hash.c+right*2cm;
 drawboxed(circD);
 draw circC.c -- circD.c cutbefore bpath.circC cutafter bpath.circD;
 draw circD.c -- (xpart(circD.c),-6.5cm) cutbefore bpath.circD -- (9cm,-6.5cm) -- (9cm,-10cm);
-label.bot(btex PF7 etex, (9cm,-10cm));
+label.bot(btex \tt PF7 etex, (9cm,-10cm));
 
 endfig;
 
