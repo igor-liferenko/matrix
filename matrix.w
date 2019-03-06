@@ -10,7 +10,8 @@
 %\let\maybe=\iffalse
 
 @* Program.
-Use separate arduino with matrix keypad and separate router with \.{tel}.
+The interface here is preserved the same as in \.{avrtel}, in order to use the same
+\.{tel} program for both (each on its own router).
 
 @d EP0 0
 @d EP1 1
