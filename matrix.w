@@ -10,7 +10,8 @@
 %\let\maybe=\iffalse
 
 @* Program.
-The interface here is preserved the same as in \.{avrtel}, in order to use the same
+The interface here is preserved the same as in \.{avrtel} (especially, if DTR/RTS
+is not `on', on-line led does not work and buttons are not sent) --- in order to use the same
 \.{tel} program for both (each on its own router). The relevant places are marked
 with ``avrtel'' in index.
 
