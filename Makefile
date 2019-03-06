@@ -25,4 +25,3 @@ keypad.eps: keypad.png
 keymap.eps: keymap.gif
 	@convert $< $@
 	@imgsize $@ 6 -
-
