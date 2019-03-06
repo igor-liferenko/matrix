@@ -21,7 +21,3 @@ imgs:
 keypad.eps: keypad.png
 	@convert $< $@
 	@imgsize $@ 7 -
-
-keymap.eps: keymap.gif
-	@convert $< $@
-	@imgsize $@ 6 -
