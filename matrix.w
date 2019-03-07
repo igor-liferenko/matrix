@@ -602,10 +602,10 @@ UEINTX &= ~(1 << RXOUTI);
 @* Matrix.
 This is how keypad is connected:
 
-$$\hbox to15cm{\vbox to8.41cm{\vfil\special{psfile=matrix.1
-  clip llx=-1 lly=-294 urx=256 ury=15 rwi=1984}}\kern9.32cm
-  \vbox to8.41cm{\vfil\special{psfile=matrix.2
-  clip llx=56 lly=-294 urx=265 ury=15 rhi=2383}}\hfil}$$
+$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=matrix.1
+  clip llx=-1 lly=-208 urx=179 ury=11 rwi=1800}}\kern9.78cm
+  \vbox to7.72583333333333cm{\vfil\special{psfile=matrix.2
+  clip llx=39 lly=-208 urx=187 ury=11 rwi=1480}}\hfil}$$
 
 @ This is the working principle:
 $$\hbox to7cm{\vbox to4.2cm{\vfil\special{psfile=keypad.eps
