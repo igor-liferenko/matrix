@@ -17,7 +17,6 @@ with ``avrtel'' in index.
 @<Type \null definitions@>@;
 @<Global variables@>@;
 
-volatile int connected = 0;
 void main(void)
 {
   @<Disable WDT@>@;
