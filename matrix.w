@@ -14,8 +14,6 @@ with ``avrtel'' in index.
 
 @c
 @<Header files@>@;
-typedef unsigned char U8;
-typedef unsigned short U16;
 @<Type \null definitions@>@;
 @<Global variables@>@;
 
