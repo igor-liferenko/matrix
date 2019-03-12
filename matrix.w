@@ -213,7 +213,7 @@ else { /* on-line */
 }
 
 @ No other requests except {\caps set control line state} come
-after connection is established (speed is not set in \.{tel}).
+after connection is established.
 
 @<Get |dtr_rts|@>=
 UENUM = EP0;
