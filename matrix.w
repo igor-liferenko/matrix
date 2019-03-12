@@ -1,7 +1,3 @@
-%TODO: change line_status.DTR to line_status.all
-%TODO: change DTR to DTR/RTS
-%TODO: rm note about TLP281
-
 \let\lheader\rheader
 %\datethis
 \secpagedepth=2 % begin new page only on *
@@ -16,21 +12,12 @@ concept is from there, though it is reasonable by itself) --- in order to use th
 \.{tel} program for both (each on its own router). The relevant places are marked
 with ``avrtel'' in index.
 
-@d EP0 0
-@d EP1 1
-@d EP2 2
-@d EP3 3
-
-@d EP0_SIZE 32 /* 32 bytes\footnote\dag{Must correspond to |UECFG1X| of |EP0|.}
-                  (max for atmega32u4) */
-
 @c
 @<Header files@>@;
 typedef unsigned char U8;
 typedef unsigned short U16;
 @<Type \null definitions@>@;
 @<Global variables@>@;
-
 
 volatile int connected = 0;
 void main(void)
@@ -59,15 +46,9 @@ void main(void)
   int on_line = 0;
   DDRD |= 1 << PD5; /* |PD5| is used to show on-line/off-line state
                        and to determine when transition happens */
-  DDRB |= 1 << PB0; /* |PB0| is used to show DTR state and and to determine
+  DDRB |= 1 << PB0; /* |PB0| is used to show DTR/RTS state and and to determine
     when transition happens */
   PORTB |= 1 << PB0; /* led on */
-
-  if (line_status.DTR != 0) { /* are unions automatically zeroed? (may be removed if yes) */
-    PORTB |= 1 << PB0;
-    PORTD |= 1 << PD5;
-    return;
-  }
 
   @<Handle matrix@>@;
 }
@@ -105,8 +86,8 @@ to expire - before it is set again)
   DDRB |= 1 << PB6; /* to indicate keypresses */
   @<Pullup input pins@>@;
   while (1) {
-    @<Get |line_status|@>@;
-    if (line_status.DTR) {
+    @<Get |dtr_rts|@>@;
+    if (dtr_rts) {
       PORTB &= ~(1 << PB0); /* led off */
     }
     else {
@@ -118,13 +99,13 @@ to expire - before it is set again)
       PORTB |= 1 << PB0; /* led on */
     }
     @<Get button@>@;
-    if (line_status.DTR && btn == 'A') { // 'A' is special button, which does not use
+    if (dtr_rts && btn == 'A') { // 'A' is special button, which does not use
       // indicator led on PB6 - it has its own - PD5
       on_line = !on_line;
     }
     @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
-      (the latter only if DTR)@>@;
-    if (line_status.DTR && btn) {
+      (the latter only if |dtr_rts|)@>@;
+    if (dtr_rts && btn) {
       if (btn != 'A' && on_line) {
         PORTB |= 1 << PB6;
         while (!(UEINTX & 1 << TXINI)) ;
@@ -153,7 +134,7 @@ to expire - before it is set again)
 
       while (--timeout) { /* HINT: see debounce
         handling in below preprocessor `if' (maybe also in git lg usb/kbd.ch */
-        /* FIXME: call |@<Get |line_status|@>| and check |line_status.DTR| here?
+        /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
            draw flowchart on graph paper and draw it in metapost
            and add it to TeX-part of this section
            (and add thorough explanation of code of this section to its TeX part)
@@ -180,8 +161,8 @@ to expire - before it is set again)
   }
 #if 0 /* this is how it was done in cdc.ch */
   while (1) {
-    @<Get |line_status|@>@;
-    if (line_status.DTR) {
+    @<Get |dtr_rts|@>@;
+    if (dtr_rts) {
       @<Get button@>@;
       if (btn != 0) {
         /* Send button */
@@ -212,10 +193,10 @@ DTR/RTS reset after timeout (it is used for \.{avrtel} to reset power on base st
 @^avrtel@>
 
 @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
-  (the latter only if DTR)@>=
+  (the latter only if |dtr_rts|)@>=
 if (!on_line) {
   if (PORTD & 1 << PD5) { /* transition happened */
-    if (line_status.DTR) { /* off-line was not caused by DTR/RTS reset */
+    if (dtr_rts) { /* off-line was not caused by DTR/RTS reset */
       while (!(UEINTX & 1 << TXINI)) ;
       UEINTX &= ~(1 << TXINI);
       UEDATX = '%';
@@ -237,7 +218,7 @@ else { /* on-line */
 @ No other requests except {\caps set control line state} come
 after connection is established (speed is not set in \.{tel}).
 
-@<Get |line_status|@>=
+@<Get |dtr_rts|@>=
 UENUM = EP0;
 if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
@@ -245,18 +226,8 @@ if (UEINTX & 1 << RXSTPI) {
 }
 UENUM = EP1; /* restore */
 
-@ @<Type \null definitions@>=
-typedef union {
-  U16 all;
-  struct {
-    U16 DTR:1;
-    U16 RTS:1;
-    U16 unused:14;
-  };
-} S_line_status;
-
 @ @<Global variables@>=
-S_line_status line_status;
+U16 dtr_rts = 0;
 
 @ This request generates RS-232/V.24 style control signals.
 
@@ -277,7 +248,7 @@ Here DTR is used by host to say the device not to send when DTR is not active.
 wValue = UEDATX | UEDATX << 8;
 UEINTX &= ~(1 << RXSTPI);
 UEINTX &= ~(1 << TXINI); /* STATUS stage */
-line_status.all = wValue;
+dtr_rts = wValue;
 
 @ Used in USB\_RESET interrupt handler.
 Reset is used to go to beginning of connection loop (because we cannot
@@ -352,7 +323,11 @@ if (WDTCSR & 1 << WDE) { /* takes 2 instructions: \.{in} (1 cycle),
     which is within 4 cycles.} */
 }
 
-@ @c
+@ @d EP0 0 /* selected by default */
+@d EP0_SIZE 32 /* 32 bytes\footnote\dag{Must correspond to |UECFG1X| of |EP0|.}
+                  (max for atmega32u4) */
+
+@c
 ISR(USB_GEN_vect)
 {
   UDINT &= ~(1 << EORSTI); /* for the interrupt handler to be called for next USB\_RESET */
