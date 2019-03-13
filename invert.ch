@@ -17,14 +17,6 @@ persists, so do the inversion in change-file to avoid headache.
 @z
 
 @x
-    PORTB |= 1 << PB0;
-    PORTD |= 1 << PD5;
-@y
-    PORTB &= ~(1 << PB0);
-    PORTD &= ~(1 << PD5);
-@z
-
-@x
       PORTB &= ~(1 << PB0); /* led off */
 @y
       PORTB |= 1 << PB0; /* led off */
