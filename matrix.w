@@ -12,7 +12,7 @@ with ``avrtel'' in index.
 
 @c
 @<Header files@>@;
-@<Type \null definitions@>@;
+@<Type definitions@>@;
 @<Global variables@>@;
 
 @<Create ISR for connecting to USB host@>@;
@@ -210,7 +210,6 @@ if (UEINTX & 1 << RXSTPI) {
   dtr_rts = wValue;
 }
 UENUM = EP1; /* restore */
-
 
 @* Matrix.
 This is how keypad is connected:
