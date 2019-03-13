@@ -331,10 +331,8 @@ U8 btn = 0;
       DDRF &= ~(1 << i);
     }
 
-@i ../usb/establishing-usb-connection.w
-@i ../usb/CONTROL-endpoint-management.w
 @i ../usb/IN-endpoint-management.w
-@i ../usb/usb_stack.w
+@i ../usb/USB.w
 
 @* Headers.
 \secpagedepth=1 % index on current page
