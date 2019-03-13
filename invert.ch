@@ -5,21 +5,21 @@ leds on board. But we do not use arduino IDE and for us the problem
 persists, so do the inversion in change-file to avoid headache.
 
 @x
-  DDRD |= 1 << PD5; /* |PD5| is used to show on-line/off-line state
+  DDRD |= 1 << PD5; /* to show on-line/off-line state
 @y
   PORTD |= 1 << PD5; /* led off */
-  DDRD |= 1 << PD5; /* |PD5| is used to show on-line/off-line state
+  DDRD |= 1 << PD5; /* to show on-line/off-line state
 @z
 
 @x
-  PORTB |= 1 << PB0; /* led on */
+  PORTB |= 1 << PB0; /* on when DTR/RTS is off */
 @y
 @z
 
 @x
-      PORTB &= ~(1 << PB0); /* led off */
+      PORTB &= ~(1 << PB0); /* DTR/RTS is on */      
 @y
-      PORTB |= 1 << PB0; /* led off */
+      PORTB |= 1 << PB0; /* DTR/RTS is on */
 @z
 
 @x
@@ -29,9 +29,9 @@ persists, so do the inversion in change-file to avoid headache.
 @z
 
 @x
-      PORTB |= 1 << PB0; /* led on */
+      PORTB |= 1 << PB0; /* DTR/RTS is off */
 @y
-      PORTB &= ~(1 << PB0); /* led on */
+      PORTB &= ~(1 << PB0); /* DTR/RTS is off */
 @z
 
 @x

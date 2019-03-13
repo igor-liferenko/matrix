@@ -23,11 +23,11 @@ void main(void)
   UENUM = EP1;
 
   int on_line = 0;
-  DDRD |= 1 << PD5; /* |PD5| is used to show on-line/off-line state
+  DDRD |= 1 << PD5; /* to show on-line/off-line state
                        and to determine when transition happens */
-  DDRB |= 1 << PB0; /* |PB0| is used to show DTR/RTS state and and to determine
+  DDRB |= 1 << PB0; /* to show DTR/RTS state and and to determine
     when transition happens */
-  PORTB |= 1 << PB0; /* led on */
+  PORTB |= 1 << PB0; /* on when DTR/RTS is off */
 
   @<Handle matrix@>@;
 }
@@ -67,7 +67,7 @@ to expire - before it is set again)
   while (1) {
     @<Get |dtr_rts|@>@;
     if (dtr_rts) {
-      PORTB &= ~(1 << PB0); /* led off */
+      PORTB &= ~(1 << PB0); /* DTR/RTS is on */      
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
@@ -75,7 +75,7 @@ to expire - before it is set again)
           where off-line automatically happens when base station is un-powered */
 @^avrtel@>
       }
-      PORTB |= 1 << PB0; /* led on */
+      PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
     @<Get button@>@;
     if (dtr_rts && btn == 'A') { // 'A' is special button, which does not use
