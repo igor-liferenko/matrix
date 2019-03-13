@@ -120,7 +120,7 @@ to expire - before it is set again)
         */
         if (!(prev_button == 'B' || prev_button == 'C')) {
           @<Get button@>@;
-          if (btn == 0 && timeout < 1500) break; /* timeout - debounce, you can't
+          if (btn == 0 && timeout < 1500) break; /* timeout $-$ debounce, you can't
             make it react more frequently than debounce interval;
             |timeout| time is allowed to release the button until it repeats;
             for `\.B' and `\.C' |timeout| is equal to |debounce|, i.e., repeat
@@ -128,12 +128,12 @@ to expire - before it is set again)
         }
         _delay_ms(1);
         if (prev_button == 'B' || prev_button == 'C') {
-          if (timeout < 200) PORTB &= ~(1 << PB6); /* timeout - indicator duration (should be less
-            than debounce) */
+          if (timeout < 200) PORTB &= ~(1 << PB6); /* timeout $-$ indicator duration (should be
+            less than debounce) */
         }
         else {
-          if (timeout < 1900) PORTB &= ~(1 << PB6); /* timeout - indicator duration (should be less
-            than debounce) */
+          if (timeout < 1900) PORTB &= ~(1 << PB6); /* timeout $-$ indicator duration (should be
+            less than debounce) */
         }
       }
     }
