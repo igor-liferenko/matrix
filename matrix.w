@@ -20,8 +20,7 @@ with ``avrtel'' in index.
 @<Create ISR for connecting to USB host@>@;
 void main(void)
 {
-  @<Disable WDT@>@;
-  @<Connect to USB host (by calling |sei|)@>@;
+  @<Connect to USB host (must be called first; |sei| is called here)@>@;
 
   UENUM = EP1;
 
