@@ -3,8 +3,6 @@
 \secpagedepth=2 % begin new page only on *
 \font\caps=cmcsc10 at 9pt
 
-%\let\maybe=\iffalse
-
 @* Program.
 The interface here is preserved the same as in {\caps avrtel} (namely, if DTR/RTS
 is not `on', on-line led does not work and buttons are not sent; also, ``on-line''
