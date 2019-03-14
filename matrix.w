@@ -14,21 +14,16 @@ with ``avrtel'' in index.
 @<Header files@>@;
 @<Type definitions@>@;
 @<Global variables@>@;
-
 @<Create ISR for connecting to USB host@>@;
+
 void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
-
-  UENUM = EP1;
-
   int on_line = 0;
-  DDRD |= 1 << PD5; /* to show on-line/off-line state
-                       and to determine when transition happens */
-  DDRB |= 1 << PB0; /* to show DTR/RTS state and and to determine
-    when transition happens */
+  DDRD |= 1 << PD5; /* to show on-line/off-line state and to determine when transition happens */
+  DDRB |= 1 << PB0; /* to show DTR/RTS state and and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-
+  UENUM = EP1;
   @<Handle matrix@>@;
 }
 
