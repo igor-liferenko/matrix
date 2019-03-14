@@ -61,10 +61,7 @@ to expire - before it is set again)
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
-        on_line = 0; /* do the same as in \.{avrtel}:
-          if DTR/RTS is not `on', we are always off-line, and buttons are not sent if
-          not on-line --- in order to use the same
-          \.{tel} program for both \.{avrtel} and \.{matrix} (each on a dedicated router) */
+        on_line = 0; /* if DTR/RTS is not `on', we are always off-line */
         PORTD &= ~(1 << PD5);
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
@@ -93,7 +90,7 @@ to expire - before it is set again)
       }
     }
     if (dtr_rts && btn) {
-      if (btn != 'A' && on_line) {
+      if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
         PORTB |= 1 << PB6;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
