@@ -5,25 +5,6 @@
 
 @* Program.
 
-@c
-@<Header files@>@;
-@<Type definitions@>@;
-@<Global variables@>@;
-@<Create ISR for connecting to USB host@>@;
-
-void main(void)
-{
-  @<Connect to USB host (must be called first; |sei| is called here)@>@;
-  int on_line = 0;
-  DDRD |= 1 << PD5; /* to show on-line/off-line state */
-  DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
-  PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-  UENUM = EP1;
-  @<Handle matrix@>@;
-}
-
-@ Add led between ground and PB6 (via 330 ohm resistor).
-
 Button press indication LED is used without interrupts and timers, because
 we block the program anyway inside the debounce interval, so use that to turn
 the LED off.
@@ -51,7 +32,22 @@ indication timeout
 must not increase debounce delay (so that when next key is pressed, the timer is guaranteed
 to expire - before it is set again)
 
-@<Handle matrix@>=
+Add led between ground and PB6 (via 330 ohm resistor).
+
+@c
+@<Header files@>@;
+@<Type definitions@>@;
+@<Global variables@>@;
+@<Create ISR for connecting to USB host@>@;
+
+void main(void)
+{
+  @<Connect to USB host (must be called first; |sei| is called here)@>@;
+  int on_line = 0;
+  DDRD |= 1 << PD5; /* to show on-line/off-line state */
+  DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
+  PORTB |= 1 << PB0; /* on when DTR/RTS is off */
+  UENUM = EP1;
   DDRB |= 1 << PB6; /* to indicate keypresses */
   @<Pullup input pins@>@;
   while (1) {
@@ -167,6 +163,7 @@ to expire - before it is set again)
     }
   }
 #endif
+}
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
