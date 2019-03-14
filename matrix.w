@@ -4,13 +4,6 @@
 \font\caps=cmcsc10 at 9pt
 
 @* Program.
-The interface here is preserved the same as in {\caps avrtel} (namely, if DTR/RTS
-is not `on', on-line led does not work and buttons are not sent; also, ``on-line''
-concept\footnote*{i.e., do not send buttons if not on-line}
-is from there, though it is reasonable by itself (to have multilevel
-menu)) --- in order to use the same
-\.{tel} program for both (each on its own router). The relevant place is marked
-with ``avrtel'' in index.
 
 @c
 @<Header files@>@;
@@ -22,8 +15,8 @@ void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
   int on_line = 0;
-  DDRD |= 1 << PD5; /* to show on-line/off-line state and to determine when transition happens */
-  DDRB |= 1 << PB0; /* to show DTR/RTS state and and to determine when transition happens */
+  DDRD |= 1 << PD5; /* to show on-line/off-line state */
+  DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   UENUM = EP1;
   @<Handle matrix@>@;
@@ -68,10 +61,11 @@ to expire - before it is set again)
     }
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
-        on_line = 0; /* do the same as in \.{avrtel},
-          where off-line is automatically caused by un-powering base station */
+        on_line = 0; /* do the same as in \.{avrtel}:
+          if DTR/RTS is not `on', we are always off-line, and buttons are not sent if
+          not on-line --- in order to use the same
+          \.{tel} program for both \.{avrtel} and \.{matrix} (each on a dedicated router) */
         PORTD &= ~(1 << PD5);
-@^avrtel@>
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
@@ -82,14 +76,18 @@ to expire - before it is set again)
       if (on_line) {
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = '@@';
+        UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
+          \.{tel}---to put it to initial state */
         UEINTX &= ~(1 << FIFOCON);
         PORTD |= 1 << PD5;
       }
       else {
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = '%';
+        UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
+          timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
+          with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
+          automatically as consequence of off-hook)).
         UEINTX &= ~(1 << FIFOCON);
         PORTD &= ~(1 << PD5);
       }
