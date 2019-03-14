@@ -41,13 +41,13 @@ persists, so do the inversion in change-file to avoid headache.
 @z
 
 @x
-  PORTD |= 1 << PD5;
+        PORTD |= 1 << PD5;
 @y
-  PORTD &= ~(1 << PD5);
+        PORTD &= ~(1 << PD5);
 @z
 
 @x
-  PORTD &= ~(1 << PD5);
+        PORTD &= ~(1 << PD5);
 @y
-  PORTD |= 1 << PD5;
+        PORTD |= 1 << PD5;
 @z
