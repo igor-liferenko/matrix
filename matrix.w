@@ -47,9 +47,9 @@ void main(void)
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-  UENUM = EP1;
   DDRB |= 1 << PB6; /* to indicate keypresses */
   @<Pullup input pins@>@;
+  UENUM = EP1;
   while (1) {
     @<Get |dtr_rts|@>@;
     if (dtr_rts) {
