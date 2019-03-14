@@ -87,7 +87,7 @@ to expire - before it is set again)
         UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
           timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
           with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
-          automatically as consequence of off-hook)).
+          automatically as consequence of off-hook)) */
         UEINTX &= ~(1 << FIFOCON);
         PORTD &= ~(1 << PD5);
       }
