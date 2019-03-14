@@ -6,8 +6,10 @@
 @* Program.
 The interface here is preserved the same as in {\caps avrtel} (namely, if DTR/RTS
 is not `on', on-line led does not work and buttons are not sent; also, ``on-line''
-concept is from there, though it is reasonable by itself) --- in order to use the same
-\.{tel} program for both (each on its own router). The relevant places are marked
+concept\footnote*{i.e., do not send buttons if not on-line}
+is from there, though it is reasonable by itself (to have multilevel
+menu)) --- in order to use the same
+\.{tel} program for both (each on its own router). The relevant place is marked
 with ``avrtel'' in index.
 
 @c
@@ -68,6 +70,7 @@ to expire - before it is set again)
       if (!(PORTB & 1 << PB0)) { /* transition happened */
         on_line = 0; /* do the same as in \.{avrtel},
           where off-line is automatically caused by un-powering base station */
+        PORTD &= ~(1 << PD5);
 @^avrtel@>
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
@@ -76,9 +79,21 @@ to expire - before it is set again)
     if (dtr_rts && btn == 'A') { // 'A' is special button, which does not use
       // indicator led on PB6 - it has its own - PD5
       on_line = !on_line;
+      if (on_line) {
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '@@';
+        UEINTX &= ~(1 << FIFOCON);
+        PORTD |= 1 << PD5;
+      }
+      else {
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '%';
+        UEINTX &= ~(1 << FIFOCON);
+        PORTD &= ~(1 << PD5);
+      }
     }
-    @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
-      (the latter only if |dtr_rts|)@>@;
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) {
         PORTB |= 1 << PB6;
@@ -157,38 +172,6 @@ to expire - before it is set again)
     }
   }
 #endif
-
-@ We check if buttons must be sent by using the variable |on_line|.
-
-For on-line indication we send `\.@@' character to \.{tel}---to put
-it to initial state.
-For off-line indication we send `\.\%' character to \.{tel}---to disable
-timeout signal handler (it is used for \.{avrtel} to put handset off-hook).
-@^avrtel@>
-
-@<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
-  (the latter only if |dtr_rts|)@>=
-if (!on_line) {
-  if (PORTD & 1 << PD5) { /* transition happened */
-    if (dtr_rts) { /* off-line was not initiated from \.{tel} (off-line is
-      caused by setting |on_line| to `0' via DTR/RTS) */
-      while (!(UEINTX & 1 << TXINI)) ;
-      UEINTX &= ~(1 << TXINI);
-      UEDATX = '%';
-      UEINTX &= ~(1 << FIFOCON);
-    }
-  }
-  PORTD &= ~(1 << PD5);
-}
-else { /* on-line */
-  if (!(PORTD & 1 << PD5)) { /* transition happened */
-    while (!(UEINTX & 1 << TXINI)) ;
-    UEINTX &= ~(1 << TXINI);
-    UEDATX = '@@';
-    UEINTX &= ~(1 << FIFOCON);
-  }
-  PORTD |= 1 << PD5;
-}
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
