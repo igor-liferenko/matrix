@@ -67,7 +67,7 @@ to expire - before it is set again)
     else {
       if (!(PORTB & 1 << PB0)) { /* transition happened */
         on_line = 0; /* do the same as in \.{avrtel},
-          where off-line automatically happens when base station is un-powered */
+          where off-line is automatically caused by un-powering base station */
 @^avrtel@>
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
@@ -163,14 +163,15 @@ to expire - before it is set again)
 For on-line indication we send `\.@@' character to \.{tel}---to put
 it to initial state.
 For off-line indication we send `\.\%' character to \.{tel}---to disable
-DTR/RTS reset after timeout (it is used for \.{avrtel} to reset power on base station).
+timeout signal handler (it is used for \.{avrtel} to put handset off-hook).
 @^avrtel@>
 
 @<Check |on_line| and indicate it via |PD5| and if it changed write to USB `\.@@' or `\.\%'
   (the latter only if |dtr_rts|)@>=
 if (!on_line) {
   if (PORTD & 1 << PD5) { /* transition happened */
-    if (dtr_rts) { /* off-line was not caused by DTR/RTS reset */
+    if (dtr_rts) { /* off-line was not initiated from \.{tel} (off-line is
+      caused by setting |on_line| to `0' via DTR/RTS) */
       while (!(UEINTX & 1 << TXINI)) ;
       UEINTX &= ~(1 << TXINI);
       UEDATX = '%';
