@@ -63,8 +63,8 @@ void main(void)
       PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
     @<Get button@>@;
-    if (dtr_rts && btn == 'A') { // 'A' is special button, which does not use
-      // indicator led on PB6 - it has its own - PD5
+    if (dtr_rts && btn == 'A') { /* 'A' is special button, which does not use
+                                    indicator led on PB6 - it has its own - PD5 */
       on_line = !on_line;
       if (on_line) {
         while (!(UEINTX & 1 << TXINI)) ;
@@ -105,16 +105,16 @@ void main(void)
           when volume will approach 90 percent, release button - if volume will keep
           changing for some time - |timeout| must be increased */
       else timeout = 2000;
-      // do not allow one button to be pressed more frequently than
-      // debounce (i.e., if I mean to hold it, but it bounces,
-      // and the interval between bounces exceeds 1 $\mu s$ delay (used in matrix scanning code
-      // to eliminate capacitance),
-      // which is very small); also, the debounce interval must be a little greater
-      // than the blink time of the button press indicator led
-
-      while (--timeout) { /* HINT: see debounce
+      (void) 0; /* do not allow one button to be pressed more frequently than
+         debounce (i.e., if I mean to hold it, but it bounces,
+         and the interval between bounces exceeds 1 $\mu s$ delay (used in matrix scanning code
+         to eliminate capacitance),
+         which is very small); also, the debounce interval must be a little greater
+         than the blink time of the button press indicator led */
+      (void) 0; /* HINT: see debounce
         handling in below preprocessor `if' (maybe also in git lg usb/kbd.ch */
-        /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
+
+      while (--timeout) { /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
            draw flowchart on graph paper and draw it in metapost
            and add it to TeX-part of this section
            (and add thorough explanation of code of this section to its TeX part)
