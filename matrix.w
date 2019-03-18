@@ -34,6 +34,8 @@ to expire - before it is set again)
 
 Add led between ground and PB6 (via 330 ohm resistor).
 
+@d F_CPU 16000000UL
+
 @c
 @<Header files@>@;
 @<Type definitions@>@;
@@ -307,10 +309,6 @@ U8 btn = 0;
 
 @<Header files@>=
 #include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/pgmspace.h>
-#include <avr/boot.h> /* |boot_signature_byte_get| */
-#define F_CPU 16000000UL
 #include <util/delay.h> /* |_delay_us|, |_delay_ms| */
 
 @* Index.
