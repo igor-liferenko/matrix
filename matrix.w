@@ -32,8 +32,6 @@ indication timeout
 must not increase debounce delay (so that when next key is pressed, the timer is guaranteed
 to expire - before it is set again)
 
-Add led between ground and PB6 (via 330 ohm resistor).
-
 @d F_CPU 16000000UL
 
 @c
@@ -49,7 +47,7 @@ void main(void)
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-  DDRB |= 1 << PB6; /* to indicate keypresses */
+  DDRC |= 1 << PC7; /* to indicate keypresses */
   @<Pullup input pins@>@;
   UENUM = EP1;
   while (1) {
@@ -66,7 +64,7 @@ void main(void)
     }
     @<Get button@>@;
     if (dtr_rts && btn == 'A') { /* 'A' is special button, which does not use
-                                    indicator led on PB6 - it has its own - PD5 */
+                                    indicator led on |PC7| --- it has its own on |PD5| */
       on_line = !on_line;
       if (on_line) {
         while (!(UEINTX & 1 << TXINI)) ;
@@ -89,7 +87,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        PORTB |= 1 << PB6;
+        PORTC |= 1 << PC7;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
@@ -131,11 +129,11 @@ void main(void)
         }
         _delay_ms(1);
         if (prev_button == 'B' || prev_button == 'C') {
-          if (timeout < 200) PORTB &= ~(1 << PB6); /* timeout $-$ indicator duration (should be
+          if (timeout < 200) PORTC &= ~(1 << PC7); /* timeout $-$ indicator duration (should be
             less than debounce) */
         }
         else {
-          if (timeout < 1900) PORTB &= ~(1 << PB6); /* timeout $-$ indicator duration (should be
+          if (timeout < 1900) PORTC &= ~(1 << PC7); /* timeout $-$ indicator duration (should be
             less than debounce) */
         }
       }
