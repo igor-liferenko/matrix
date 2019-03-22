@@ -86,7 +86,7 @@ drawboxed(circD);
 
 draw (circ1.c+up*1mm+left*1mm) -- (circA.c+up*1mm+right*1mm) -- (circD.c+right*1mm+down*1mm) -- (circ_ast.c+down*1mm+left*1mm) -- cycle;
 
-boxit.arduino(btex \eightss Arduino Micro etex);
+boxit.arduino(btex \eightss Arduino Micro etex); % HINT: use "drawboxes(box4); draw pic(box4) shifted (0,-1cm);" to position label not in center
 arduino.c=(-3cm,0);
 arduino.e-arduino.w=right*4cm;
 arduino.n-arduino.s=up*2cm;
