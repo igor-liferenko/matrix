@@ -245,50 +245,50 @@ U8 btn = 0;
         https://arduino.stackexchange.com/questions/54919/, but check transition
         not from not-pulled-up to pulled-up, but from
         not-grounded to grounded (with pullup enabled)} */
-      switch (~PINB & 1 << PB2 ? 0xB2 : @|
-              ~PIND & 1 << PD3 ? 0xD3 : @|
+      switch (~PIND & 1 << PD1 ? 0xD1 : @|
               ~PIND & 1 << PD2 ? 0xD2 : @|
-              ~PIND & 1 << PD1 ? 0xD1 : 0) {
-      case 0xB2:
+              ~PIND & 1 << PD3 ? 0xD3 : @|
+              ~PINB & 1 << PB2 ? 0xB2 : 0) {
+      case 0xD1:
         switch (i) {
-        case PB4: btn = '1'; @+ break;
-        case PB5: btn = '2'; @+ break;
-        case PB6: btn = '3'; @+ break;
-        case PB7: btn = 'A'; @+ break;
-        }
-        done = 1;
-        break;
-      case 0xD3:
-        switch (i) {
-        case PB4: btn = '4'; @+ break;
-        case PB5: btn = '5'; @+ break;
-        case PB6: btn = '6'; @+ break;
-        case PB7: btn = 'B'; @+ break;
+        case PB7: btn = '1'; @+ break;
+        case PB6: btn = '2'; @+ break;
+        case PB5: btn = '3'; @+ break;
+        case PB4: btn = 'A'; @+ break;
         }
         done = 1;
         break;
       case 0xD2:
         switch (i) {
-        case PB4: btn = '7'; @+ break;
-        case PB5: btn = '8'; @+ break;
-        case PB6: btn = '9'; @+ break;
-        case PB7: btn = 'C'; @+ break;
+        case PB7: btn = '4'; @+ break;
+        case PB6: btn = '5'; @+ break;
+        case PB5: btn = '6'; @+ break;
+        case PB4: btn = 'B'; @+ break;
         }
         done = 1;
         break;
-      case 0xD1:
+      case 0xD3:
         switch (i) {
-        case PB4: btn = '*'; @+ break;
-        case PB5: btn = '0'; @+ break;
-        case PB6: btn = '#'; @+ break;
-        case PB7: btn = 'D'; @+ break;
+        case PB7: btn = '7'; @+ break;
+        case PB6: btn = '8'; @+ break;
+        case PB5: btn = '9'; @+ break;
+        case PB4: btn = 'C'; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xB2:
+        switch (i) {
+        case PB7: btn = '*'; @+ break;
+        case PB6: btn = '0'; @+ break;
+        case PB5: btn = '#'; @+ break;
+        case PB4: btn = 'D'; @+ break;
         }
         done = 1;
         break;
       default: @/
         btn = 0;
       }
-      DDRF &= ~(1 << i);
+      DDRB &= ~(1 << i);
     }
 
 @i ../usb/IN-endpoint-management.w
