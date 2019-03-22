@@ -226,26 +226,15 @@ Since pull-up resistors are so commonly needed, our MCU has internal pull-ups
 that can be enabled and disabled.
 
 @<Pullup input pins@>=
-PORTB |= 1 << PB4 | 1 << PB5;
-PORTE |= 1 << PE6;
-PORTD |= 1 << PD7;
+PORTB |= 1 << PB2 | 1 << PB0;
+PORTD |= 1 << PD3 | 1 << PD2;
 
 @ @<Global variables@>=
 U8 btn = 0;
 
-@
-% NOTE: use index into an array of Pxn if pins in "for" are not consequtive:
-% int a[3] = { PF3, PD4, PB5 }; ... for (int i = 0, ... DDRF |= 1 << a[i]; ... switch (a[i]) ...
-
-% NOTE: use array of indexes to separate bits if pin numbers in "switch" collide:
-% int b[256] = {0};
-% if (~PINB & 1 << PB4) b[0xB4] = 1 << 0; ... if ... b[0xB5] = 1 << 1; ... b[0xE6] = 1 << 2; ...
-% switch (b[0xB4] | ...) ... case b[0xB4]: ...
-% (here # in woven output will represent P)
-
-@<Get button@>=
-    for (int i = PF4, done = 0; i <= PF7 && !done; i++) {
-      DDRF |= 1 << i;
+@ @<Get button@>=
+    for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
+      DDRB |= 1 << i;
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
         previous column, wait
         for pullup of it to charge the stray capacitance\footnote\dag{mind that
@@ -256,40 +245,43 @@ U8 btn = 0;
         https://arduino.stackexchange.com/questions/54919/, but check transition
         not from not-pulled-up to pulled-up, but from
         not-grounded to grounded (with pullup enabled)} */
-      switch (~PINB & (1 << PB4 | 1 << PB5) | ~PINE & 1 << PE6 | ~PIND & 1 << PD7) {
-      case 1 << PB4:
+      switch (~PINB & 1 << PB2 ? 0xB2 : @|
+              ~PINB & 1 << PB0 ? 0xB0 : @|
+              ~PIND & 1 << PD3 ? 0xD3 : @|
+              ~PIND & 1 << PD2 ? 0xD2 : 0) {
+      case 0xB2:
         switch (i) {
-        case PF4: btn = '1'; @+ break;
-        case PF5: btn = '2'; @+ break;
-        case PF6: btn = '3'; @+ break;
-        case PF7: btn = 'A'; @+ break;
+        case PB4: btn = '1'; @+ break;
+        case PB5: btn = '2'; @+ break;
+        case PB6: btn = '3'; @+ break;
+        case PB7: btn = 'A'; @+ break;
         }
         done = 1;
         break;
-      case 1 << PB5:
+      case 0xB0:
         switch (i) {
-        case PF4: btn = '4'; @+ break;
-        case PF5: btn = '5'; @+ break;
-        case PF6: btn = '6'; @+ break;
-        case PF7: btn = 'B'; @+ break;
+        case PB4: btn = '4'; @+ break;
+        case PB5: btn = '5'; @+ break;
+        case PB6: btn = '6'; @+ break;
+        case PB7: btn = 'B'; @+ break;
         }
         done = 1;
         break;
-      case 1 << PE6:
+      case 0xD3:
         switch (i) {
-        case PF4: btn = '7'; @+ break;
-        case PF5: btn = '8'; @+ break;
-        case PF6: btn = '9'; @+ break;
-        case PF7: btn = 'C'; @+ break;
+        case PB4: btn = '7'; @+ break;
+        case PB5: btn = '8'; @+ break;
+        case PB6: btn = '9'; @+ break;
+        case PB7: btn = 'C'; @+ break;
         }
         done = 1;
         break;
-      case 1 << PD7:
+      case 0xD2:
         switch (i) {
-        case PF4: btn = '*'; @+ break;
-        case PF5: btn = '0'; @+ break;
-        case PF6: btn = '#'; @+ break;
-        case PF7: btn = 'D'; @+ break;
+        case PB4: btn = '*'; @+ break;
+        case PB5: btn = '0'; @+ break;
+        case PB6: btn = '#'; @+ break;
+        case PB7: btn = 'D'; @+ break;
         }
         done = 1;
         break;
