@@ -11,11 +11,11 @@ etex
 beginfig(1);
 u:=1mm;
 r:=.5u;
-
+pair matrix_origin; matrix_origin:=(-3.3cm,-1cm);
 % row1
 circleit.circ1();
 circ1.n-circ1.c=up*r; circ1.e-circ1.c=right*r;
-circ1.c=origin+right*2.5u;
+circ1.c=matrix_origin+right*2.5u;
 drawboxed(circ1);
 circleit.circ2();
 circ2.n-circ2.c=up*r; circ2.e-circ2.c=right*r;
@@ -33,7 +33,7 @@ drawboxed(circA);
 % row2
 circleit.circ4();
 circ4.n-circ4.c=up*r; circ4.e-circ4.c=right*r;
-circ4.c=origin+right*2.5u+down*1.75u;
+circ4.c=matrix_origin+right*2.5u+down*1.75u;
 drawboxed(circ4);
 circleit.circ5();
 circ5.n-circ5.c=up*r; circ5.e-circ5.c=right*r;
@@ -51,7 +51,7 @@ drawboxed(circB);
 % row3
 circleit.circ7();
 circ7.n-circ7.c=up*r; circ7.e-circ7.c=right*r;
-circ7.c=origin+right*2.5u+down*3.5u;
+circ7.c=matrix_origin+right*2.5u+down*3.5u;
 drawboxed(circ7);
 circleit.circ8();
 circ8.n-circ8.c=up*r; circ8.e-circ8.c=right*r;
@@ -69,7 +69,7 @@ drawboxed(circC);
 % row4
 circleit.circ_ast();
 circ_ast.n-circ_ast.c=up*r; circ_ast.e-circ_ast.c=right*r;
-circ_ast.c=origin+right*2.5u+down*5.25u;
+circ_ast.c=matrix_origin+right*2.5u+down*5.25u;
 drawboxed(circ_ast);
 circleit.circ0();
 circ0.n-circ0.c=up*r; circ0.e-circ0.c=right*r;
@@ -89,8 +89,8 @@ draw (circ1.c+up*1mm+left*1mm) -- (circA.c+up*1mm+right*1mm) -- (circD.c+right*1
 boxit.arduino(btex \eightss Arduino Micro etex);
 arduino.c=(-3cm,0);
 arduino.e-arduino.w=right*4cm;
-arduino.n-arduino.s=up*2cm;
-drawboxes(arduino); draw pic(arduino) shifted (up*5mm+left*1mm);
+arduino.n-arduino.s=up*1.4cm;
+drawboxes(arduino); draw pic(arduino) shifted (up*2mm+left*6mm);
 % pins
 pair arduino.B[],arduino.D[],arduino.C[];
 arduino.B7=arduino.se+left*4.25mm;
@@ -106,13 +106,17 @@ begingroup;
 save A; pen A; A:=currentpen;
 pickup pencircle scaled .4pt;
 boxit.arduino.B0.box(btex \smallss B0 etex);
-arduino.B0.box.c=1/2[arduino.B4,arduino.B5]+down*5.5mm;
+arduino.B0.box.c=arduino.e+left*5mm;
 arduino.B0.box.sw=arduino.B0.box.c+down*2pt+left*3pt; % TODO: use sw and ne corners to specify full width and height, like in setup-tarif.mp, use rbox_radius, use thinner line for drawing the box
 drawboxed(arduino.B0.box);
 boxit.arduino.D5.box(btex \smallss D5 etex);
-arduino.D5.box.c=(xpart(arduino.B0.box.c),ypart(arduino.sw)+5.5mm);
+arduino.D5.box.c=arduino.B0.box.c+left*3mm;
 arduino.D5.box.sw=arduino.D5.box.c+down*2pt+left*3pt;
 drawboxed(arduino.D5.box);
+boxit.arduino.C7.box(btex \smallss C7 etex);
+arduino.C7.box.c=arduino.D5.box.c+left*3mm;
+arduino.C7.box.sw=arduino.C7.box.c+down*2pt+left*3pt;
+drawboxed(arduino.C7.box);
 label.top(btex \smallss 11 etex, arduino.B7);
 rboxit.arduino.B7.box(btex \smallss B7 etex);
 arduino.B7.box.c=arduino.B7+up*3mm;
@@ -155,6 +159,57 @@ arduino.D1.box.sw=arduino.D1.box.c+down*2pt+left*3pt;
 drawboxed(arduino.D1.box);
 pickup A;
 endgroup;
+
+path wire[];
+pair wire[][];
+
+wire1[1]=circ_ast.c+down*1mm+left*.5mm;
+wire1[2]=wire1[1]+down*1mm;
+xpart(wire1[3])=xpart(arduino.D1); ypart(wire1[3])=ypart(wire1[2]);
+wire1[4]=arduino.D1;
+draw wire1[1]--wire1[2]--wire1[3]--wire1[4];
+
+wire2[1]=circ_ast.c+down*1mm+right*.5mm;
+wire2[2]=wire2[1]+down*2mm;
+xpart(wire2[3])=xpart(arduino.D2); ypart(wire2[3])=ypart(wire2[2]);
+wire2[4]=arduino.D2;
+draw wire2[1]--wire2[2]--wire2[3]--wire2[4];
+
+wire3[1]=circ_ast.c+down*1mm+right*1.5mm;
+wire3[2]=wire3[1]+down*3mm;
+xpart(wire3[3])=xpart(arduino.D3); ypart(wire3[3])=ypart(wire3[2]);
+wire3[4]=arduino.D3;
+draw wire3[1]--wire3[2]--wire3[3]--wire3[4];
+
+wire4[1]=circ_ast.c+down*1mm+right*2.5mm;
+wire4[2]=wire4[1]+down*4mm;
+xpart(wire4[3])=xpart(arduino.B2); ypart(wire4[3])=ypart(wire4[2]);
+wire4[4]=arduino.B2;
+draw wire4[1]--wire4[2]--wire4[3]--wire4[4];
+
+wire5[1]=circ_ast.c+down*1mm+right*6.5mm;
+wire5[2]=wire5[1]+down*1mm;
+xpart(wire5[3])=xpart(arduino.B4); ypart(wire5[3])=ypart(wire5[2]);
+wire5[4]=arduino.B4;
+draw wire5[1]--wire5[2]--wire5[3]--wire5[4];
+
+wire6[1]=circ_ast.c+down*1mm+right*5.5mm;
+wire6[2]=wire6[1]+down*2mm;
+xpart(wire6[3])=xpart(arduino.B5); ypart(wire6[3])=ypart(wire6[2]);
+wire6[4]=arduino.B5;
+draw wire6[1]--wire6[2]--wire6[3]--wire6[4];
+
+wire7[1]=circ_ast.c+down*1mm+right*4.5mm;
+wire7[2]=wire7[1]+down*3mm;
+xpart(wire7[3])=xpart(arduino.B6); ypart(wire7[3])=ypart(wire7[2]);
+wire7[4]=arduino.B6;
+draw wire7[1]--wire7[2]--wire7[3]--wire7[4];
+
+wire8[1]=circ_ast.c+down*1mm+right*3.5mm;
+wire8[2]=wire8[1]+down*4mm;
+xpart(wire8[3])=xpart(arduino.B7); ypart(wire8[3])=ypart(wire8[2]);
+wire8[4]=arduino.B7;
+draw wire8[1]--wire8[2]--wire8[3]--wire8[4];
 
 endfig;
 
