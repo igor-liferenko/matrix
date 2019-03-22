@@ -7,6 +7,86 @@ verbatimtex
 etex
 
 beginfig(1);
+u:=1mm;
+r:=.5u;
+
+% row1
+circleit.circ1();
+circ1.n-circ1.c=up*r; circ1.e-circ1.c=right*r;
+circ1.c=origin+right*2.5u;
+drawboxed(circ1);
+circleit.circ2();
+circ2.n-circ2.c=up*r; circ2.e-circ2.c=right*r;
+circ2.c=circ1.c+right*2u;
+drawboxed(circ2);
+circleit.circ3();
+circ3.n-circ3.c=up*r; circ3.e-circ3.c=right*r;
+circ3.c=circ2.c+right*2u;
+drawboxed(circ3);
+circleit.circA();
+circA.n-circA.c=up*r; circA.e-circA.c=right*r;
+circA.c=circ3.c+right*2u;
+drawboxed(circA);
+
+% row2
+circleit.circ4();
+circ4.n-circ4.c=up*r; circ4.e-circ4.c=right*r;
+circ4.c=origin+right*2.5u+down*1.75u;
+drawboxed(circ4);
+circleit.circ5();
+circ5.n-circ5.c=up*r; circ5.e-circ5.c=right*r;
+circ5.c=circ4.c+right*2u;
+drawboxed(circ5);
+circleit.circ6();
+circ6.n-circ6.c=up*r; circ6.e-circ6.c=right*r;
+circ6.c=circ5.c+right*2u;
+drawboxed(circ6);
+circleit.circB();
+circB.n-circB.c=up*r; circB.e-circB.c=right*r;
+circB.c=circ6.c+right*2u;
+drawboxed(circB);
+
+% row3
+circleit.circ7();
+circ7.n-circ7.c=up*r; circ7.e-circ7.c=right*r;
+circ7.c=origin+right*2.5u+down*3.5u;
+drawboxed(circ7);
+circleit.circ8();
+circ8.n-circ8.c=up*r; circ8.e-circ8.c=right*r;
+circ8.c=circ7.c+right*2u;
+drawboxed(circ8);
+circleit.circ9();
+circ9.n-circ9.c=up*r; circ9.e-circ9.c=right*r;
+circ9.c=circ8.c+right*2u;
+drawboxed(circ9);
+circleit.circC();
+circC.n-circC.c=up*r; circC.e-circC.c=right*r;
+circC.c=circ9.c+right*2u;
+drawboxed(circC);
+
+% row4
+circleit.circ_ast();
+circ_ast.n-circ_ast.c=up*r; circ_ast.e-circ_ast.c=right*r;
+circ_ast.c=origin+right*2.5u+down*5.25u;
+drawboxed(circ_ast);
+circleit.circ0();
+circ0.n-circ0.c=up*r; circ0.e-circ0.c=right*r;
+circ0.c=circ_ast.c+right*2u;
+drawboxed(circ0);
+circleit.circ_hash();
+circ_hash.n-circ_hash.c=up*r; circ_hash.e-circ_hash.c=right*r;
+circ_hash.c=circ0.c+right*2u;
+drawboxed(circ_hash);
+circleit.circD();
+circD.n-circD.c=up*r; circD.e-circD.c=right*r;
+circD.c=circ_hash.c+right*2u;
+drawboxed(circD);
+
+draw (circ1.c+up*1mm+left*1mm) -- (circA.c+up*1mm+right*1mm) -- (circD.c+right*1mm+down*1mm) -- (circ_ast.c+down*1mm+left*1mm) -- cycle;
+
+endfig;
+
+beginfig(2);
 u:=.7cm;
 r:=.5u;
 
@@ -104,7 +184,7 @@ label.bot(btex \tt PD7 etex, (5u,-10u));
 
 endfig;
 
-beginfig(2);
+beginfig(3);
 u:=.7cm;
 r:=.5u;
 

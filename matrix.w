@@ -186,9 +186,9 @@ UENUM = EP1; /* restore */
 @* Matrix.
 This is how keypad is connected:
 
-$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=matrix.1
+$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=matrix.2
   clip llx=-1 lly=-208 urx=179 ury=11 rwi=1800}}\kern9.78cm
-  \vbox to7.72583333333333cm{\vfil\special{psfile=matrix.2
+  \vbox to7.72583333333333cm{\vfil\special{psfile=matrix.3
   clip llx=39 lly=-208 urx=187 ury=11 rwi=1480}}\hfil}$$
 
 @ This is the working principle:
