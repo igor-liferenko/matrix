@@ -32,6 +32,9 @@ indication timeout
 must not increase debounce delay (so that when next key is pressed, the timer is guaranteed
 to expire - before it is set again)
 
+$$\hbox to4.02cm{\vbox to2.78694444444444cm{\vfil\special{psfile=matrix.1
+  clip llx=-142 lly=-58 urx=-28 ury=21 rwi=1140}}\hfil}$$
+
 @d F_CPU 16000000UL
 
 @c

@@ -1,4 +1,4 @@
-outputtemplate:="%j.eps"; prologues:=3;
+%outputtemplate:="%j.eps"; prologues:=3;
 
 input rboxes;
 
@@ -212,8 +212,6 @@ wire8[4]=arduino.B7;
 draw wire8[1]--wire8[2]--wire8[3]--wire8[4];
 
 endfig;
-
-end
 
 beginfig(2);
 u:=.7cm;
