@@ -226,8 +226,8 @@ Since pull-up resistors are so commonly needed, our MCU has internal pull-ups
 that can be enabled and disabled.
 
 @<Pullup input pins@>=
-PORTB |= 1 << PB2 | 1 << PB0;
-PORTD |= 1 << PD3 | 1 << PD2;
+PORTB |= 1 << PB2;
+PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Global variables@>=
 U8 btn = 0;
@@ -246,9 +246,9 @@ U8 btn = 0;
         not from not-pulled-up to pulled-up, but from
         not-grounded to grounded (with pullup enabled)} */
       switch (~PINB & 1 << PB2 ? 0xB2 : @|
-              ~PINB & 1 << PB0 ? 0xB0 : @|
               ~PIND & 1 << PD3 ? 0xD3 : @|
-              ~PIND & 1 << PD2 ? 0xD2 : 0) {
+              ~PIND & 1 << PD2 ? 0xD2 : @|
+              ~PIND & 1 << PD1 ? 0xD1 : 0) {
       case 0xB2:
         switch (i) {
         case PB4: btn = '1'; @+ break;
@@ -258,7 +258,7 @@ U8 btn = 0;
         }
         done = 1;
         break;
-      case 0xB0:
+      case 0xD3:
         switch (i) {
         case PB4: btn = '4'; @+ break;
         case PB5: btn = '5'; @+ break;
@@ -267,7 +267,7 @@ U8 btn = 0;
         }
         done = 1;
         break;
-      case 0xD3:
+      case 0xD2:
         switch (i) {
         case PB4: btn = '7'; @+ break;
         case PB5: btn = '8'; @+ break;
@@ -276,7 +276,7 @@ U8 btn = 0;
         }
         done = 1;
         break;
-      case 0xD2:
+      case 0xD1:
         switch (i) {
         case PB4: btn = '*'; @+ break;
         case PB5: btn = '0'; @+ break;
