@@ -96,15 +96,15 @@ void main(void)
         UEDATX = btn;
         UEINTX &= ~(1 << FIFOCON);
       }
-      U8 prev_button = btn;
+      uint8_t prev_button = btn;
       int timeout;
       if (btn == 'B' || btn == 'C')
         timeout = 300; /* values smaller that this do not give mpc call
           enough time to finish before another mpc request arrives; it
           is manifested by the fact that when button is released, the volume
           continues to increase (decrease);
-          TODO: find minimum possible |timeout| value by setting it to `0' and
-          doing this: run tel in foreground, set volume to 0, press + button,
+          TODO: find minimum possible |timeout| value by setting it to 0 and
+          doing this: run \.{tel} in foreground, set volume to 0, press + button,
           when volume will approach 90 percent, release button - if volume will keep
           changing for some time - |timeout| must be increased */
       else timeout = 2000;
@@ -149,7 +149,7 @@ void main(void)
       @<Get button@>@;
       if (btn != 0) {
         /* Send button */
-        U8 prev_button = btn;
+        uint8_t prev_button = btn;
         int timeout = 2000;
         while (--timeout) {
           @<Get button@>@;
@@ -233,7 +233,7 @@ PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Global variables@>=
-U8 btn = 0;
+uint8_t btn = 0;
 
 @ @<Get button@>=
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
