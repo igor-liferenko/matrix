@@ -20,3 +20,6 @@ DDRC |= 1 << PC7;
 TCNT4
 OCR4A
 OCR4B
+
+https://wp.josh.com/2015/03/05/the-perfect-pulse-some-tricks-for-generating-precise-one-shots-on-avr8/
+https://github.com/bigjosh/TimerShot/blob/master/TimerShot.ino
