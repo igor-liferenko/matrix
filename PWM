@@ -1,0 +1,22 @@
+TCCR0B = 0; // Halt counter by setting clock select bits to 0 (No clock source).
+            // This keeps anyhting from happeneing while we get set up
+TCNT0 = 0x00;     // Start counting at bottom.
+OCR0A = 0; // Set TOP to 0. This effectively keeps us from counting becuase the counter just keeps
+           // reseting back to 0.
+           // We break out of this by manually setting the TCNT higher than 0, in which case it
+           // will count all the way up to MAX and then overflow back to 0 and get locked up again.
+OCR0B = 2; // max width (must be greater than TCNT0 - see
+           // https://github.com/bigjosh/TimerShot/blob/master/TimerShot.ino)
+TCCR0A = _BV(COM0B1) | _BV(COM0B0) | _BV(WGM00) | _BV(WGM01);
+TCCR0B =  _BV(WGM02)|_BV(CS02) | _BV(CS00);
+DDRD |= 1 << PD0;     // Set pin to output
+
+Try to do analogously to PC7:
+
+pin OC4A
+TCCR4A
+TCCR4B
+DDRC |= 1 << PC7;
+TCNT4
+OCR4A
+OCR4B
