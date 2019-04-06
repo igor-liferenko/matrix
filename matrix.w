@@ -5,6 +5,8 @@
 
 @* Program.
 
+HINT: led must be the same as beep on phone
+
 Button press indication LED is used without interrupts and timers, because
 we block the program anyway inside the debounce interval, so use that to turn
 the LED off.
