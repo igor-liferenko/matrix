@@ -106,12 +106,12 @@ begingroup;
 interim rbox_radius:=1bp;
 save A; pen A; A:=currentpen;
 pickup pencircle scaled .1pt;
-boxit.arduino.B0(btex \smallss B0 etex);
-arduino.B0.c=arduino.e+left*.5u;
-arduino.B0.ne=arduino.B0.sw+right*.2u+up*.15u; % TODO: do the rest like this
-drawboxed(arduino.B0);
+boxit.arduino.B0_box(btex \smallss B0 etex);
+arduino.B0_box.c=arduino.e+left*.5u;
+arduino.B0_box.ne=arduino.B0_box.sw+right*.2u+up*.15u; % TODO: do the rest like this
+drawboxed(arduino.B0_box);
 boxit.arduino.D5.box(btex \smallss D5 etex);
-arduino.D5.box.c=arduino.B0.c+left*3mm;
+arduino.D5.box.c=arduino.B0_box.c+left*3mm;
 arduino.D5.box.sw=arduino.D5.box.c+down*2pt+left*3pt;
 drawboxed(arduino.D5.box);
 boxit.arduino.C7.box(btex \smallss C7 etex);
