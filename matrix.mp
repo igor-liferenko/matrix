@@ -103,14 +103,15 @@ arduino.D2=arduino.D3+right*2.5mm;
 arduino.D1=arduino.D2+right*7.5mm;
 % draw
 begingroup;
+interim rbox_radius:=1bp;
 save A; pen A; A:=currentpen;
-pickup pencircle scaled .4pt;
-boxit.arduino.B0.box(btex \smallss B0 etex);
-arduino.B0.box.c=arduino.e+left*5mm;
-arduino.B0.box.sw=arduino.B0.box.c+down*2pt+left*3pt; % TODO: use sw and ne corners to specify full width and height, like in setup-tarif.mp, use rbox_radius, use thinner line for drawing the box
-drawboxed(arduino.B0.box);
+pickup pencircle scaled .1pt;
+boxit.arduino.B0(btex \smallss B0 etex);
+arduino.B0.c=arduino.e+left*.5u;
+arduino.B0.ne=arduino.B0.sw+right*.2u+up*.15u; % TODO: do the rest like this
+drawboxed(arduino.B0);
 boxit.arduino.D5.box(btex \smallss D5 etex);
-arduino.D5.box.c=arduino.B0.box.c+left*3mm;
+arduino.D5.box.c=arduino.B0.c+left*3mm;
 arduino.D5.box.sw=arduino.D5.box.c+down*2pt+left*3pt;
 drawboxed(arduino.D5.box);
 boxit.arduino.C7.box(btex \smallss C7 etex);
