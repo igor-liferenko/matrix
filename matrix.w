@@ -49,15 +49,10 @@ void main(void)
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
 
-TC4H = 0x01; TCNT4 = 0xFF; /* set TCNT4 to 0x01FF */
-
-
-
-  OCR4C = 0; /* TOP */
-  OCR4A = 0x03ff - cycles + 1; /* pulse width (100ms); `+1' is here because BOTTOM will be reached
-    on next step after 0x03ff (i.e., overflow); minimum is `2' */
+  OCR4C = 0; /* TOP (0x0FF by default) */
+  OCR4A = 200; /* pulse width is 824 ticks, which is 0.105472 sec, or ~105ms */
   TCCR4A |= 1 << COM4A1 | 1 << COM4A0 | 1 << PWM4A;
-  TCCR4B |= 1 << CS43 CS42 CS41 CS40;
+  TCCR4B |= 1 << CS43 | 1 << CS42; /* 2048 prescaler - 7812.5 ticks per second */
   DDRC |= 1 << PC7; /* FIXME: must be done last - see \S15.4.3 in datasheet and pwm.w */
 
   @<Pullup input pins@>@;
@@ -99,7 +94,7 @@ TC4H = 0x01; TCNT4 = 0xFF; /* set TCNT4 to 0x01FF */
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        TCNT2 = OCR2B - 1; /* fire one-shot pulse FIXME: try -2 - see \S15.12.6 in datasheet */
+        TCNT4 = OCR4A - 10; /* fire one-shot pulse FIXME: try -1 - see \S15.12.6 in datasheet */
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
