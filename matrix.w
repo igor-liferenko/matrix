@@ -50,12 +50,12 @@ void main(void)
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
 
   OCR4C = 0; /* TOP (0x0FF by default) */
-  OCR4A = 0xff; /* FIXME: can it be set here instead of below? */
+  OCR4A = 0xff; /* MATCH (0 by default) FIXME: can it be set here instead of below? */
   TCCR4A |= 1 << COM4A1 | 1 << COM4A0 | 1 << PWM4A;
   TCCR4B |= 1 << CS43 | 1 << CS42; /* 2048 prescaler - 7812.5 ticks per second */
   DDRC |= 1 << PC7; /* FIXME: must be done last - see \S15.4.3 in datasheet and pwm.w */
-  OCR4A = 200; /* pulse width is 824 ticks, which is 0.105472 sec (due to prescaler),
-    or ~105ms (0 by default) */
+  TCNT4 = 0; /* FIXME: try to comment this line and next line and see if it blinks on power-on - see MAX+1 in \S15.8.2 - ask on SX + search one more MAX+1 place in datasheet */
+  OCR4A = 200; /* pulse width is 824 ticks, which is (due to prescaler) ~105ms */
 
   @<Pullup input pins@>@;
   UENUM = EP1;
