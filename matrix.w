@@ -48,7 +48,18 @@ void main(void)
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-  DDRC |= 1 << PC7; /* to indicate keypresses */
+
+TC4H = 0x01; TCNT4 = 0xFF; /* set TCNT4 to 0x01FF */
+
+
+
+  OCR4C = 0; /* TOP */
+  OCR4A = 0x03ff - cycles + 1; /* pulse width (100ms); `+1' is here because BOTTOM will be reached
+    on next step after 0x03ff (i.e., overflow); minimum is `2' */
+  TCCR4A |= 1 << COM4A1 | 1 << COM4A0 | 1 << PWM4A;
+  TCCR4B |= 1 << CS43 CS42 CS41 CS40;
+  DDRC |= 1 << PC7; /* FIXME: must be done last - see \S15.4.3 in datasheet and pwm.w */
+
   @<Pullup input pins@>@;
   UENUM = EP1;
   while (1) {
@@ -88,7 +99,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        TCNT2 = OCR2B - 1; /* fire one-shot pulse; 100ms */
+        TCNT2 = OCR2B - 1; /* fire one-shot pulse FIXME: try -2 - see \S15.12.6 in datasheet */
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
