@@ -29,10 +29,6 @@ NOTE: if necessary, you may set 16-bit timers here as if interrupts are not
 enabled at all (if USB RESET interrupt happens, device is going to be reset anyway,
 so it is safe that it is enabled (we cannot disable it because USB host may be
 rebooted)
-NOTE: if you decide to do keypress indication via timer, keep in mind that keypress
-indication timeout
-must not increase debounce delay (so that when next key is pressed, the timer is guaranteed
-to expire - before it is set again)
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
@@ -92,7 +88,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        PORTC |= 1 << PC7;
+        TCNT2 = OCR2B - 1; /* fire one-shot pulse; 100ms */
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
@@ -133,14 +129,6 @@ void main(void)
             right away */
         }
         _delay_ms(1);
-        if (prev_button == 'B' || prev_button == 'C') {
-          if (timeout < 200) PORTC &= ~(1 << PC7); /* timeout $-$ indicator duration (should be
-            less than debounce) */
-        }
-        else {
-          if (timeout < 1900) PORTC &= ~(1 << PC7); /* timeout $-$ indicator duration (should be
-            less than debounce) */
-        }
       }
     }
   }
