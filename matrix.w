@@ -52,7 +52,7 @@ void main(void)
   DDRC |= 1 << PC7;
   TCCR4A |= 1 << PWM4A; /* WGM */
   OCR4C = 3; /* TOP (minimal) */
-  OCR4A = 920;
+  TC4H = 0x03; OCR4A = 0x98; // 920
   TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40; /* max prescaler + start timer */
   _delay_ms(5); // wait until counter hits TOP when OCR4A will be set
   TCCR4A |= 1 << COM4A1 | 1 << COM4A0;
@@ -96,7 +96,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        TCNT4 = OCR4A - 10; /* fire one-shot pulse FIXME: try -1 - see \S15.12.6 in datasheet */
+        TCNT4 = 0x8e; // 910
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
