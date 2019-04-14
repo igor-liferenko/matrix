@@ -52,9 +52,8 @@ void main(void)
   DDRC |= 1 << PC7;
   TCCR4A |= 1 << PWM4A; /* WGM */
   OCR4C = 3; /* TOP (minimal) */
-  TC4H = 0x03; OCR4A = 0x98; // 920
+  TC4H = 0x03; OCR4A = 0x98; // 920 (set without buffering)
   TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40; /* max prescaler + start timer */
-  _delay_ms(5); // wait until counter hits TOP when OCR4A will be set
   TCCR4A |= 1 << COM4A1 | 1 << COM4A0;
 
   @<Pullup input pins@>@;
