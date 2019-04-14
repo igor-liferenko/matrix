@@ -49,13 +49,13 @@ void main(void)
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
 
-  OCR4C = 0; /* TOP (0x0FF by default) */
-  OCR4A = 0xff; /* MATCH (0 by default) FIXME: can it be set here instead of below? */
-  TCCR4A |= 1 << COM4A1 | 1 << COM4A0 | 1 << PWM4A;
-  TCCR4B |= 1 << CS43 | 1 << CS42; /* 2048 prescaler - 7812.5 ticks per second */
-  DDRC |= 1 << PC7; /* FIXME: must be done last - see \S15.4.3 in datasheet and pwm.w */
-  TCNT4 = 0; /* FIXME: try to comment this line and next line and see if it blinks on power-on - see MAX+1 in \S15.8.2 - ask on SX + search one more MAX+1 place in datasheet */
-  OCR4A = 200; /* pulse width is 824 ticks, which is (due to prescaler) ~105ms */
+  DDRC |= 1 << PC7;
+  TCCR4A |= 1 << PWM4A; /* WGM */
+  OCR4C = 3; /* TOP (minimal) */
+  OCR4A = 920;
+  TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40; /* max prescaler + start timer */
+  _delay_ms(5); // wait until counter hits TOP when OCR4A will be set
+  TCCR4A |= 1 << COM4A1 | 1 << COM4A0;
 
   @<Pullup input pins@>@;
   UENUM = EP1;
