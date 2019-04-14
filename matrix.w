@@ -40,6 +40,11 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Type definitions@>@;
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
+@#
+ISR(TIMER4_OVF_vect)
+{
+  TCCR4B &= 0xF0;
+}
 
 void main(void)
 {
@@ -51,8 +56,9 @@ void main(void)
 
   DDRC |= 1 << PC7;
   TCCR4A |= 1 << PWM4A; /* WGM */
-  OCR4C = 3; /* TOP (minimal) */
-  TC4H = 0x03; OCR4A = 0x98; // 920 (set without buffering)
+  OCR4C = 0x9f; /* TOP (number of ms) */
+  OCR4A = 1;
+  TIMSK4 |= 1 << TOIE4; /* when counter reaches TOP */
   TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40; /* max prescaler + start timer */
   TCCR4A |= 1 << COM4A1 | 1 << COM4A0;
 
@@ -95,7 +101,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        TCNT4 = 0x8e; // 910
+        TCCR4B |= 0x0F;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
@@ -298,6 +304,7 @@ uint8_t btn = 0;
 
 @<Header files@>=
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h> /* |_delay_us|, |_delay_ms| */
 
 @* Index.
