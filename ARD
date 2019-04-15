@@ -1,0 +1,2 @@
+millis() on arduino: Every millisecond a timer interrupt fires to increment a global variable.  When millis() is called, the value of that variable is returned.  The data type used is an unsigned long which is 4-bytes or 32-bits.  This means the maximum value it can hold is 4,294,967,295.  Convert that many milliseconds into days and you can see the rollover will occur in 49 days.
+
