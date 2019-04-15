@@ -124,6 +124,7 @@ void main(void)
         when it is still pressed and hence no need for initial big delay
         (maybe also in git lg usb/kbd.ch */
 /* FIXME: maybe do debounce via timer too */
+/* see this https://www.avrfreaks.net/forum/tutsofthard-button-debouncing-software */
       while (--timeout) { /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
            draw flowchart on graph paper and draw it in metapost
            and add it to TeX-part of this section
