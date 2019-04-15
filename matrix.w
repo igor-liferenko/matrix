@@ -120,9 +120,10 @@ void main(void)
          to eliminate capacitance),
          which is very small); also, the debounce interval must be a little greater
          than the blink time of the button press indicator led */
-      (void) 0; /* HINT: see debounce
-        handling in below preprocessor `if' (maybe also in git lg usb/kbd.ch */
-
+      (void) 0; /* NOTE: do not do like in below preprocessor `if' - no need to repeat a key
+        when it is still pressed and hence no need for initial big delay
+        (maybe also in git lg usb/kbd.ch */
+/* FIXME: maybe do debounce via timer too */
       while (--timeout) { /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
            draw flowchart on graph paper and draw it in metapost
            and add it to TeX-part of this section
