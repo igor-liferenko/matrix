@@ -33,8 +33,6 @@ rebooted)
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
 
-@d F_CPU 16000000UL
-
 @c
 @<Header files@>@;
 @<Type definitions@>@;
