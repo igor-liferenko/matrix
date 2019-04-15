@@ -173,7 +173,7 @@ TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40;
 @ This code shows that counter is zeroed automatically when timer is started.
 
 @(/dev/null@>=
-// TODO
+// HINT: use t1.w t2.w t3.w from avr/ and delete them
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
