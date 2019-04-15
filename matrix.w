@@ -41,7 +41,7 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 
 ISR(TIMER4_OVF_vect)
 {
-  TCCR4B &= 0xF0;
+  PORTC &= ~(1 << PC7);
 }
 
 void main(void)
@@ -51,14 +51,11 @@ void main(void)
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
+  DDRC |= 1 << PC7; /* indicate that key was pressed */
 
-  DDRC |= 1 << PC7;
-  TCCR4A |= 1 << PWM4A; /* WGM */
-  OCR4C = 0x9f; /* TOP (number of ms) */
-  OCR4A = 1;
-  TIMSK4 |= 1 << TOIE4; /* when counter reaches TOP */
-  TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40; /* max prescaler + start timer */
-  TCCR4A |= 1 << COM4A1 | 1 << COM4A0;
+  OCR4C = 100; /* TOP (approximate number of ms) */
+  TIMSK4 |= 1 << TOIE4; /* when counter reaches TOP TODO: put here comments about interrupts
+    like in avrtel.w */
 
   @<Pullup input pins@>@;
   UENUM = EP1;
@@ -99,7 +96,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        TCCR4B |= 0x0F;
+        PORTC |= 1 << PC7; @+ @<Start timer@>@;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
@@ -168,6 +165,15 @@ void main(void)
   }
 #endif
 }
+
+@ @<Start timer@>=
+TCCR4B &= ~(1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40);
+TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40;
+
+@ This code shows that counter is zeroed automatically when timer is started.
+
+@(/dev/null@>=
+// TODO
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
@@ -302,7 +308,7 @@ uint8_t btn = 0;
 
 @<Header files@>=
 #include <avr/io.h>
-#include <avr/interrupt.h>
+#include <avr/interrupt.h> /* |ISR|, |TIMER4_OVF_vect| */
 #include <util/delay.h> /* |_delay_us|, |_delay_ms| */
 
 @* Index.
