@@ -119,7 +119,8 @@ void main(void)
           changing for some time - value must be increased */
       }
       else {
-        do debounce
+        /* see this https://www.avrfreaks.net/forum/tutsofthard-button-debouncing-software +
+           debounce.zip in this directory (from this link) */
       uint8_t prev_button = btn;
       (void) 0; /* do not allow one button to be pressed more frequently than
          debounce (i.e., if I mean to hold it, but it bounces,
@@ -128,27 +129,18 @@ void main(void)
          which is very small); also, the debounce interval must be a little greater
          than the blink time of the button press indicator led */
       (void) 0; /* NOTE: do not do like in below preprocessor `if' - no need to repeat a key
-        when it is still pressed and hence no need for initial big delay
-        (maybe also in git lg usb/kbd.ch */
-/* FIXME: maybe do debounce via timer too */
-/* see this https://www.avrfreaks.net/forum/tutsofthard-button-debouncing-software + debounce.zip
-in this directory (from this link) */
+        when it is still pressed and hence no need for initial big delay */
       while (--timeout) { /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
            draw flowchart on graph paper and draw it in metapost
            and add it to TeX-part of this section
            (and add thorough explanation of code of this section to its TeX part)
         */
-        if (!(prev_button == 'B' || prev_button == 'C')) {
           @<Get button@>@;
           if (btn == 0 && timeout < 1500) break; /* timeout $-$ debounce, you can't
-            make it react more frequently than debounce interval;
-            |timeout| time is allowed to release the button until it repeats;
-            for `\.B' and `\.C' |timeout| is equal to |debounce|, i.e., repeat
-            right away */
+            make it react more frequently than debounce interval */
+          _delay_ms(1);
         }
-        _delay_ms(1);
       }
-     }
     }
   }
 #if 0 /* this is how it was done in cdc.ch */
