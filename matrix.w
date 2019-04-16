@@ -103,9 +103,16 @@ void main(void)
         UEINTX &= ~(1 << FIFOCON);
       }
      again_x:
-      if (btn == 'B' || btn == 'C') { /* here we cannot press faster that timeout,
-        and we need it to be pressed again after timeout if we hold it - for
-        this using a delay is the proper solution, and we get debounce for free */
+      if (btn == 'B' || btn == 'C') { /* here we must not be able to press faster than timeout
+        expires, so we may just wait intil the timeout expires; the fact that we cannot press
+        another button until the timeout expires is not a big deal
+        in this case, because this timeout is smaller than time required to reach another button;
+        and we need the same button to be pressed again after timeout if we did not release
+        it - just waiting until the timeout expires works great in this case too;
+        note, that using this method automatically handles debounce */
+
+
+
         _delay_ms(300); /* values smaller that this do not give mpc call
           enough time to finish before another mpc request arrives; it
           is manifested by the fact that when button is released, the volume
