@@ -102,10 +102,11 @@ void main(void)
         UEDATX = btn;
         UEINTX &= ~(1 << FIFOCON);
       }
-      uint8_t prev_button = btn;
-      int timeout;
-      if (btn == 'B' || btn == 'C')
-        timeout = 300; /* values smaller that this do not give mpc call
+     again_x:
+      if (btn == 'B' || btn == 'C') { /* here we cannot press faster that timeout,
+        and we need it to be pressed again after timeout if we hold it - for
+        this using a delay is the proper solution, and we get debounce for free */
+        _delay_ms(300); /* values smaller that this do not give mpc call
           enough time to finish before another mpc request arrives; it
           is manifested by the fact that when button is released, the volume
           continues to increase (decrease);
@@ -113,7 +114,12 @@ void main(void)
           doing this: run \.{tel} in foreground, set volume to 0, press + button,
           when volume will approach 90 percent, release button - if volume will keep
           changing for some time - |timeout| must be increased */
-      else timeout = 2000;
+        <get button>
+        goto again_x;
+      }
+      else {
+        do debounce
+      uint8_t prev_button = btn;
       (void) 0; /* do not allow one button to be pressed more frequently than
          debounce (i.e., if I mean to hold it, but it bounces,
          and the interval between bounces exceeds 1 $\mu s$ delay (used in matrix scanning code
