@@ -102,7 +102,6 @@ void main(void)
         UEDATX = btn;
         UEINTX &= ~(1 << FIFOCON);
       }
-     again_x:
       if (btn == 'B' || btn == 'C') { /* here we must not be able to press faster than timeout
         expires, so we may just wait intil the timeout expires; the fact that we cannot press
         another button until the timeout expires is not a big deal
@@ -110,19 +109,14 @@ void main(void)
         and we need the same button to be pressed again after timeout if we did not release
         it - just waiting until the timeout expires works great in this case too;
         note, that using this method automatically handles debounce */
-
-
-
         _delay_ms(300); /* values smaller that this do not give mpc call
           enough time to finish before another mpc request arrives; it
           is manifested by the fact that when button is released, the volume
           continues to increase (decrease);
-          TODO: find minimum possible |timeout| value by setting it to 0 and
+          TODO: find minimum possible value by setting it to 0 and
           doing this: run \.{tel} in foreground, set volume to 0, press + button,
           when volume will approach 90 percent, release button - if volume will keep
-          changing for some time - |timeout| must be increased */
-        <get button>
-        goto again_x;
+          changing for some time - value must be increased */
       }
       else {
         do debounce
@@ -154,6 +148,7 @@ in this directory (from this link) */
         }
         _delay_ms(1);
       }
+     }
     }
   }
 #if 0 /* this is how it was done in cdc.ch */
