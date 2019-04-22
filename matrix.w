@@ -39,9 +39,9 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
 
-ISR(TIMER4_OVF_vect)
+ISR(TIMER0_OVF_vect) // 10ms interval
 {
-  PORTC &= ~(1 << PC7);
+  @<Get button@>@;
 }
 
 void main(void)
