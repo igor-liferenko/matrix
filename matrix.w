@@ -39,9 +39,10 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
 
-ISR(TIMER0_OVF_vect) // 10ms interval
+ISR(TIMER0_COMPA_vect)
 {
   @<Get button@>@;
+  // if four times, btn = button
 }
 
 void main(void)
@@ -53,9 +54,9 @@ void main(void)
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
-  OCR4C = 100; /* TOP (approximate number of ms) */
-  TIMSK4 |= 1 << TOIE4; /* when counter reaches TOP TODO: put here comments about interrupts
-    like in avrtel.w */
+  OCR0A = 156;
+  TIMSK0 |= 1 << OCIE0A; /* TODO: put here comments about interrupts like in avrtel.w */
+  TCCR0B |= 1 << WGM1 | 1 << CS02 | 1 << CS00;
 
   @<Pullup input pins@>@;
   UENUM = EP1;
@@ -71,7 +72,6 @@ void main(void)
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
-    @<Get button@>@;
     if (dtr_rts && btn == 'A') { /* 'A' is special button, which does not use
                                     indicator led on |PC7| --- it has its own on |PD5| */
       on_line = !on_line;
@@ -96,7 +96,7 @@ void main(void)
     }
     if (dtr_rts && btn) {
       if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
-        PORTC |= 1 << PC7; @+ @<Start timer@>@;
+        PORTC |= 1 << PC7;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = btn;
@@ -135,7 +135,6 @@ void main(void)
            and add it to TeX-part of this section
            (and add thorough explanation of code of this section to its TeX part)
         */
-          @<Get button@>@;
           if (btn == 0 && timeout < 1500) break; /* timeout $-$ debounce, you can't
             make it react more frequently than debounce interval */
           _delay_ms(1);
@@ -243,7 +242,8 @@ PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Global variables@>=
-uint8_t btn = 0;
+volatile uint8_t btn = 0;
+uint8_t button;
 
 @ @<Get button@>=
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
@@ -264,42 +264,42 @@ uint8_t btn = 0;
               ~PIND & 1 << PD1 ? 0xD1 : 0) {
       case 0xD1:
         switch (i) {
-        case PB7: btn = '1'; @+ break;
-        case PB6: btn = '2'; @+ break;
-        case PB5: btn = '3'; @+ break;
-        case PB4: btn = 'A'; @+ break;
+        case PB7: button = '1'; @+ break;
+        case PB6: button = '2'; @+ break;
+        case PB5: button = '3'; @+ break;
+        case PB4: button = 'A'; @+ break;
         }
         done = 1;
         break;
       case 0xD2:
         switch (i) {
-        case PB7: btn = '4'; @+ break;
-        case PB6: btn = '5'; @+ break;
-        case PB5: btn = '6'; @+ break;
-        case PB4: btn = 'B'; @+ break;
+        case PB7: button = '4'; @+ break;
+        case PB6: button = '5'; @+ break;
+        case PB5: button = '6'; @+ break;
+        case PB4: button = 'B'; @+ break;
         }
         done = 1;
         break;
       case 0xD3:
         switch (i) {
-        case PB7: btn = '7'; @+ break;
-        case PB6: btn = '8'; @+ break;
-        case PB5: btn = '9'; @+ break;
-        case PB4: btn = 'C'; @+ break;
+        case PB7: button = '7'; @+ break;
+        case PB6: button = '8'; @+ break;
+        case PB5: button = '9'; @+ break;
+        case PB4: button = 'C'; @+ break;
         }
         done = 1;
         break;
       case 0xB2:
         switch (i) {
-        case PB7: btn = '*'; @+ break;
-        case PB6: btn = '0'; @+ break;
-        case PB5: btn = '#'; @+ break;
-        case PB4: btn = 'D'; @+ break;
+        case PB7: button = '*'; @+ break;
+        case PB6: button = '0'; @+ break;
+        case PB5: button = '#'; @+ break;
+        case PB4: button = 'D'; @+ break;
         }
         done = 1;
         break;
       default: @/
-        btn = 0;
+        button = 0;
       }
       DDRB &= ~(1 << i);
     }
