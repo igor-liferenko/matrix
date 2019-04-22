@@ -38,11 +38,13 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Type definitions@>@;
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
-
+@#
+volatile int my = 0;
 ISR(TIMER0_COMPA_vect)
 {
   @<Get button@>@;
-  // if four times, btn = button
+  // TODO: from debounce.pdf do that if four times, btn = button
+  if (my) my++;
 }
 
 void main(void)
@@ -142,40 +144,7 @@ void main(void)
       }
     }
   }
-#if 0 /* this is how it was done in cdc.ch */
-  while (1) {
-    @<Get |dtr_rts|@>@;
-    if (dtr_rts) {
-      @<Get button@>@;
-      if (btn != 0) {
-        /* Send button */
-        uint8_t prev_button = btn;
-        int timeout = 2000;
-        while (--timeout) {
-          @<Get button@>@;
-          if (btn != prev_button) break;
-          _delay_ms(1);
-        }
-        while (1) {
-          @<Get button@>@;
-          if (btn != prev_button) break;
-          /* Send button */
-          _delay_ms(50);
-        }
-      }
-    }
-  }
-#endif
 }
-
-@ @<Start timer@>=
-TCCR4B &= ~(1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40);
-TCCR4B |= 1 << CS43 | 1 << CS42 | 1 << CS41 | 1 << CS40;
-
-@ This code shows that counter is zeroed automatically when timer is started.
-
-@(/dev/null@>=
-// HINT: use t1.w t2.w t3.w from avr/ and delete them
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
