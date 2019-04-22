@@ -40,7 +40,7 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Create ISR for connecting to USB host@>@;
 @#
 volatile int my = 0;
-ISR(TIMER0_COMPA_vect)
+ISR(TIMER0_COMPA_vect) // FIXME: will this interrupt work in CTC mode at all?
 {
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
