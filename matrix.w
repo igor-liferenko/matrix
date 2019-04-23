@@ -40,7 +40,10 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Create ISR for connecting to USB host@>@;
 @#
 volatile int my = 0;
-ISR(TIMER0_COMPA_vect) // FIXME: will this interrupt work in CTC mode at all?
+ISR(TIMER0_COMPA_vect) /* FIXME: will this interrupt work in CTC mode at all?
+  Create a separate test program and switch on led in this interrupt to check
+  if it will not work, use timer4 where OVF value is set by hand (see git lg matrix.w
+  how I used timer4 before) */
 {
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
