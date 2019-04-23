@@ -40,10 +40,11 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Create ISR for connecting to USB host@>@;
 @#
 volatile int my = 0;
-ISR(TIMER0_COMPA_vect) /* FIXME: will this interrupt work in CTC mode at all?
-  Create a separate test program and switch on led in this interrupt to check
-  if it will not work, use timer4 where TOP is programmable (see git lg how I
-  used timer4 here) */
+ISR(TIMER0_COMPA_vect) /* FIXME: check if TCNT0 will be cleared automatically
+  when this interrupt is called
+  Create a separate test program and check
+  (according to http://maxembedded.com/2011/07/avr-timers-ctc-mode/, timer should
+   be reset to zero automatically, but in datasheet I could not find this info) */
 {
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
