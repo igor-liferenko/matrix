@@ -33,6 +33,10 @@ rebooted)
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
 
+debounce: we must constantly check if button state persists for a certain amount of time;
+to determine this, we must compare the state, and to compare it we must store it;
+for this we use the variable |button_state|
+
 @c
 @<Header files@>@;
 @<Type definitions@>@;
