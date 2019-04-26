@@ -44,15 +44,13 @@ for this we use the variable |button_state|
 @<Create ISR for connecting to USB host@>@;
 @#
 volatile int my = 0;
-ISR(TIMER0_COMPA_vect) /* FIXME: check if TCNT0 will be cleared automatically
-  when this interrupt is called
-  Create a separate test program and check
-  (according to http://maxembedded.com/2011/07/avr-timers-ctc-mode/, timer should
-   be reset to zero automatically, but in datasheet I could not find this info) */
+ISR(TIMER0_COMPA_vect)
 {
+  TCNT0 = 0;
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
   if (my) my++;
+
 }
 
 void main(void)
@@ -64,9 +62,9 @@ void main(void)
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
-  OCR0A = 156;
+  OCR0A = 156; /* 10ms */
   TIMSK0 |= 1 << OCIE0A; /* TODO: put here comments about interrupts like in avrtel.w */
-  TCCR0B |= 1 << WGM1 | 1 << CS02 | 1 << CS00;
+  TCCR0B |= 1 << CS02 | 1 << CS00;
 
   @<Pullup input pins@>@;
   UENUM = EP1;
