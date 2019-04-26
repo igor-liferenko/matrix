@@ -44,13 +44,13 @@ for this we use the variable |button_state|
 @<Create ISR for connecting to USB host@>@;
 @#
 volatile int my = 0;
-ISR(TIMER0_COMPA_vect)
+ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
+  this code does not exceed the period */
 {
   TCNT0 = 0;
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
   if (my) my++;
-
 }
 
 void main(void)
