@@ -53,6 +53,9 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
   if (my) my++;
 }
 
+HINT: try to count how many times a button bounces on my keypad with external clock on T0 pin, as in
+first example in ~/tcnt/test.w
+
 void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
