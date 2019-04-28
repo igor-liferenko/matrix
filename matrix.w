@@ -47,7 +47,6 @@ volatile int my = 0;
 ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
   this code does not exceed the period */
 {
-  TCNT0 = 0;
   @<Get button@>@;
   // TODO: from debounce.pdf do that if four times, btn = button
   if (my) my++;
@@ -67,6 +66,7 @@ void main(void)
 
   OCR0A = 156; /* 10ms */
   TIMSK0 |= 1 << OCIE0A; /* TODO: put here comments about interrupts like in avrtel.w */
+  TCCR0A |= 1 << WGM01;
   TCCR0B |= 1 << CS02 | 1 << CS00;
 
   @<Pullup input pins@>@;
