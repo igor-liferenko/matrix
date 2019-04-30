@@ -54,6 +54,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
 
 HINT: try to count how many times a button bounces on my keypad with external clock on T0 pin, as in
 first example in ~/tcnt/test.w
+This is because I don't understand how it could work in old algorithm (with 2s delay in the beginning)
 
 void main(void)
 {
