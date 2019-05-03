@@ -92,7 +92,7 @@ arduino.e-arduino.w=right*4cm;
 arduino.n-arduino.s=up*1.4cm;
 drawboxes(arduino); draw pic(arduino) shifted (up*2mm+left*6mm);
 % pins
-pair arduino.B[],arduino.D[],arduino.C[];
+pair arduino.B[],arduino.D[],arduino.C[],arduino.MISO,arduino.SCK,arduino.GND,arduino.RST;
 arduino.B7=arduino.se+left*4.25mm;
 arduino.B6=arduino.B7+left*2.5mm;
 arduino.B5=arduino.B6+left*2.5mm;
@@ -101,6 +101,10 @@ arduino.B2=arduino.sw+right*1.75mm;
 arduino.D3=arduino.B2+right*5mm;
 arduino.D2=arduino.D3+right*2.5mm;
 arduino.D1=arduino.D2+right*7.5mm;
+xpart(arduino.GND)=xpart(arduino.D2); ypart(arduino.RST)=ypart(arduino.n);
+arduino.RST=arduino.GND+right*2.5mm;
+xpart(arduino.SCK)=xpart(arduino.B2); ypart(arduino.SCK)=ypart(arduino.n);
+arduino.MISO=arduino.SCK+right*2.5mm;
 % draw
 begingroup;
 interim rbox_radius:=1bp;
@@ -158,6 +162,10 @@ rboxit.arduino.D1.box(btex \smallss D1 etex);
 arduino.D1.box.c=arduino.D1+up*3mm;
 arduino.D1.box.sw=arduino.D1.box.c+down*2pt+left*3pt;
 drawboxed(arduino.D1.box);
+label.bot(btex \smallss SCK etex, arduino.SCK);
+label.bot(btex \smallss MISO etex, arduino.MISO);
+label.bot(btex \smallss GND etex, arduino.GND);
+label.bot(btex \smallss RST etex, arduino.RST);
 pickup A;
 endgroup;
 
