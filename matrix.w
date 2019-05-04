@@ -18,9 +18,6 @@ read in this program
 \item{2.} data is read by USB host as soon as it is sent, even if \\{read}
 call has not been done in application yet (i.e., it is buffered)
 
-`\.B' and `\.C' are used to increase/decrease volume by just holding the button
-(there are extra buttons on numpad, so we may use them for convenience).
-
 TODO: decrease debounce on A. This is useful when we switch off (when done with a router) and
 then immediately switch on to go to another router
 
@@ -113,23 +110,6 @@ void main(void)
         UEDATX = btn;
         UEINTX &= ~(1 << FIFOCON);
       }
-      if (btn == 'B' || btn == 'C') { /* here we must not be able to press faster than timeout
-        expires, so we may just wait intil the timeout expires; the fact that we cannot press
-        another button until the timeout expires is not a big deal
-        in this case, because this timeout is smaller than time required to reach another button;
-        and we need the same button to be pressed again after timeout if we did not release
-        it - just waiting until the timeout expires works great in this case too;
-        note, that using this method automatically handles debounce */
-        _delay_ms(300); /* values smaller that this do not give mpc call
-          enough time to finish before another mpc request arrives; it
-          is manifested by the fact that when button is released, the volume
-          continues to increase (decrease);
-          TODO: find minimum possible value by setting it to 0 and
-          doing this: run \.{tel} in foreground, set volume to 0, press + button,
-          when volume will approach 90 percent, release button - if volume will keep
-          changing for some time - value must be increased */
-      }
-      else {
         /* see this https://www.avrfreaks.net/forum/tutsofthard-button-debouncing-software +
            debounce.zip in this directory (from this link) */
       uint8_t prev_button = btn;
@@ -150,7 +130,6 @@ void main(void)
             make it react more frequently than debounce interval */
           _delay_ms(1);
         }
-      }
     }
   }
 }
