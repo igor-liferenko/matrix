@@ -62,7 +62,12 @@ void main(void)
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   OCR0A = 156; /* 10ms */
-  TIMSK0 |= 1 << OCIE0A; /* TODO: put here comments about interrupts like in avrtel.w */
+  TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
+    is processed, it does not change anything, as the device is going to be reset;
+    if USB RESET happens whiled this interrupt is processed, it also does not change
+    anything, as USB RESET is repeated several times by USB host, so it is safe
+    that USB RESET interrupt is enabled (we cannot disable it because USB host
+    may be rebooted) */
   TCCR0A |= 1 << WGM01;
   TCCR0B |= 1 << CS02 | 1 << CS00;
 
