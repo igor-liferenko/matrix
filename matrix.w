@@ -5,12 +5,6 @@
 
 @* Program.
 
-HINT: led must be the same as beep on phone
-
-Button press indication LED is used without interrupts and timers, because
-we block the program anyway inside the debounce interval, so use that to turn
-the LED off.
-
 Take to consideration that:
 
 \item{1.} \\{ioctl} call blocks in application until it is
@@ -18,20 +12,8 @@ read in this program
 \item{2.} data is read by USB host as soon as it is sent, even if \\{read}
 call has not been done in application yet (i.e., it is buffered)
 
-TODO: decrease debounce on A. This is useful when we switch off (when done with a router) and
-then immediately switch on to go to another router
-
-NOTE: if necessary, you may set 16-bit timers here as if interrupts are not
-enabled at all (if USB RESET interrupt happens, device is going to be reset anyway,
-so it is safe that it is enabled (we cannot disable it because USB host may be
-rebooted)
-
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
-
-debounce: we must constantly check if button state persists for a certain amount of time;
-to determine this, we must compare the state, and to compare it we must store it;
-for this we use the variable |button_state|
 
 @c
 @<Header files@>@;
