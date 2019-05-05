@@ -78,23 +78,79 @@ ISR(TIMER0_COMPA_vect)
     static uint8_t button14_state = 0;    
     static uint8_t button15_state = 0;    
     static uint8_t button16_state = 0;    
-    // Check if button is high or low for the moment
-    uint8_t current_state1 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state2 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state3 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state4 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state5 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state6 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state7 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state8 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state9 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state10 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state11 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state12 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state13 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state14 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
-    uint8_t current_state15 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
-    uint8_t current_state16 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+
+    uint8_t current_state1 = 0;
+    uint8_t current_state2 = 0;
+    uint8_t current_state3 = 0;
+    uint8_t current_state4 = 0;
+    uint8_t current_state5 = 0;
+    uint8_t current_state6 = 0;
+    uint8_t current_state7 = 0;
+    uint8_t current_state8 = 0;
+    uint8_t current_state9 = 0;
+    uint8_t current_state10 = 0;
+    uint8_t current_state11 = 0;
+    uint8_t current_state12 = 0;
+    uint8_t current_state13 = 0;
+    uint8_t current_state14 = 0;
+    uint8_t current_state15 = 0;
+    uint8_t current_state16 = 0;
+
+    for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
+      DDRB |= 1 << i;
+      _delay_us(1); /* before reading input pin for row which showed a LOW reading on
+        previous column, wait
+        for pullup of it to charge the stray capacitance\footnote\dag{mind that
+        open-ended wire may be longer wire (where button is pressed)} and before reading input
+        pin for whose row
+        a button may be pressed, wait ground of \\{PFi} to
+        discharge the stray capacitance\footnote\ddag{TODO: confirm this by doing test like on
+        https://arduino.stackexchange.com/questions/54919/, but check transition
+        not from not-pulled-up to pulled-up, but from
+        not-grounded to grounded (with pullup enabled)} */
+      switch (~PINB & 1 << PB2 ? 0xB2 : @|
+              ~PIND & 1 << PD3 ? 0xD3 : @|
+              ~PIND & 1 << PD2 ? 0xD2 : @|
+              ~PIND & 1 << PD1 ? 0xD1 : 0) {
+      case 0xD1:
+        switch (i) {
+        case PB7: current_state1 = 1; @+ break;
+        case PB6: current_state2 = 1; @+ break;
+        case PB5: current_state3 = 1; @+ break;
+        case PB4: current_state4 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xD2:
+        switch (i) {
+        case PB7: current_state5 = 1; @+ break;
+        case PB6: current_state6 = 1; @+ break;
+        case PB5: current_state7 = 1; @+ break;
+        case PB4: current_state8 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xD3:
+        switch (i) {
+        case PB7: current_state9 = 1; @+ break;
+        case PB6: current_state10 = 1; @+ break;
+        case PB5: current_state11 = 1; @+ break;
+        case PB4: current_state12 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xB2:
+        switch (i) {
+        case PB7: current_state13 = 1; @+ break;
+        case PB6: current_state14 = 1; @+ break;
+        case PB5: current_state15 = 1; @+ break;
+        case PB4: current_state16 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      }
+      DDRB &= ~(1 << i);
+    }
 
     if (current_state1 != button1_state) {
         count2 = 0; // reset other counters
