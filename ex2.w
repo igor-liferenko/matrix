@@ -5,20 +5,14 @@
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
 
-// Connect a button from ground to pin 0 on PORTA
 #define BUTTON_MASK (1<<PF4)
 #define BUTTON_PIN  PINF
 #define BUTTON_PORT PORTF
 
-// Variable to tell main that the button is pressed (and debounced).
-// Main will clear it after a detected button press.
 volatile uint8_t button_down;
 volatile uint8_t button_up;
 
-// Check button state and set the button_down variable if a debounced
-// button down press is detected.
-// Call this function about 100 times per second.
-static inline void debounce(void)
+ISR(TIMER0_COMPA_vect)
 {
     // Counter for number of equal states
     static uint8_t count = 0;
@@ -51,17 +45,22 @@ void main(void)
 {
   @<Connect...@>@;
 
+    OCR0A = 156;
+    TCCR0A |= 1 << WGM01;
+    TCCR0B |= 1 << CS02 | 1 << CS00;
+    TIMSK0 |= 1 << OCIE0A;
+
   // Enable internal pullup resistor on the input pin
   BUTTON_PORT |= BUTTON_MASK;
 
   while(1) {
     @<Get |dtr_rts|@>@;
-    // Update button_state
-    debounce();
+    cli();
     // Check if the button is pressed.
     if (button_down) {
       // Clear flag
       button_down = 0;
+      sei();
       if (dtr_rts) {
         UENUM = EP1;
         while (!(UEINTX & 1 << TXINI)) ;
@@ -71,8 +70,12 @@ void main(void)
         UEINTX &= ~(1 << FIFOCON);
       }
     }
+    else
+      sei();
+    cli();
     if (button_up) {
       button_up = 0;
+      sei();
       if (dtr_rts) {            
         UENUM = EP1;            
         while (!(UEINTX & 1 << TXINI)) ;            
@@ -82,6 +85,8 @@ void main(void)
         UEINTX &= ~(1 << FIFOCON);            
       }
     }
+    else
+      sei();
     // Delay for a while so we don't check to button too often
     _delay_ms(10);
   }
