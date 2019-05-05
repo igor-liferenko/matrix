@@ -625,14 +625,15 @@ void main(void)
 {
   @<Connect...@>@;
 
+PORTB |= 1 << PB2;
+PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
+_delay_us(1);
+
     OCR0A = 156;
     TCCR0A |= 1 << WGM01;
     TCCR0B |= 1 << CS02 | 1 << CS00;
     TIMSK0 |= 1 << OCIE0A;
 
-  // Enable internal pullup resistor on the input pin
-  BUTTON_PORT |= BUTTON1_MASK;
-  BUTTON_PORT |= BUTTON2_MASK;
 
   while(1) {
     @<Get |dtr_rts|@>@;
