@@ -14,22 +14,104 @@ volatile uint8_t button1_down;
 volatile uint8_t button1_up;
 volatile uint8_t button2_down;
 volatile uint8_t button2_up;
+volatile uint8_t button3_down;
+volatile uint8_t button3_up;
+volatile uint8_t button4_down;
+volatile uint8_t button4_up;
+volatile uint8_t button5_down;
+volatile uint8_t button5_up;
+volatile uint8_t button6_down;
+volatile uint8_t button6_up;
+volatile uint8_t button7_down;
+volatile uint8_t button7_up;
+volatile uint8_t button8_down;
+volatile uint8_t button8_up;
+volatile uint8_t button9_down;
+volatile uint8_t button9_up;
+volatile uint8_t button10_down;
+volatile uint8_t button10_up;
+volatile uint8_t button11_down;
+volatile uint8_t button11_up;
+volatile uint8_t button12_down;
+volatile uint8_t button12_up;
+volatile uint8_t button13_down;
+volatile uint8_t button13_up;
+volatile uint8_t button14_down;
+volatile uint8_t button14_up;
+volatile uint8_t button15_down;
+volatile uint8_t button15_up;
+volatile uint8_t button16_down;
+volatile uint8_t button16_up;
 
 ISR(TIMER0_COMPA_vect)
 {
-    // Counter for number of equal states
     static uint8_t count1 = 0;
     static uint8_t count2 = 0;
+    static uint8_t count3 = 0;    
+    static uint8_t count4 = 0;    
+    static uint8_t count5 = 0;    
+    static uint8_t count6 = 0;    
+    static uint8_t count7 = 0;    
+    static uint8_t count8 = 0;    
+    static uint8_t count9 = 0;    
+    static uint8_t count10 = 0;    
+    static uint8_t count11 = 0;    
+    static uint8_t count12 = 0;    
+    static uint8_t count13 = 0;    
+    static uint8_t count14 = 0;    
+    static uint8_t count15 = 0;    
+    static uint8_t count16 = 0;    
     // Keeps track of current (debounced) state
     static uint8_t button1_state = 0;
     static uint8_t button2_state = 0;
-
+    static uint8_t button3_state = 0;    
+    static uint8_t button4_state = 0;    
+    static uint8_t button5_state = 0;    
+    static uint8_t button6_state = 0;    
+    static uint8_t button7_state = 0;    
+    static uint8_t button8_state = 0;    
+    static uint8_t button9_state = 0;    
+    static uint8_t button10_state = 0;    
+    static uint8_t button11_state = 0;    
+    static uint8_t button12_state = 0;    
+    static uint8_t button13_state = 0;    
+    static uint8_t button14_state = 0;    
+    static uint8_t button15_state = 0;    
+    static uint8_t button16_state = 0;    
     // Check if button is high or low for the moment
     uint8_t current_state1 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
     uint8_t current_state2 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state3 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state4 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state5 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state6 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state7 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state8 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state9 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state10 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state11 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state12 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state13 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state14 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state15 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+    uint8_t current_state16 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
 
     if (current_state1 != button1_state) {
         count2 = 0; // reset other counters
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+        count16 = 0;
 	count1++; // Button state is about to be changed, increase counter
 	if (count1 >= 4) {
  	    // The button have not bounced for four checks, change state
@@ -44,6 +126,20 @@ ISR(TIMER0_COMPA_vect)
     }
     else if (current_state2 != button2_state) {
         count1 = 0; // reset other counters
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+        count16 = 0;
         count2++; // Button state is about to be changed, increase counter
         if (count2 >= 4) {
             // The button have not bounced for four checks, change state
@@ -56,9 +152,416 @@ ISR(TIMER0_COMPA_vect)
             count2 = 0;
         }
     }
+    else if (current_state3 != button3_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count3++; // Button state is about to be changed, increase counter
+        if (count3 >= 4) {
+            // The button have not bounced for four checks, change state
+            button3_state = current_state3;
+            // tell main if button was released of pressed
+            if (current_state3 == 0)
+              button3_up = 1;
+            else
+              button3_down = 1;
+            count3 = 0;
+        }
+    }
+    else if (current_state4 != button4_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count4++; // Button state is about to be changed, increase counter
+        if (count4 >= 4) {
+            // The button have not bounced for four checks, change state
+            button4_state = current_state4;
+            // tell main if button was released of pressed
+            if (current_state4 == 0)
+              button4_up = 1;
+            else
+              button4_down = 1;
+            count4 = 0;
+        }
+    }
+    else if (current_state5 != button5_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count5++; // Button state is about to be changed, increase counter
+        if (count5 >= 4) {
+            // The button have not bounced for four checks, change state
+            button5_state = current_state5;
+            // tell main if button was released of pressed
+            if (current_state5 == 0)
+              button5_up = 1;
+            else
+              button5_down = 1;
+            count5 = 0;
+        }
+    }
+    else if (current_state6 != button6_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count6++; // Button state is about to be changed, increase counter
+        if (count6 >= 4) {
+            // The button have not bounced for four checks, change state
+            button6_state = current_state6;
+            // tell main if button was released of pressed
+            if (current_state6 == 0)
+              button6_up = 1;
+            else
+              button6_down = 1;
+            count6 = 0;
+        }
+    }
+    else if (current_state7 != button7_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count7++; // Button state is about to be changed, increase counter
+        if (count7 >= 4) {
+            // The button have not bounced for four checks, change state
+            button7_state = current_state7;
+            // tell main if button was released of pressed
+            if (current_state7 == 0)
+              button7_up = 1;
+            else
+              button7_down = 1;
+            count7 = 0;
+        }
+    }
+    else if (current_state8 != button8_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count8++; // Button state is about to be changed, increase counter
+        if (count8 >= 4) {
+            // The button have not bounced for four checks, change state
+            button8_state = current_state8;
+            // tell main if button was released of pressed
+            if (current_state8 == 0)
+              button8_up = 1;
+            else
+              button8_down = 1;
+            count8 = 0;
+        }
+    }
+    else if (current_state9 != button9_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count9++; // Button state is about to be changed, increase counter
+        if (count9 >= 4) {
+            // The button have not bounced for four checks, change state
+            button9_state = current_state9;
+            // tell main if button was released of pressed
+            if (current_state9 == 0)
+              button9_up = 1;
+            else
+              button9_down = 1;
+            count9 = 0;
+        }
+    }
+    else if (current_state10 != button10_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count10++; // Button state is about to be changed, increase counter
+        if (count10 >= 4) {
+            // The button have not bounced for four checks, change state
+            button10_state = current_state10;
+            // tell main if button was released of pressed
+            if (current_state10 == 0)
+              button10_up = 1;
+            else
+              button10_down = 1;
+            count10 = 0;
+        }
+    }
+    else if (current_state11 != button11_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count11++; // Button state is about to be changed, increase counter
+        if (count11 >= 4) {
+            // The button have not bounced for four checks, change state
+            button11_state = current_state11;
+            // tell main if button was released of pressed
+            if (current_state11 == 0)
+              button11_up = 1;
+            else
+              button11_down = 1;
+            count11 = 0;
+        }
+    }
+    else if (current_state12 != button12_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count12++; // Button state is about to be changed, increase counter
+        if (count12 >= 4) {
+            // The button have not bounced for four checks, change state
+            button12_state = current_state12;
+            // tell main if button was released of pressed
+            if (current_state12 == 0)
+              button12_up = 1;
+            else
+              button12_down = 1;
+            count12 = 0;
+        }
+    }
+    else if (current_state13 != button13_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count13++; // Button state is about to be changed, increase counter
+        if (count13 >= 4) {
+            // The button have not bounced for four checks, change state
+            button13_state = current_state13;
+            // tell main if button was released of pressed
+            if (current_state13 == 0)
+              button13_up = 1;
+            else
+              button13_down = 1;
+            count13 = 0;
+        }
+    }
+    else if (current_state14 != button14_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count14++; // Button state is about to be changed, increase counter
+        if (count14 >= 4) {
+            // The button have not bounced for four checks, change state
+            button14_state = current_state14;
+            // tell main if button was released of pressed
+            if (current_state14 == 0)
+              button14_up = 1;
+            else
+              button14_down = 1;
+            count14 = 0;
+        }
+    }
+    else if (current_state15 != button15_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count16 = 0;        
+        count15++; // Button state is about to be changed, increase counter
+        if (count15 >= 4) {
+            // The button have not bounced for four checks, change state
+            button15_state = current_state15;
+            // tell main if button was released of pressed
+            if (current_state15 == 0)
+              button15_up = 1;
+            else
+              button15_down = 1;
+            count15 = 0;
+        }
+    }
+    else if (current_state16 != button16_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16++; // Button state is about to be changed, increase counter
+        if (count16 >= 4) {
+            // The button have not bounced for four checks, change state
+            button16_state = current_state16;
+            // tell main if button was released of pressed
+            if (current_state16 == 0)
+              button16_up = 1;
+            else
+              button16_down = 1;
+            count16 = 0;
+        }
+    }
     else {
 	// Reset all counters
-	count1 = 0; count2 = 0;
+	count1 = 0;
+        count2 = 0;
+        count3 = 0; 
+        count4 = 0;
+        count5 = 0; 
+        count6 = 0;
+        count7 = 0; 
+        count8 = 0;
+        count9 = 0; 
+        count10 = 0;
+        count11 = 0; 
+        count12 = 0;
+        count13 = 0; 
+        count14 = 0;
+        count15 = 0; 
+        count16 = 0;
     }
 }
 
