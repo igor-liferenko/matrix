@@ -10,11 +10,6 @@
 #define BUTTON_PIN  PINF
 #define BUTTON_PORT PORTF
 
-// Connect a LED from ground via a resistor to pin 0 on PORTB
-#define LED_MASK (1<<PD5)
-#define LED_PORT PORTD
-#define LED_DDR  DDRD
-
 // Variable to tell main that the button is pressed (and debounced).
 // Main will clear it after a detected button press.
 volatile uint8_t button_down;
