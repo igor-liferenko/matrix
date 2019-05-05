@@ -1,10 +1,9 @@
-/*
-  Example of debouncing one button.
-  $Rev: 1003 $
- */
-
-#include <avr/io.h>
-#include <util/delay.h>
+\noinx
+@ @c
+@<Header files@>@;
+@<Type definitions@>@;
+@<Global variables@>@;
+@<Create ISR for connecting to USB host@>@;
 
 // Connect a button from ground to pin 0 on PORTA
 #define BUTTON_MASK (1<<PF4)
@@ -53,32 +52,68 @@ static inline void debounce(void)
     }
 }
 
-int main(void)
+void main(void)
 {
-    // Enable internal pullup resistor on the input pin
-    BUTTON_PORT |= BUTTON_MASK;
+  @<Connect...@>@;
 
-    // Set to output
-    LED_PORT |= LED_MASK;
-    LED_DDR |= LED_MASK;
+  // Enable internal pullup resistor on the input pin
+  BUTTON_PORT |= BUTTON_MASK;
 
-    while(1)
-    {
-	// Update button_state
-	debounce();
-        // Check if the button is pressed.
-        if (button_down)
-        {
-	    // Clear flag
-	    button_down = 0;
-            // Toggle the LED
-            LED_PORT &= ~(LED_MASK);
-        }
-        if (button_up) {
-          button_up = 0;
-          LED_PORT |= LED_MASK;
-        }
-	// Delay for a while so we don't check to button too often
-	_delay_ms(10);
+  while(1) {
+    @<Get |dtr_rts|@>@;
+    // Update button_state
+    debounce();
+    // Check if the button is pressed.
+    if (button_down) {
+      // Clear flag
+      button_down = 0;
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'L'; UEDATX = '1'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
     }
+    if (button_up) {
+      button_up = 0;
+      if (dtr_rts) {            
+        UENUM = EP1;            
+        while (!(UEINTX & 1 << TXINI)) ;            
+        UEINTX &= ~(1 << TXINI);            
+        UEDATX = 'L'; UEDATX = '1'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);            
+      }
+    }
+    // Delay for a while so we don't check to button too often
+    _delay_ms(10);
+  }
 }
+
+@ No other requests except {\caps set control line state} come
+after connection is established.
+It is used by host to say the device not to send when DTR/RTS is not on.
+
+@<Global variables@>=
+U16 dtr_rts = 0;
+
+@ @<Get |dtr_rts|@>=
+UENUM = EP0;
+if (UEINTX & 1 << RXSTPI) {
+  (void) UEDATX; @+ (void) UEDATX;
+  wValue = UEDATX | UEDATX << 8;
+  UEINTX &= ~(1 << RXSTPI);
+  UEINTX &= ~(1 << TXINI); /* STATUS stage */
+  dtr_rts = wValue;
+}
+
+@i ../usb/IN-endpoint-management.w
+@i ../usb/USB.w
+
+@ Program headers are in separate section from USB headers.
+
+@<Header files@>=
+#include <avr/io.h>
+#include <util/delay.h>
