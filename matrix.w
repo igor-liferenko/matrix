@@ -20,15 +20,8 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Type definitions@>@;
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
-@#
-volatile int my = 0;
-ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
-  this code does not exceed the period */
-{
-  @<Get button@>@;
-  // TODO: from debounce.pdf do that if four times, btn = button
-  if (my) my++;
-}
+
+@<Create interrupt handler@>@;
 
 void main(void)
 {
@@ -38,6 +31,9 @@ void main(void)
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
+
+  @<Pullup input pins@>@;
+  _delay_us(1); /* FIXME: do we need it here? */
 
   OCR0A = 156; /* 10ms */
   TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
@@ -49,7 +45,6 @@ void main(void)
   TCCR0A |= 1 << WGM01;
   TCCR0B |= 1 << CS02 | 1 << CS00;
 
-  @<Pullup input pins@>@;
   UENUM = EP1;
   while (1) {
     @<Get |dtr_rts|@>@;
@@ -63,8 +58,13 @@ void main(void)
       }
       PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
-    if (dtr_rts && btn == 'A') { /* 'A' is special button, which does not use
+
+    cli();
+    if (button4_down) {/* 'A' is special button, which does not use
                                     indicator led on |PC7| --- it has its own on |PD5| */
+      button4_down = 0;
+      sei();
+    if (dtr_rts) {
       on_line = !on_line;
       if (on_line) {
         while (!(UEINTX & 1 << TXINI)) ;
@@ -85,34 +85,310 @@ void main(void)
         PORTD &= ~(1 << PD5);
       }
     }
-    if (dtr_rts && btn) {
-      if (btn != 'A' && on_line) { /* (buttons are not sent if not on-line) */
+    }
+    else sei();
+
+    if (on_line) { /* (buttons are not sent if not on-line) */    
+    cli();
+    if (button1_down) {
+      button1_down = 0;
+      sei();
+      if (dtr_rts) {
         PORTC |= 1 << PC7;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = btn;
+        UEDATX = '1';
         UEINTX &= ~(1 << FIFOCON);
       }
-        /* see this https://www.avrfreaks.net/forum/tutsofthard-button-debouncing-software +
-           debounce.zip in this directory (from this link) */
-      uint8_t prev_button = btn;
-      (void) 0; /* do not allow one button to be pressed more frequently than
-         debounce (i.e., if I mean to hold it, but it bounces,
-         and the interval between bounces exceeds 1 $\mu s$ delay (used in matrix scanning code
-         to eliminate capacitance),
-         which is very small); also, the debounce interval must be a little greater
-         than the blink time of the button press indicator led */
-      (void) 0; /* NOTE: do not do like in below preprocessor `if' - no need to repeat a key
-        when it is still pressed and hence no need for initial big delay */
-      while (--timeout) { /* FIXME: call |@<Get |dtr_rts|@>| and check |dtr_rts| here?
-           draw flowchart on graph paper and draw it in metapost
-           and add it to TeX-part of this section
-           (and add thorough explanation of code of this section to its TeX part)
-        */
-          if (btn == 0 && timeout < 1500) break; /* timeout $-$ debounce, you can't
-            make it react more frequently than debounce interval */
-          _delay_ms(1);
-        }
+    }
+    else sei();
+    cli();
+    if (button1_up) {
+      button1_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button2_down) {
+      button2_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '2';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button2_up) {
+      button2_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button3_down) {
+      button3_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '3';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button3_up) {
+      button3_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button5_down) {
+      button5_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '4';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button5_up) {
+      button5_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button6_down) {
+      button6_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '5';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button6_up) {
+      button6_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button7_down) {
+      button7_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '6';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button7_up) {
+      button7_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button8_down) {
+      button8_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'B';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button8_up) {
+      button8_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button9_down) {
+      button9_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '7';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button9_up) {
+      button9_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button10_down) {
+      button10_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '8';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button10_up) {
+      button10_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button11_down) {
+      button11_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '9';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button11_up) {
+      button11_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button12_down) {
+      button12_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'C';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button12_up) {
+      button12_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button13_down) {
+      button13_down = 0;
+      sei();
+      if (dtr_rts) { 
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '*';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button13_up) {
+      button13_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button14_down) {
+      button14_down = 0;
+      sei();
+      if (dtr_rts) {
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '0';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button14_up) {
+      button14_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button15_down) {
+      button15_down = 0;
+      sei();
+      if (dtr_rts) {
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '#';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button15_up) {
+      button15_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
+    cli();
+    if (button16_down) {
+      button16_down = 0;
+      sei();
+      if (dtr_rts) {
+        PORTC |= 1 << PC7;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'D';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else sei();
+    cli();
+    if (button16_up) {
+      button16_up = 0;
+      sei();
+      PORTC &= ~(1 << PC7);
+    }
+    else sei();
     }
   }
 }
@@ -181,11 +457,95 @@ that can be enabled and disabled.
 PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
-@ @<Global variables@>=
-volatile uint8_t btn = 0;
-uint8_t button;
+@ @<Create interrupt handler@>=
 
-@ @<Get button@>=
+volatile uint8_t button1_down;
+volatile uint8_t button1_up;
+volatile uint8_t button2_down;
+volatile uint8_t button2_up;
+volatile uint8_t button3_down;
+volatile uint8_t button3_up;
+volatile uint8_t button4_down;
+volatile uint8_t button4_up;
+volatile uint8_t button5_down;
+volatile uint8_t button5_up;
+volatile uint8_t button6_down;
+volatile uint8_t button6_up;
+volatile uint8_t button7_down;
+volatile uint8_t button7_up;
+volatile uint8_t button8_down;
+volatile uint8_t button8_up;
+volatile uint8_t button9_down;
+volatile uint8_t button9_up;
+volatile uint8_t button10_down;
+volatile uint8_t button10_up;
+volatile uint8_t button11_down;
+volatile uint8_t button11_up;
+volatile uint8_t button12_down;
+volatile uint8_t button12_up;
+volatile uint8_t button13_down;
+volatile uint8_t button13_up;
+volatile uint8_t button14_down;
+volatile uint8_t button14_up;
+volatile uint8_t button15_down;
+volatile uint8_t button15_up;
+volatile uint8_t button16_down;
+volatile uint8_t button16_up;
+
+ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
+  this code does not exceed the period */
+{
+    static uint8_t count1 = 0;
+    static uint8_t count2 = 0;
+    static uint8_t count3 = 0;    
+    static uint8_t count4 = 0;    
+    static uint8_t count5 = 0;    
+    static uint8_t count6 = 0;    
+    static uint8_t count7 = 0;    
+    static uint8_t count8 = 0;    
+    static uint8_t count9 = 0;    
+    static uint8_t count10 = 0;    
+    static uint8_t count11 = 0;    
+    static uint8_t count12 = 0;    
+    static uint8_t count13 = 0;    
+    static uint8_t count14 = 0;    
+    static uint8_t count15 = 0;    
+    static uint8_t count16 = 0;    
+    // Keeps track of current (debounced) state
+    static uint8_t button1_state = 0;
+    static uint8_t button2_state = 0;
+    static uint8_t button3_state = 0;    
+    static uint8_t button4_state = 0;    
+    static uint8_t button5_state = 0;    
+    static uint8_t button6_state = 0;    
+    static uint8_t button7_state = 0;    
+    static uint8_t button8_state = 0;    
+    static uint8_t button9_state = 0;    
+    static uint8_t button10_state = 0;    
+    static uint8_t button11_state = 0;    
+    static uint8_t button12_state = 0;    
+    static uint8_t button13_state = 0;    
+    static uint8_t button14_state = 0;    
+    static uint8_t button15_state = 0;    
+    static uint8_t button16_state = 0;    
+
+    uint8_t current_state1 = 0;
+    uint8_t current_state2 = 0;
+    uint8_t current_state3 = 0;
+    uint8_t current_state4 = 0;
+    uint8_t current_state5 = 0;
+    uint8_t current_state6 = 0;
+    uint8_t current_state7 = 0;
+    uint8_t current_state8 = 0;
+    uint8_t current_state9 = 0;
+    uint8_t current_state10 = 0;
+    uint8_t current_state11 = 0;
+    uint8_t current_state12 = 0;
+    uint8_t current_state13 = 0;
+    uint8_t current_state14 = 0;
+    uint8_t current_state15 = 0;
+    uint8_t current_state16 = 0;
+
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
       DDRB |= 1 << i;
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
@@ -204,45 +564,512 @@ uint8_t button;
               ~PIND & 1 << PD1 ? 0xD1 : 0) {
       case 0xD1:
         switch (i) {
-        case PB7: button = '1'; @+ break;
-        case PB6: button = '2'; @+ break;
-        case PB5: button = '3'; @+ break;
-        case PB4: button = 'A'; @+ break;
+        case PB7: current_state1 = 1; @+ break;
+        case PB6: current_state2 = 1; @+ break;
+        case PB5: current_state3 = 1; @+ break;
+        case PB4: current_state4 = 1; @+ break;
         }
         done = 1;
         break;
       case 0xD2:
         switch (i) {
-        case PB7: button = '4'; @+ break;
-        case PB6: button = '5'; @+ break;
-        case PB5: button = '6'; @+ break;
-        case PB4: button = 'B'; @+ break;
+        case PB7: current_state5 = 1; @+ break;
+        case PB6: current_state6 = 1; @+ break;
+        case PB5: current_state7 = 1; @+ break;
+        case PB4: current_state8 = 1; @+ break;
         }
         done = 1;
         break;
       case 0xD3:
         switch (i) {
-        case PB7: button = '7'; @+ break;
-        case PB6: button = '8'; @+ break;
-        case PB5: button = '9'; @+ break;
-        case PB4: button = 'C'; @+ break;
+        case PB7: current_state9 = 1; @+ break;
+        case PB6: current_state10 = 1; @+ break;
+        case PB5: current_state11 = 1; @+ break;
+        case PB4: current_state12 = 1; @+ break;
         }
         done = 1;
         break;
       case 0xB2:
         switch (i) {
-        case PB7: button = '*'; @+ break;
-        case PB6: button = '0'; @+ break;
-        case PB5: button = '#'; @+ break;
-        case PB4: button = 'D'; @+ break;
+        case PB7: current_state13 = 1; @+ break;
+        case PB6: current_state14 = 1; @+ break;
+        case PB5: current_state15 = 1; @+ break;
+        case PB4: current_state16 = 1; @+ break;
         }
         done = 1;
         break;
-      default: @/
-        button = 0;
       }
       DDRB &= ~(1 << i);
     }
+
+    if (current_state1 != button1_state) {
+        count2 = 0; // reset other counters
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+        count16 = 0;
+	count1++; // Button state is about to be changed, increase counter
+	if (count1 >= 4) {
+ 	    // The button have not bounced for four checks, change state
+	    button1_state = current_state1;
+	    // tell main if button was released of pressed
+	    if (current_state1 == 0)
+              button1_up = 1;
+            else
+              button1_down = 1;
+	    count1 = 0;
+	}
+    }
+    else if (current_state2 != button2_state) {
+        count1 = 0; // reset other counters
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+        count16 = 0;
+        count2++; // Button state is about to be changed, increase counter
+        if (count2 >= 4) {
+            // The button have not bounced for four checks, change state
+            button2_state = current_state2;
+            // tell main if button was released of pressed
+            if (current_state2 == 0)
+              button2_up = 1;
+            else
+              button2_down = 1;
+            count2 = 0;
+        }
+    }
+    else if (current_state3 != button3_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count3++; // Button state is about to be changed, increase counter
+        if (count3 >= 4) {
+            // The button have not bounced for four checks, change state
+            button3_state = current_state3;
+            // tell main if button was released of pressed
+            if (current_state3 == 0)
+              button3_up = 1;
+            else
+              button3_down = 1;
+            count3 = 0;
+        }
+    }
+    else if (current_state4 != button4_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count4++; // Button state is about to be changed, increase counter
+        if (count4 >= 4) {
+            // The button have not bounced for four checks, change state
+            button4_state = current_state4;
+            // tell main if button was released of pressed
+            if (current_state4 == 0)
+              button4_up = 1;
+            else
+              button4_down = 1;
+            count4 = 0;
+        }
+    }
+    else if (current_state5 != button5_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count5++; // Button state is about to be changed, increase counter
+        if (count5 >= 4) {
+            // The button have not bounced for four checks, change state
+            button5_state = current_state5;
+            // tell main if button was released of pressed
+            if (current_state5 == 0)
+              button5_up = 1;
+            else
+              button5_down = 1;
+            count5 = 0;
+        }
+    }
+    else if (current_state6 != button6_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count6++; // Button state is about to be changed, increase counter
+        if (count6 >= 4) {
+            // The button have not bounced for four checks, change state
+            button6_state = current_state6;
+            // tell main if button was released of pressed
+            if (current_state6 == 0)
+              button6_up = 1;
+            else
+              button6_down = 1;
+            count6 = 0;
+        }
+    }
+    else if (current_state7 != button7_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count7++; // Button state is about to be changed, increase counter
+        if (count7 >= 4) {
+            // The button have not bounced for four checks, change state
+            button7_state = current_state7;
+            // tell main if button was released of pressed
+            if (current_state7 == 0)
+              button7_up = 1;
+            else
+              button7_down = 1;
+            count7 = 0;
+        }
+    }
+    else if (current_state8 != button8_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count8++; // Button state is about to be changed, increase counter
+        if (count8 >= 4) {
+            // The button have not bounced for four checks, change state
+            button8_state = current_state8;
+            // tell main if button was released of pressed
+            if (current_state8 == 0)
+              button8_up = 1;
+            else
+              button8_down = 1;
+            count8 = 0;
+        }
+    }
+    else if (current_state9 != button9_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count9++; // Button state is about to be changed, increase counter
+        if (count9 >= 4) {
+            // The button have not bounced for four checks, change state
+            button9_state = current_state9;
+            // tell main if button was released of pressed
+            if (current_state9 == 0)
+              button9_up = 1;
+            else
+              button9_down = 1;
+            count9 = 0;
+        }
+    }
+    else if (current_state10 != button10_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count10++; // Button state is about to be changed, increase counter
+        if (count10 >= 4) {
+            // The button have not bounced for four checks, change state
+            button10_state = current_state10;
+            // tell main if button was released of pressed
+            if (current_state10 == 0)
+              button10_up = 1;
+            else
+              button10_down = 1;
+            count10 = 0;
+        }
+    }
+    else if (current_state11 != button11_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count11++; // Button state is about to be changed, increase counter
+        if (count11 >= 4) {
+            // The button have not bounced for four checks, change state
+            button11_state = current_state11;
+            // tell main if button was released of pressed
+            if (current_state11 == 0)
+              button11_up = 1;
+            else
+              button11_down = 1;
+            count11 = 0;
+        }
+    }
+    else if (current_state12 != button12_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count12++; // Button state is about to be changed, increase counter
+        if (count12 >= 4) {
+            // The button have not bounced for four checks, change state
+            button12_state = current_state12;
+            // tell main if button was released of pressed
+            if (current_state12 == 0)
+              button12_up = 1;
+            else
+              button12_down = 1;
+            count12 = 0;
+        }
+    }
+    else if (current_state13 != button13_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count13++; // Button state is about to be changed, increase counter
+        if (count13 >= 4) {
+            // The button have not bounced for four checks, change state
+            button13_state = current_state13;
+            // tell main if button was released of pressed
+            if (current_state13 == 0)
+              button13_up = 1;
+            else
+              button13_down = 1;
+            count13 = 0;
+        }
+    }
+    else if (current_state14 != button14_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count15 = 0;        
+        count16 = 0;        
+        count14++; // Button state is about to be changed, increase counter
+        if (count14 >= 4) {
+            // The button have not bounced for four checks, change state
+            button14_state = current_state14;
+            // tell main if button was released of pressed
+            if (current_state14 == 0)
+              button14_up = 1;
+            else
+              button14_down = 1;
+            count14 = 0;
+        }
+    }
+    else if (current_state15 != button15_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count16 = 0;        
+        count15++; // Button state is about to be changed, increase counter
+        if (count15 >= 4) {
+            // The button have not bounced for four checks, change state
+            button15_state = current_state15;
+            // tell main if button was released of pressed
+            if (current_state15 == 0)
+              button15_up = 1;
+            else
+              button15_down = 1;
+            count15 = 0;
+        }
+    }
+    else if (current_state16 != button16_state) {
+        count1 = 0; // reset other counters
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;        
+        count13 = 0;        
+        count14 = 0;        
+        count15 = 0;        
+        count16++; // Button state is about to be changed, increase counter
+        if (count16 >= 4) {
+            // The button have not bounced for four checks, change state
+            button16_state = current_state16;
+            // tell main if button was released of pressed
+            if (current_state16 == 0)
+              button16_up = 1;
+            else
+              button16_down = 1;
+            count16 = 0;
+        }
+    }
+    else {
+	// Reset all counters
+	count1 = 0;
+        count2 = 0;
+        count3 = 0; 
+        count4 = 0;
+        count5 = 0; 
+        count6 = 0;
+        count7 = 0; 
+        count8 = 0;
+        count9 = 0; 
+        count10 = 0;
+        count11 = 0; 
+        count12 = 0;
+        count13 = 0; 
+        count14 = 0;
+        count15 = 0; 
+        count16 = 0;
+    }
+}
 
 @i ../usb/IN-endpoint-management.w
 @i ../usb/USB.w
