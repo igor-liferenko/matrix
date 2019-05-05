@@ -19,6 +19,7 @@
 // Variable to tell main that the button is pressed (and debounced).
 // Main will clear it after a detected button press.
 volatile uint8_t button_down;
+volatile uint8_t button_up;
 
 // Check button state and set the button_down variable if a debounced
 // button down press is detected.
@@ -39,10 +40,11 @@ static inline void debounce(void)
 	if (count >= 4) {
  	    // The button have not bounced for four checks, change state
 	    button_state = current_state;
-	    // If the button was pressed (not released), tell main so
-	    if (current_state != 0) {
-		button_down = 1;
-	    }
+	    // tell main if button was released of pressed
+	    if (current_state == 0)
+              button_up = 1;
+            else
+              button_down = 1;
 	    count = 0;
 	}
     } else {
@@ -70,7 +72,11 @@ int main(void)
 	    // Clear flag
 	    button_down = 0;
             // Toggle the LED
-            LED_PORT ^= LED_MASK;
+            LED_PORT &= ~(LED_MASK);
+        }
+        if (button_up) {
+          button_up = 0;
+          LED_PORT |= LED_MASK;
         }
 	// Delay for a while so we don't check to button too often
 	_delay_ms(10);
