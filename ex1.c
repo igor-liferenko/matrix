@@ -29,9 +29,8 @@ int main(void)
         // Check if the button is pressed. Button is active low
         // so we invert PINB with ~ for positive logic
         if (~BUTTON_PIN & BUTTON_MASK)
-        {
-            // Toggle the LED
-            LED_PORT ^= LED_MASK;
-        }
+            LED_PORT &= ~(LED_MASK);
+        else
+            LED_PORT |= LED_MASK;
     }
 }
