@@ -8,7 +8,7 @@
 #include "debounce.h"
 
 // Called at about 100Hz (122Hz)
-ISR(TIMER0_OVF_vect)
+ISR(TIMER0_COMPA_vect)
 {
     // Debounce buttons. debounce() is declared static inline
     // in debounce.h so we will not suffer from the added overhead
@@ -18,15 +18,13 @@ ISR(TIMER0_OVF_vect)
 
 int main(void)
 {
-    // BORTB output
-    DDRB = 0xFF;
-    // High turns off LED's on STK500
-    PORTB = 0xFF;
+    PORTD |= 1 << PD5;
+    DDRD |= 1 << PD5;
 
-    // Timer0 normal mode, presc 1:256
-    TCCR0B = 1<<CS02;
-    // Overflow interrupt. (at 8e6/256/256 = 122 Hz)
-    TIMSK0 = 1<<TOIE0;
+    OCR0A = 156;
+    TCCR0A |= 1 << WGM01;
+    TCCR0B |= 1 << CS02 | 1 << CS00;
+    TIMSK0 |= 1 << OCIE0A;
 
     debounce_init();
 
@@ -37,13 +35,11 @@ int main(void)
     {
 	if (button_down(BUTTON1_MASK))
 	{
-	    // Toggle PB0
-	    PORTB ^= 1<<PB0;
+	    PORTD ^= 1<<PD5;
 	}
-	if (button_down(BUTTON2_MASK))
+/*	if (button_down(BUTTON2_MASK))
 	{
-	    // Toggle PB1
 	    PORTB ^= 1<<PB1;
-	}
+	}*/
     }
 }

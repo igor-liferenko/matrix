@@ -10,11 +10,11 @@
 #include <util/atomic.h>
 
 // Buttons connected to PA0 and PA1
-#define BUTTON_PORT  PORTA
-#define BUTTON_PIN   PINA
-#define BUTTON_DDR   DDRA
-#define BUTTON1_MASK (1<<PA0)
-#define BUTTON2_MASK (1<<PA1)
+#define BUTTON_PORT  PORTF
+#define BUTTON_PIN   PINF
+#define BUTTON_DDR   DDRF
+#define BUTTON1_MASK (1<<PF4)
+#define BUTTON2_MASK (1<<PF5)
 #define BUTTON_MASK  (BUTTON1_MASK | BUTTON2_MASK)
 
 // Variable to tell that the button is pressed (and debounced).
