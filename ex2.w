@@ -646,7 +646,7 @@ void main(void)
         UENUM = EP1;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = 'L'; UEDATX = '1'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '1'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
         UEDATX = '\r'; UEDATX = '\n';
         UEINTX &= ~(1 << FIFOCON);
       }
@@ -661,7 +661,7 @@ void main(void)
         UENUM = EP1;            
         while (!(UEINTX & 1 << TXINI)) ;            
         UEINTX &= ~(1 << TXINI);            
-        UEDATX = 'L'; UEDATX = '1'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '1'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
         UEDATX = '\r'; UEDATX = '\n';
         UEINTX &= ~(1 << FIFOCON);            
       }
@@ -678,7 +678,7 @@ void main(void)
         UENUM = EP1;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = 'L'; UEDATX = '2'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '2'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
         UEDATX = '\r'; UEDATX = '\n';
         UEINTX &= ~(1 << FIFOCON);
       }
@@ -693,7 +693,455 @@ void main(void)
         UENUM = EP1;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = 'L'; UEDATX = '2'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '2'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button3_down) {
+      // Clear flag
+      button3_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '3'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button3_up) {
+      button3_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '3'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button4_down) {
+      // Clear flag
+      button4_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'A'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button4_up) {
+      button4_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'A'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button5_down) {
+      // Clear flag
+      button5_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '4'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button5_up) {
+      button5_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '4'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button6_down) {
+      // Clear flag
+      button6_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '5'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button6_up) {
+      button6_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '5'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button7_down) {
+      // Clear flag
+      button7_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '6'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button7_up) {
+      button7_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '6'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button8_down) {
+      // Clear flag
+      button8_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'B'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button8_up) {
+      button8_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'B'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button9_down) {
+      // Clear flag
+      button9_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '7'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button9_up) {
+      button9_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '7'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button10_down) {
+      // Clear flag
+      button10_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '8'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button10_up) {
+      button10_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '8'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button11_down) {
+      // Clear flag
+      button11_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '9'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button11_up) {
+      button11_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '9'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button12_down) {
+      // Clear flag
+      button12_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'C'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button12_up) {
+      button12_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'C'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button13_down) {
+      // Clear flag
+      button13_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '*'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button13_up) {
+      button13_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '*'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button14_down) {
+      // Clear flag
+      button14_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '0'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button14_up) {
+      button14_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '0'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button15_down) {
+      // Clear flag
+      button15_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '#'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button15_up) {
+      button15_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '#'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    // Check if the button is pressed.
+    if (button16_down) {
+      // Clear flag
+      button16_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'D'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button16_up) {
+      button16_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'D'; UEDATX = ' '; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
         UEDATX = '\r'; UEDATX = '\n';
         UEINTX &= ~(1 << FIFOCON);
       }
