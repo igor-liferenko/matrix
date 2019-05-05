@@ -5,39 +5,60 @@
 @<Global variables@>@;
 @<Create ISR for connecting to USB host@>@;
 
-#define BUTTON_MASK (1<<PF4)
+#define BUTTON1_MASK (1<<PF4)
+#define BUTTON2_MASK (1<<PF5)
 #define BUTTON_PIN  PINF
 #define BUTTON_PORT PORTF
 
-volatile uint8_t button_down;
-volatile uint8_t button_up;
+volatile uint8_t button1_down;
+volatile uint8_t button1_up;
+volatile uint8_t button2_down;
+volatile uint8_t button2_up;
 
 ISR(TIMER0_COMPA_vect)
 {
     // Counter for number of equal states
-    static uint8_t count = 0;
+    static uint8_t count1 = 0;
+    static uint8_t count2 = 0;
     // Keeps track of current (debounced) state
-    static uint8_t button_state = 0;
+    static uint8_t button1_state = 0;
+    static uint8_t button2_state = 0;
 
     // Check if button is high or low for the moment
-    uint8_t current_state = (~BUTTON_PIN & BUTTON_MASK) != 0;
-    
-    if (current_state != button_state) {
-	// Button state is about to be changed, increase counter
-	count++;
-	if (count >= 4) {
+    uint8_t current_state1 = (~BUTTON_PIN & BUTTON1_MASK) != 0;
+    uint8_t current_state2 = (~BUTTON_PIN & BUTTON2_MASK) != 0;
+
+    if (current_state1 != button1_state) {
+        count2 = 0; // reset other counters
+	count1++; // Button state is about to be changed, increase counter
+	if (count1 >= 4) {
  	    // The button have not bounced for four checks, change state
-	    button_state = current_state;
+	    button1_state = current_state1;
 	    // tell main if button was released of pressed
-	    if (current_state == 0)
-              button_up = 1;
+	    if (current_state1 == 0)
+              button1_up = 1;
             else
-              button_down = 1;
-	    count = 0;
+              button1_down = 1;
+	    count1 = 0;
 	}
-    } else {
-	// Reset counter
-	count = 0;
+    }
+    else if (current_state2 != button2_state) {
+        count1 = 0; // reset other counters
+        count2++; // Button state is about to be changed, increase counter
+        if (count2 >= 4) {
+            // The button have not bounced for four checks, change state
+            button2_state = current_state2;
+            // tell main if button was released of pressed
+            if (current_state2 == 0)
+              button2_up = 1;
+            else
+              button2_down = 1;
+            count2 = 0;
+        }
+    }
+    else {
+	// Reset all counters
+	count1 = 0; count2 = 0;
     }
 }
 
@@ -51,15 +72,16 @@ void main(void)
     TIMSK0 |= 1 << OCIE0A;
 
   // Enable internal pullup resistor on the input pin
-  BUTTON_PORT |= BUTTON_MASK;
+  BUTTON_PORT |= BUTTON1_MASK;
+  BUTTON_PORT |= BUTTON2_MASK;
 
   while(1) {
     @<Get |dtr_rts|@>@;
     cli();
     // Check if the button is pressed.
-    if (button_down) {
+    if (button1_down) {
       // Clear flag
-      button_down = 0;
+      button1_down = 0;
       sei();
       if (dtr_rts) {
         UENUM = EP1;
@@ -73,8 +95,8 @@ void main(void)
     else
       sei();
     cli();
-    if (button_up) {
-      button_up = 0;
+    if (button1_up) {
+      button1_up = 0;
       sei();
       if (dtr_rts) {            
         UENUM = EP1;            
@@ -87,9 +109,39 @@ void main(void)
     }
     else
       sei();
-    // Delay for a while so we don't check to button too often
-    _delay_ms(10);
-  }
+    cli();
+    // Check if the button is pressed.
+    if (button2_down) {
+      // Clear flag
+      button2_down = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'L'; UEDATX = '2'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'n';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+    cli();
+    if (button2_up) {
+      button2_up = 0;
+      sei();
+      if (dtr_rts) {
+        UENUM = EP1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'L'; UEDATX = '2'; UEDATX = ' '; UEDATX = 'o'; UEDATX = 'f'; UEDATX = 'f';
+        UEDATX = '\r'; UEDATX = '\n';
+        UEINTX &= ~(1 << FIFOCON);
+      }
+    }
+    else
+      sei();
+   }
 }
 
 @ No other requests except {\caps set control line state} come
