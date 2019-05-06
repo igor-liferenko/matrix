@@ -32,7 +32,7 @@ void main(void)
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
-  @<Pullup input pins@>@;
+  @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it here? */
 
   OCR0A = 156; /* 10ms */
