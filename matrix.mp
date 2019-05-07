@@ -110,18 +110,18 @@ begingroup;
 interim rbox_radius:=1bp;
 save A; pen A; A:=currentpen;
 pickup pencircle scaled .1pt;
+boxit.arduino.C7_box(btex \smallss C7 etex);
+arduino.C7_box.e=arduino.e+left*5mm+up*2mm;
+arduino.C7_box.ne=arduino.C7_box.sw+right*6pt+up*4pt;
+drawboxed(arduino.C7_box);
 boxit.arduino.B0_box(btex \smallss B0 etex);
-arduino.B0_box.c=arduino.e+left*.5u;
-arduino.B0_box.ne=arduino.B0_box.sw+right*.2u+up*.15u; % TODO: do the rest like this
+arduino.B0_box.e=arduino.C7_box.w+left*.5mm;
+arduino.B0_box.ne=arduino.B0_box.sw+right*6pt+up*4pt;
 drawboxed(arduino.B0_box);
-boxit.arduino.D5.box(btex \smallss D5 etex);
-arduino.D5.box.c=arduino.B0_box.c+left*3mm;
-arduino.D5.box.sw=arduino.D5.box.c+down*2pt+left*3pt;
-drawboxed(arduino.D5.box);
-boxit.arduino.C7.box(btex \smallss C7 etex);
-arduino.C7.box.c=arduino.D5.box.c+left*3mm;
-arduino.C7.box.sw=arduino.C7.box.c+down*2pt+left*3pt;
-drawboxed(arduino.C7.box);
+boxit.arduino.D5_box(btex \smallss D5 etex);
+arduino.D5_box.n=arduino.C7_box.s+down*.5mm;
+arduino.D5_box.ne=arduino.D5_box.sw+right*6pt+up*4pt;
+drawboxed(arduino.D5_box); % TODO: do the rest like this (variable name + box dimensions)
 label.top(btex \smallss 11 etex, arduino.B7);
 rboxit.arduino.B7.box(btex \smallss B7 etex);
 arduino.B7.box.c=arduino.B7+up*3mm;
