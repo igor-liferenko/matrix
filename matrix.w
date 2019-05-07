@@ -97,67 +97,8 @@ void main(void)
       @<Check \vb{4}; turn on LED and send it if pressed, turn off LED if released@>@;
       @<Check \vb{5}; turn on LED and send it if pressed, turn off LED if released@>@;
       @<Check \vb{6}; turn on LED and send it if pressed, turn off LED if released@>@;
-
-    cli();
-    if (button8_down) {
-      button8_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = 'B';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button8_up) {
-      button8_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button9_down) {
-      button9_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '7';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button9_up) {
-      button9_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button10_down) {
-      button10_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '8';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button10_up) {
-      button10_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
+      @<Check \vb{7}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{8}; turn on LED and send it if pressed, turn off LED if released@>@;
     cli();
     if (button11_down) {
       button11_down = 0;
@@ -397,6 +338,46 @@ else sei();
 cli();
 if (button7_up) {
   button7_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{7}; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button9_down) {
+  button9_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '7';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button9_up) {
+  button9_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{8}; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button10_down) {
+  button10_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '8';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button10_up) {
+  button10_up = 0;
   sei();
   PORTC &= ~(1 << PC7);
 }
