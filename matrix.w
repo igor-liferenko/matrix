@@ -89,26 +89,7 @@ void main(void)
     else sei();
 
     if (on_line) { /* (buttons are not sent if not on-line) */    
-    cli();
-    if (button1_down) {
-      button1_down = 0;
-      sei();
-      if (dtr_rts) {
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '1';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button1_up) {
-      button1_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
+      @<Check `1'; turn on LED and send it if pressed, turn off LED if released@>@;
     cli();
     if (button2_down) {
       button2_down = 0;
@@ -392,6 +373,26 @@ void main(void)
     }
   }
 }
+
+@ @<Check `1'; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button1_down) {
+  button1_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '1';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button1_up) {
+  button1_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
