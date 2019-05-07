@@ -447,7 +447,7 @@ that can be enabled and disabled.
 PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
-@ @<Create interrupt handler@>=
+@ @<Global variables@>=
 
 volatile uint8_t button1_down;
 volatile uint8_t button1_up;
@@ -482,42 +482,42 @@ volatile uint8_t button15_up;
 volatile uint8_t button16_down;
 volatile uint8_t button16_up;
 
-ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
-  this code does not exceed the period */
-{
+@ TODO: rm "static" and compare via dvidiff that it is treated correctly
+
+@<Local variables@>=
     static uint8_t count1 = 0;
     static uint8_t count2 = 0;
-    static uint8_t count3 = 0;    
-    static uint8_t count4 = 0;    
-    static uint8_t count5 = 0;    
-    static uint8_t count6 = 0;    
-    static uint8_t count7 = 0;    
-    static uint8_t count8 = 0;    
-    static uint8_t count9 = 0;    
-    static uint8_t count10 = 0;    
-    static uint8_t count11 = 0;    
-    static uint8_t count12 = 0;    
-    static uint8_t count13 = 0;    
-    static uint8_t count14 = 0;    
-    static uint8_t count15 = 0;    
-    static uint8_t count16 = 0;    
+    static uint8_t count3 = 0;
+    static uint8_t count4 = 0;
+    static uint8_t count5 = 0;
+    static uint8_t count6 = 0;
+    static uint8_t count7 = 0;
+    static uint8_t count8 = 0;
+    static uint8_t count9 = 0;
+    static uint8_t count10 = 0;
+    static uint8_t count11 = 0;
+    static uint8_t count12 = 0;
+    static uint8_t count13 = 0;
+    static uint8_t count14 = 0;
+    static uint8_t count15 = 0;
+    static uint8_t count16 = 0;
     // Keeps track of current (debounced) state
     static uint8_t button1_state = 0;
     static uint8_t button2_state = 0;
-    static uint8_t button3_state = 0;    
-    static uint8_t button4_state = 0;    
-    static uint8_t button5_state = 0;    
-    static uint8_t button6_state = 0;    
-    static uint8_t button7_state = 0;    
-    static uint8_t button8_state = 0;    
-    static uint8_t button9_state = 0;    
-    static uint8_t button10_state = 0;    
-    static uint8_t button11_state = 0;    
-    static uint8_t button12_state = 0;    
-    static uint8_t button13_state = 0;    
-    static uint8_t button14_state = 0;    
-    static uint8_t button15_state = 0;    
-    static uint8_t button16_state = 0;    
+    static uint8_t button3_state = 0;
+    static uint8_t button4_state = 0;
+    static uint8_t button5_state = 0;
+    static uint8_t button6_state = 0;
+    static uint8_t button7_state = 0;
+    static uint8_t button8_state = 0;
+    static uint8_t button9_state = 0;
+    static uint8_t button10_state = 0;
+    static uint8_t button11_state = 0;
+    static uint8_t button12_state = 0;
+    static uint8_t button13_state = 0;
+    static uint8_t button14_state = 0;
+    static uint8_t button15_state = 0;
+    static uint8_t button16_state = 0;
 
     uint8_t current_state1 = 0;
     uint8_t current_state2 = 0;
@@ -535,6 +535,12 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
     uint8_t current_state14 = 0;
     uint8_t current_state15 = 0;
     uint8_t current_state16 = 0;
+
+@ @<Create interrupt handler@>=
+ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
+  this code does not exceed the period */
+{
+  @<Local variables@>@; /* see cwebman - is there an example of such? */
 
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
       DDRB |= 1 << i;
@@ -1013,21 +1019,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
         }
     }
     else if (current_state16 != button16_state) {
-        count1 = 0; // reset other counters
-        count2 = 0;
-        count3 = 0;
-        count4 = 0;
-        count5 = 0;
-        count6 = 0;
-        count7 = 0;
-        count8 = 0;
-        count9 = 0;
-        count10 = 0;
-        count11 = 0;
-        count12 = 0;        
-        count13 = 0;        
-        count14 = 0;        
-        count15 = 0;        
+        @<Reset all counters, except |count16|@>@;
         count16++; // Button state is about to be changed, increase counter
         if (count16 >= 4) {
             // The button have not bounced for four checks, change state
@@ -1041,25 +1033,44 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
         }
     }
     else {
-	// Reset all counters
-	count1 = 0;
-        count2 = 0;
-        count3 = 0; 
-        count4 = 0;
-        count5 = 0; 
-        count6 = 0;
-        count7 = 0; 
-        count8 = 0;
-        count9 = 0; 
-        count10 = 0;
-        count11 = 0; 
-        count12 = 0;
-        count13 = 0; 
-        count14 = 0;
-        count15 = 0; 
-        count16 = 0;
+	@<Reset all counter{s}@>@;
     }
 }
+
+@ @<Reset all counters, except |count16|@>=
+        count1 = 0;
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+
+@ @<Reset all counter{s}@>=
+        count1 = 0;
+        count2 = 0;
+        count3 = 0;
+        count4 = 0;
+        count5 = 0;
+        count6 = 0;
+        count7 = 0;
+        count8 = 0;
+        count9 = 0;
+        count10 = 0;
+        count11 = 0;
+        count12 = 0;
+        count13 = 0;
+        count14 = 0;
+        count15 = 0;
+        count16 = 0;
 
 @i ../usb/IN-endpoint-management.w
 @i ../usb/USB.w
