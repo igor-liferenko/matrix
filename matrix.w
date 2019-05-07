@@ -92,14 +92,14 @@ void main(void)
     if (on_line) { /* (buttons are not sent if not on-line); note, that |dtr_rts| is
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
       sending (and turning on the LED) */
-      @<Check \vb{1}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{2}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{3}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{4}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{5}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{6}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{7}; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check \vb{8}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{1}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{2}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{3}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{4}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{5}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{6}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{7}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{8}; turn on LED and send if pressed, turn off LED if released@>@;
     cli();
     if (button11_down) {
       button11_down = 0;
@@ -224,7 +224,7 @@ void main(void)
   }
 }
 
-@ @<Check \vb{1}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{1}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button1_down) {
   button1_down = 0;
@@ -244,7 +244,7 @@ if (button1_up) {
 }
 else sei();
 
-@ @<Check \vb{2}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{2}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button2_down) {
   button2_down = 0;
@@ -264,7 +264,7 @@ if (button2_up) {
 }
 else sei();
 
-@ @<Check \vb{3}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{3}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button3_down) {
   button3_down = 0;
@@ -284,7 +284,7 @@ if (button3_up) {
 }
 else sei();
 
-@ @<Check \vb{4}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{4}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button5_down) {
   button5_down = 0;
@@ -304,7 +304,7 @@ if (button5_up) {
 }
 else sei();
 
-@ @<Check \vb{5}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{5}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button6_down) {
   button6_down = 0;
@@ -324,7 +324,7 @@ if (button6_up) {
 }
 else sei();
 
-@ @<Check \vb{6}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{6}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button7_down) {
   button7_down = 0;
@@ -344,7 +344,7 @@ if (button7_up) {
 }
 else sei();
 
-@ @<Check \vb{7}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{7}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button9_down) {
   button9_down = 0;
@@ -364,7 +364,7 @@ if (button9_up) {
 }
 else sei();
 
-@ @<Check \vb{8}; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{8}; turn on LED and send if pressed, turn off LED if released@>=
 cli();
 if (button10_down) {
   button10_down = 0;
