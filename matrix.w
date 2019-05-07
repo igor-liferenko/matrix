@@ -1,7 +1,7 @@
 \let\lheader\rheader
 %\datethis
 \secpagedepth=2 % begin new page only on *
-\font\caps=cmcsc10 at 9pt
+\font\caps=cmcsc10 at 9pt % for USB.w
 
 @* Program.
 
@@ -91,68 +91,12 @@ void main(void)
     if (on_line) { /* (buttons are not sent if not on-line); note, that |dtr_rts| is
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
       sending (and turning on the LED) */
-      @<Check `1'; turn on LED and send it if pressed, turn off LED if released@>@;
-      @<Check `2'; turn on LED and send it if pressed, turn off LED if released@>@;
-    cli();
-    if (button3_down) {
-      button3_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '3';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button3_up) {
-      button3_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button5_down) {
-      button5_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '4';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button5_up) {
-      button5_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button6_down) {
-      button6_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '5';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button6_up) {
-      button6_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
+      @<Check \vb{1}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{2}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{3}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{4}; turn on LED and send it if pressed, turn off LED if released@>@;
+      @<Check \vb{5}; turn on LED and send it if pressed, turn off LED if released@>@;
+
     cli();
     if (button7_down) {
       button7_down = 0;
@@ -357,7 +301,7 @@ void main(void)
   }
 }
 
-@ @<Check `1'; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{1}; turn on LED and send it if pressed, turn off LED if released@>=
 cli();
 if (button1_down) {
   button1_down = 0;
@@ -377,7 +321,7 @@ if (button1_up) {
 }
 else sei();
 
-@ @<Check `2'; turn on LED and send it if pressed, turn off LED if released@>=
+@ @<Check \vb{2}; turn on LED and send it if pressed, turn off LED if released@>=
 cli();
 if (button2_down) {
   button2_down = 0;
@@ -392,6 +336,66 @@ else sei();
 cli();
 if (button2_up) {
   button2_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{3}; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button3_down) {
+  button3_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '3';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button3_up) {
+  button3_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{4}; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button5_down) {
+  button5_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '4';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button5_up) {
+  button5_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{5}; turn on LED and send it if pressed, turn off LED if released@>=
+cli();
+if (button6_down) {
+  button6_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '5';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button6_up) {
+  button6_up = 0;
   sei();
   PORTC &= ~(1 << PC7);
 }
