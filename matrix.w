@@ -30,7 +30,8 @@ void main(void)
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
-  DDRC |= 1 << PC7; /* indicate that key was pressed */
+  DDRC |= 1 << PC7; /* indicate that key was pressed; TODO: via tel.log check
+    if DTMF is transferred when key pressed or released */
 
   @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it here? */
