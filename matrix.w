@@ -100,46 +100,7 @@ void main(void)
       @<Check \vb{6}; turn on LED and send if pressed, turn off LED if released@>@;
       @<Check \vb{7}; turn on LED and send if pressed, turn off LED if released@>@;
       @<Check \vb{8}; turn on LED and send if pressed, turn off LED if released@>@;
-    cli();
-    if (button11_down) {
-      button11_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '9';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button11_up) {
-      button11_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button12_down) {
-      button12_down = 0;
-      sei();
-      if (dtr_rts) { 
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = 'C';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button12_up) {
-      button12_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
+      @<Check \vb{9}; turn on LED and send if pressed, turn off LED if released@>@;
     cli();
     if (button13_down) {
       button13_down = 0;
@@ -196,26 +157,6 @@ void main(void)
     cli();
     if (button15_up) {
       button15_up = 0;
-      sei();
-      PORTC &= ~(1 << PC7);
-    }
-    else sei();
-    cli();
-    if (button16_down) {
-      button16_down = 0;
-      sei();
-      if (dtr_rts) {
-        PORTC |= 1 << PC7;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = 'D';
-        UEINTX &= ~(1 << FIFOCON);
-      }
-    }
-    else sei();
-    cli();
-    if (button16_up) {
-      button16_up = 0;
       sei();
       PORTC &= ~(1 << PC7);
     }
@@ -379,6 +320,26 @@ else sei();
 cli();
 if (button10_up) {
   button10_up = 0;
+  sei();
+  PORTC &= ~(1 << PC7);
+}
+else sei();
+
+@ @<Check \vb{9}; turn on LED and send if pressed, turn off LED if released@>=
+cli();
+if (button11_down) {
+  button11_down = 0;
+  sei();
+  PORTC |= 1 << PC7;
+  while (!(UEINTX & 1 << TXINI)) ;
+  UEINTX &= ~(1 << TXINI);
+  UEDATX = '9';
+  UEINTX &= ~(1 << FIFOCON);
+}
+else sei();
+cli();
+if (button11_up) {
+  button11_up = 0;
   sei();
   PORTC &= ~(1 << PC7);
 }
