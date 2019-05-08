@@ -62,31 +62,31 @@ void main(void)
     }
 
     cli();
-    if (button4_down) {/* 'A' is special button, which does not use
-                                    indicator led on |PC7| --- it has its own on |PD5| */
+    if (button4_down) { /* \vb{A} is special button, which does not use
+                           indicator led on |PC7| --- it has its own on |PD5| */
       button4_down = 0;
       sei();
-    if (dtr_rts) {
-      on_line = !on_line;
-      if (on_line) {
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
-          \.{tel}---to put it to initial state */
-        UEINTX &= ~(1 << FIFOCON);
-        PORTD |= 1 << PD5;
+      if (dtr_rts) {
+        on_line = !on_line;
+        if (on_line) {
+          while (!(UEINTX & 1 << TXINI)) ;
+          UEINTX &= ~(1 << TXINI);
+          UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
+            \.{tel}---to put it to initial state */
+          UEINTX &= ~(1 << FIFOCON);
+          PORTD |= 1 << PD5;
+        }
+        else {
+          while (!(UEINTX & 1 << TXINI)) ;
+          UEINTX &= ~(1 << TXINI);
+          UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
+            timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
+            with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
+            automatically as consequence of off-hook)) */
+          UEINTX &= ~(1 << FIFOCON);
+          PORTD &= ~(1 << PD5);
+        }
       }
-      else {
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
-          timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
-          with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
-          automatically as consequence of off-hook)) */
-        UEINTX &= ~(1 << FIFOCON);
-        PORTD &= ~(1 << PD5);
-      }
-    }
     }
     else sei();
 
