@@ -32,7 +32,10 @@ void main(void)
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed; TODO: via tel.log check
-    if DTMF is transferred when key pressed or released */
+    if DTMF is transferred when key pressed or released (press it and hold long without
+    releasing) and if it is sent when key pressed, move switching off PC7 to ISR
+    without using buttonX-up variable, and if it is sent when key is released - check
+    if button is released not in "if on-line", but outside of it */
 
   @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it here? */
