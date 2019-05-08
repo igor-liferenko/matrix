@@ -67,7 +67,7 @@ void main(void)
     cli();
     if (button4_down) { /* \vb{A} is special button, which does not use
                            indicator led on |PC7| --- it has its own on |PD5| */
-      button4_down = 0;
+      @<Clear all buttons@>@;
       sei();
       if (dtr_rts) {
         on_line = !on_line;
@@ -112,6 +112,27 @@ void main(void)
     }
   }
 }
+
+@ We clear all buttons, not only |button4_down|, to ensure that any key must not be pressed
+in ``off-line'' state.
+
+@<Clear all buttons@>=
+button1_down = 0;
+button2_down = 0;
+button3_down = 0;
+button4_down = 0;
+button5_down = 0;
+button6_down = 0;
+button7_down = 0;
+button8_down = 0;
+button9_down = 0;
+button10_down = 0;
+button11_down = 0;
+button12_down = 0;
+button13_down = 0;
+button14_down = 0;
+button15_down = 0;
+button16_down = 0;
 
 @ @<Check \vb{1}; turn on LED and send if pressed@>=
 cli();
