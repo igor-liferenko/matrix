@@ -2,6 +2,8 @@
 %\datethis
 \secpagedepth=2 % begin new page only on *
 
+@i ../usb/USB.h
+
 @* Program.
 
 Take to consideration that:
@@ -348,7 +350,7 @@ if (button15_up) {
 }
 else sei();
 
-@ No other requests except {\global\font\caps=cmcsc10 at 9pt \caps set control line state} come
+@ No other requests except {\caps set control line state} come
 after connection is established.
 It is used by host to say the device not to send when DTR/RTS is not on.
 
