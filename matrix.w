@@ -423,7 +423,6 @@ volatile uint8_t button2_up;
 volatile uint8_t button3_down;
 volatile uint8_t button3_up;
 volatile uint8_t button4_down;
-volatile uint8_t button4_up;
 volatile uint8_t button5_down;
 volatile uint8_t button5_up;
 volatile uint8_t button6_down;
@@ -670,9 +669,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             // The button have not bounced for four checks, change state
             button4_state = current_state4;
             // tell main if button was released of pressed
-            if (current_state4 == 0)
-              button4_up = 1;
-            else
+            if (current_state4 != 0)
               button4_down = 1;
             count4 = 0;
         }
