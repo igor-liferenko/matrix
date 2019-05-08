@@ -33,9 +33,9 @@ void main(void)
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed; TODO: via tel.log check
     if DTMF is transferred when key pressed or released (press it and hold long without
-    releasing) and if it is sent when key pressed, move switching off PC7 to ISR
-    without using buttonX-up variable, and if it is sent when key is released - check
-    if button is released not in "if on-line", but outside of it */
+    releasing) and if it is sent when key pressed, it is OK, and if it is sent when key
+    is released - restore buttonX-up variables and check
+    if button is released outside of ``|if (on_line)|'' */
 
   @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it here? */
@@ -97,23 +97,23 @@ void main(void)
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
       sending (and turning on the LED) TODO: ensure by reading the code that it is
       really so */
-      @<Check \vb{1}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{2}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{3}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{4}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{5}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{6}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{7}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{8}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{9}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{*}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{0}; turn on LED and send if pressed, turn off LED if released@>@;
-      @<Check \vb{\#}; turn on LED and send if pressed, turn off LED if released@>@;
+      @<Check \vb{1}; turn on LED and send if pressed@>@;
+      @<Check \vb{2}; turn on LED and send if pressed@>@;
+      @<Check \vb{3}; turn on LED and send if pressed@>@;
+      @<Check \vb{4}; turn on LED and send if pressed@>@;
+      @<Check \vb{5}; turn on LED and send if pressed@>@;
+      @<Check \vb{6}; turn on LED and send if pressed@>@;
+      @<Check \vb{7}; turn on LED and send if pressed@>@;
+      @<Check \vb{8}; turn on LED and send if pressed@>@;
+      @<Check \vb{9}; turn on LED and send if pressed@>@;
+      @<Check \vb{*}; turn on LED and send if pressed@>@;
+      @<Check \vb{0}; turn on LED and send if pressed@>@;
+      @<Check \vb{\#}; turn on LED and send if pressed@>@;
     }
   }
 }
 
-@ @<Check \vb{1}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{1}; turn on LED and send if pressed@>=
 cli();
 if (button1_down) {
   button1_down = 0;
@@ -125,15 +125,8 @@ if (button1_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button1_up) {
-  button1_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{2}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{2}; turn on LED and send if pressed@>=
 cli();
 if (button2_down) {
   button2_down = 0;
@@ -145,15 +138,8 @@ if (button2_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button2_up) {
-  button2_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{3}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{3}; turn on LED and send if pressed@>=
 cli();
 if (button3_down) {
   button3_down = 0;
@@ -165,15 +151,8 @@ if (button3_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button3_up) {
-  button3_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{4}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{4}; turn on LED and send if pressed@>=
 cli();
 if (button5_down) {
   button5_down = 0;
@@ -185,15 +164,8 @@ if (button5_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button5_up) {
-  button5_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{5}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{5}; turn on LED and send if pressed@>=
 cli();
 if (button6_down) {
   button6_down = 0;
@@ -205,15 +177,8 @@ if (button6_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button6_up) {
-  button6_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{6}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{6}; turn on LED and send if pressed@>=
 cli();
 if (button7_down) {
   button7_down = 0;
@@ -225,15 +190,8 @@ if (button7_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button7_up) {
-  button7_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{7}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{7}; turn on LED and send if pressed@>=
 cli();
 if (button9_down) {
   button9_down = 0;
@@ -245,15 +203,8 @@ if (button9_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button9_up) {
-  button9_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{8}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{8}; turn on LED and send if pressed@>=
 cli();
 if (button10_down) {
   button10_down = 0;
@@ -265,15 +216,8 @@ if (button10_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button10_up) {
-  button10_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{9}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{9}; turn on LED and send if pressed@>=
 cli();
 if (button11_down) {
   button11_down = 0;
@@ -285,15 +229,8 @@ if (button11_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button11_up) {
-  button11_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{*}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{*}; turn on LED and send if pressed@>=
 cli();
 if (button13_down) {
   button13_down = 0;
@@ -305,15 +242,8 @@ if (button13_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button13_up) {
-  button13_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{0}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{0}; turn on LED and send if pressed@>=
 cli();
 if (button14_down) {
   button14_down = 0;
@@ -325,15 +255,8 @@ if (button14_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
-cli();
-if (button14_up) {
-  button14_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
-}
-else sei();
 
-@ @<Check \vb{\#}; turn on LED and send if pressed, turn off LED if released@>=
+@ @<Check \vb{\#}; turn on LED and send if pressed@>=
 cli();
 if (button15_down) {
   button15_down = 0;
@@ -343,13 +266,6 @@ if (button15_down) {
   UEINTX &= ~(1 << TXINI);
   UEDATX = '#';
   UEINTX &= ~(1 << FIFOCON);
-}
-else sei();
-cli();
-if (button15_up) {
-  button15_up = 0;
-  sei();
-  PORTC &= ~(1 << PC7);
 }
 else sei();
 
@@ -420,32 +336,20 @@ PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 @ @<Global variables@>=
 
 volatile uint8_t button1_down;
-volatile uint8_t button1_up;
 volatile uint8_t button2_down;
-volatile uint8_t button2_up;
 volatile uint8_t button3_down;
-volatile uint8_t button3_up;
 volatile uint8_t button4_down;
 volatile uint8_t button5_down;
-volatile uint8_t button5_up;
 volatile uint8_t button6_down;
-volatile uint8_t button6_up;
 volatile uint8_t button7_down;
-volatile uint8_t button7_up;
 volatile uint8_t button8_down;
 volatile uint8_t button9_down;
-volatile uint8_t button9_up;
 volatile uint8_t button10_down;
-volatile uint8_t button10_up;
 volatile uint8_t button11_down;
-volatile uint8_t button11_up;
 volatile uint8_t button12_down;
 volatile uint8_t button13_down;
-volatile uint8_t button13_up;
 volatile uint8_t button14_down;
-volatile uint8_t button14_up;
 volatile uint8_t button15_down;
-volatile uint8_t button15_up;
 volatile uint8_t button16_down;
 
 @ TODO: rm "static" and compare via dvidiff that it is treated correctly
@@ -586,7 +490,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
 	    button1_state = current_state1;
 	    // tell main if button was released of pressed
 	    if (current_state1 == 0)
-              button1_up = 1;
+              PORTC &= ~(1 << PC7);
             else
               button1_down = 1;
 	    count1 = 0;
@@ -614,7 +518,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button2_state = current_state2;
             // tell main if button was released of pressed
             if (current_state2 == 0)
-              button2_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button2_down = 1;
             count2 = 0;
@@ -642,7 +546,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button3_state = current_state3;
             // tell main if button was released of pressed
             if (current_state3 == 0)
-              button3_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button3_down = 1;
             count3 = 0;
@@ -696,7 +600,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button5_state = current_state5;
             // tell main if button was released of pressed
             if (current_state5 == 0)
-              button5_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button5_down = 1;
             count5 = 0;
@@ -724,7 +628,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button6_state = current_state6;
             // tell main if button was released of pressed
             if (current_state6 == 0)
-              button6_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button6_down = 1;
             count6 = 0;
@@ -752,7 +656,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button7_state = current_state7;
             // tell main if button was released of pressed
             if (current_state7 == 0)
-              button7_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button7_down = 1;
             count7 = 0;
@@ -806,7 +710,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button9_state = current_state9;
             // tell main if button was released of pressed
             if (current_state9 == 0)
-              button9_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button9_down = 1;
             count9 = 0;
@@ -834,7 +738,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button10_state = current_state10;
             // tell main if button was released of pressed
             if (current_state10 == 0)
-              button10_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button10_down = 1;
             count10 = 0;
@@ -862,7 +766,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button11_state = current_state11;
             // tell main if button was released of pressed
             if (current_state11 == 0)
-              button11_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button11_down = 1;
             count11 = 0;
@@ -916,7 +820,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button13_state = current_state13;
             // tell main if button was released of pressed
             if (current_state13 == 0)
-              button13_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button13_down = 1;
             count13 = 0;
@@ -944,7 +848,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button14_state = current_state14;
             // tell main if button was released of pressed
             if (current_state14 == 0)
-              button14_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button14_down = 1;
             count14 = 0;
@@ -972,7 +876,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             button15_state = current_state15;
             // tell main if button was released of pressed
             if (current_state15 == 0)
-              button15_up = 1;
+              PORTC &= ~(1 << PC7); 
             else
               button15_down = 1;
             count15 = 0;
