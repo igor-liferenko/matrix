@@ -430,7 +430,6 @@ volatile uint8_t button6_up;
 volatile uint8_t button7_down;
 volatile uint8_t button7_up;
 volatile uint8_t button8_down;
-volatile uint8_t button8_up;
 volatile uint8_t button9_down;
 volatile uint8_t button9_up;
 volatile uint8_t button10_down;
@@ -438,7 +437,6 @@ volatile uint8_t button10_up;
 volatile uint8_t button11_down;
 volatile uint8_t button11_up;
 volatile uint8_t button12_down;
-volatile uint8_t button12_up;
 volatile uint8_t button13_down;
 volatile uint8_t button13_up;
 volatile uint8_t button14_down;
@@ -446,7 +444,6 @@ volatile uint8_t button14_up;
 volatile uint8_t button15_down;
 volatile uint8_t button15_up;
 volatile uint8_t button16_down;
-volatile uint8_t button16_up;
 
 @ TODO: rm "static" and compare via dvidiff that it is treated correctly
 
@@ -779,9 +776,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             // The button have not bounced for four checks, change state
             button8_state = current_state8;
             // tell main if button was released of pressed
-            if (current_state8 == 0)
-              button8_up = 1;
-            else
+            if (current_state8 != 0)
               button8_down = 1;
             count8 = 0;
         }
@@ -891,9 +886,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             // The button have not bounced for four checks, change state
             button12_state = current_state12;
             // tell main if button was released of pressed
-            if (current_state12 == 0)
-              button12_up = 1;
-            else
+            if (current_state12 != 0)
               button12_down = 1;
             count12 = 0;
         }
@@ -989,9 +982,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.
             // The button have not bounced for four checks, change state
             button16_state = current_state16;
             // tell main if button was released of pressed
-            if (current_state16 == 0)
-              button16_up = 1;
-            else
+            if (current_state16 != 0)
               button16_down = 1;
             count16 = 0;
         }
