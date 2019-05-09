@@ -434,7 +434,7 @@ volatile uint8_t button16_down;
     uint8_t current_state16 = 0;
 
 @ @<Create interrupt handler@>=
-ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
+ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/test.w} that
   this code does not exceed the period */
 {
   @<Local variables of timer interrupt handler@>@;
