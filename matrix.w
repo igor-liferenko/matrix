@@ -37,7 +37,7 @@ void main(void)
     if button is released outside of ``|if (on_line)|'' */
 
   @<Pullup input pins@>@; /* must be before starting timer */
-  _delay_us(1); /* FIXME: do we need it here? */
+  _delay_us(1); /* FIXME: do we need it? */
 
   OCR0A = 156; /* 10ms */
   TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
