@@ -381,7 +381,7 @@ volatile uint8_t button16_down;
 
 @ TODO: rm "static" and compare via dvidiff that it is treated correctly
 
-@<Local variables@>=
+@<Local variables...@>=
     static uint8_t count1 = 0;
     static uint8_t count2 = 0;
     static uint8_t count3 = 0;
@@ -437,7 +437,7 @@ volatile uint8_t button16_down;
 ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via ~/tcnt/test.w that
   this code does not exceed the period */
 {
-  @<Local variables@>@; /* see cwebman - is there an example of such? */
+  @<Local variables of timer interrupt handler@>@;
 
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
       DDRB |= 1 << i;
