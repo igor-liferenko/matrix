@@ -20,9 +20,8 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Header files@>@;
 @<Type definitions@>@;
 @<Global variables@>@;
+@<Create ISR for timer@>@;
 @<Create ISR for connecting to USB host@>@;
-
-@<Create interrupt handler@>@;
 
 void main(void)
 {
@@ -433,7 +432,7 @@ volatile uint8_t button16_down;
     uint8_t current_state15 = 0;
     uint8_t current_state16 = 0;
 
-@ @<Create interrupt handler@>=
+@ @<Create ISR for timer@>=
 ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/test.w} that
   this code does not exceed the period */
 {
