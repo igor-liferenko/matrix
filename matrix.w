@@ -116,6 +116,12 @@ void main(void)
 @ We clear all buttons, not only |button4_down|, to ensure that any key must not be pressed
 in ``off-line'' state.
 
+TODO: check via \.{\~/tcnt/test.w} that if interrupts are disabled and counter hits MATCH,
+what will happen when interrupts are enabled again - will the interrupt fire again right
+away or until next time when it happens (overflow should happen then - check this via test.w
+too)
+@^TODO@>
+
 @<Clear all buttons@>=
 button1_down = 0;
 button2_down = 0;
