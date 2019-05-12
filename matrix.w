@@ -1,5 +1,5 @@
-% TODO: do via 'A' and 'B', as on handset (i.e., no toggle 'A') - HINT: see commit
-% 4b1f18bcca5af26ceeb728d755cd9c15db53b56d in avrtel repo
+% TODO: do via 'A' and 'B', as on handset (i.e., no toggle 'A') - HINT: see end of commit
+% b65ef593babdf4636def49ed4f527bee8bd7d3e7 in avrtel repo
 
 \let\lheader\rheader
 %\datethis
