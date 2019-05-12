@@ -1,8 +1,11 @@
+% TODO: do via 'A' and 'B', as on handset (i.e., no toggle 'A') - HINT: see commit
+% 4b1f18bcca5af26ceeb728d755cd9c15db53b56d in avrtel repo
+
 \let\lheader\rheader
 %\datethis
 \secpagedepth=2 % begin new page only on *
 
-@i ../usb/USB.h
+\input USB
 
 @* Program.
 
