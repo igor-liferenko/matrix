@@ -1,7 +1,6 @@
 *.elf
 *.hex
 *.c
-*.o
 *.dvi
 *.idx
 *.log
