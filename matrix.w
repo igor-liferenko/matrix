@@ -1,6 +1,8 @@
 % TODO: do via 'A' and 'B', as on handset (i.e., no toggle 'A') - HINT: see end of commit
 % b65ef593babdf4636def49ed4f527bee8bd7d3e7 in avrtel repo
 
+% a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
+
 \let\lheader\rheader
 %\datethis
 \secpagedepth=2 % begin new page only on *
