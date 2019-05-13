@@ -362,6 +362,63 @@ that can be enabled and disabled.
 PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
+@ @<Get button@>=
+    for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
+      DDRB |= 1 << i;
+      _delay_us(1); /* before reading input pin for row which showed a LOW reading on
+        previous column, wait
+        for pullup of it to charge the stray capacitance\footnote\dag{mind that
+        open-ended wire may be longer wire (where button is pressed)} and before reading input
+        pin for whose row
+        a button may be pressed, wait ground of \\{PFi} to
+        discharge the stray capacitance\footnote\ddag{TODO: confirm this by doing test like on
+        https://arduino.stackexchange.com/questions/54919/, but check transition
+        not from not-pulled-up to pulled-up, but from
+        not-grounded to grounded (with pullup enabled)} */
+      switch (~PINB & 1 << PB2 ? 0xB2 : @|
+              ~PIND & 1 << PD3 ? 0xD3 : @|
+              ~PIND & 1 << PD2 ? 0xD2 : @|
+              ~PIND & 1 << PD1 ? 0xD1 : 0) {
+      case 0xD1:
+        switch (i) {
+        case PB7: current_state1 = 1; @+ break;
+        case PB6: current_state2 = 1; @+ break;
+        case PB5: current_state3 = 1; @+ break;
+        case PB4: current_state4 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xD2:
+        switch (i) {
+        case PB7: current_state5 = 1; @+ break;
+        case PB6: current_state6 = 1; @+ break;
+        case PB5: current_state7 = 1; @+ break;
+        case PB4: current_state8 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xD3:
+        switch (i) {
+        case PB7: current_state9 = 1; @+ break;
+        case PB6: current_state10 = 1; @+ break;
+        case PB5: current_state11 = 1; @+ break;
+        case PB4: current_state12 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      case 0xB2:
+        switch (i) {
+        case PB7: current_state13 = 1; @+ break;
+        case PB6: current_state14 = 1; @+ break;
+        case PB5: current_state15 = 1; @+ break;
+        case PB4: current_state16 = 1; @+ break;
+        }
+        done = 1;
+        break;
+      }
+      DDRB &= ~(1 << i);
+    }
+
 @ @<Global variables@>=
 volatile uint8_t button1_down;
 volatile uint8_t button2_down;
@@ -440,61 +497,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 {
   @<Local variables of ISR for debounce timer@>@;
 
-    for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
-      DDRB |= 1 << i;
-      _delay_us(1); /* before reading input pin for row which showed a LOW reading on
-        previous column, wait
-        for pullup of it to charge the stray capacitance\footnote\dag{mind that
-        open-ended wire may be longer wire (where button is pressed)} and before reading input
-        pin for whose row
-        a button may be pressed, wait ground of \\{PFi} to
-        discharge the stray capacitance\footnote\ddag{TODO: confirm this by doing test like on
-        https://arduino.stackexchange.com/questions/54919/, but check transition
-        not from not-pulled-up to pulled-up, but from
-        not-grounded to grounded (with pullup enabled)} */
-      switch (~PINB & 1 << PB2 ? 0xB2 : @|
-              ~PIND & 1 << PD3 ? 0xD3 : @|
-              ~PIND & 1 << PD2 ? 0xD2 : @|
-              ~PIND & 1 << PD1 ? 0xD1 : 0) {
-      case 0xD1:
-        switch (i) {
-        case PB7: current_state1 = 1; @+ break;
-        case PB6: current_state2 = 1; @+ break;
-        case PB5: current_state3 = 1; @+ break;
-        case PB4: current_state4 = 1; @+ break;
-        }
-        done = 1;
-        break;
-      case 0xD2:
-        switch (i) {
-        case PB7: current_state5 = 1; @+ break;
-        case PB6: current_state6 = 1; @+ break;
-        case PB5: current_state7 = 1; @+ break;
-        case PB4: current_state8 = 1; @+ break;
-        }
-        done = 1;
-        break;
-      case 0xD3:
-        switch (i) {
-        case PB7: current_state9 = 1; @+ break;
-        case PB6: current_state10 = 1; @+ break;
-        case PB5: current_state11 = 1; @+ break;
-        case PB4: current_state12 = 1; @+ break;
-        }
-        done = 1;
-        break;
-      case 0xB2:
-        switch (i) {
-        case PB7: current_state13 = 1; @+ break;
-        case PB6: current_state14 = 1; @+ break;
-        case PB5: current_state15 = 1; @+ break;
-        case PB4: current_state16 = 1; @+ break;
-        }
-        done = 1;
-        break;
-      }
-      DDRB &= ~(1 << i);
-    }
+  @<Get button@>@;
 
     if (current_state1 != button1_state) {
         count2 = 0; // reset other counters
