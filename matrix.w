@@ -23,7 +23,7 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 @<Header files@>@;
 @<Type definitions@>@;
 @<Global variables@>@;
-@<Create ISR for timer@>@;
+@<Create ISR for debounce timer@>@;
 @<Create ISR for connecting to USB host@>@;
 
 void main(void)
@@ -363,7 +363,6 @@ PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Global variables@>=
-
 volatile uint8_t button1_down;
 volatile uint8_t button2_down;
 volatile uint8_t button3_down;
@@ -435,11 +434,11 @@ volatile uint8_t button16_down;
     uint8_t current_state15 = 0;
     uint8_t current_state16 = 0;
 
-@ @<Create ISR for timer@>=
+@ @<Create ISR for debounce timer@>=
 ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/test.w} that
   this code does not exceed the period */
 {
-  @<Local variables of timer interrupt handler@>@;
+  @<Local variables of ISR for debounce timer@>@;
 
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
       DDRB |= 1 << i;
