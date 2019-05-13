@@ -370,7 +370,7 @@ PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
         for pullup of it to charge the stray capacitance\footnote\dag{mind that
         open-ended wire may be longer wire (where button is pressed)} and before reading input
         pin for whose row
-        a button may be pressed, wait ground of \\{PFi} to
+        a button may be pressed, wait ground of \\{PB4-7} to
         discharge the stray capacitance\footnote\ddag{TODO: confirm this by doing test like on
         https://arduino.stackexchange.com/questions/54919/, but check transition
         not from not-pulled-up to pulled-up, but from

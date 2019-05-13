@@ -247,7 +247,7 @@ circA.c=circ3.c+right*2u;
 drawboxed(circA);
 draw circ3.c -- circA.c cutbefore bpath.circ3 cutafter bpath.circA;
 draw circ1.c -- origin cutbefore bpath.circ1 -- (0,-8u) -- (2u,-8u) -- (2u,-10u);
-label.bot(btex \tt PB4 etex, (2u,-10u));
+label.bot(btex \tt D1 etex, (2u,-10u));
 
 % row2
 circleit.circ4(btex 4 etex);
@@ -270,7 +270,7 @@ circB.c=circ6.c+right*2u;
 drawboxed(circB);
 draw circ6.c -- circB.c cutbefore bpath.circ6 cutafter bpath.circB;
 draw circ4.c -- (.5u,ypart(circ4.c)) cutbefore bpath.circ4 -- (.5u,-7.5u) -- (3u,-7.5u) -- (3u,-10u);
-label.bot(btex \tt PB5 etex, (3u,-10u));
+label.bot(btex \tt D2 etex, (3u,-10u));
 
 % row3
 circleit.circ7(btex 7 etex);
@@ -293,7 +293,7 @@ circC.c=circ9.c+right*2u;
 drawboxed(circC);
 draw circ9.c -- circC.c cutbefore bpath.circ9 cutafter bpath.circC;
 draw circ7.c -- (1u,ypart(circ7.c)) cutbefore bpath.circ7 -- (1u,-7u) -- (4u,-7u) -- (4u,-10u);
-label.bot(btex \tt PE6 etex, (4u,-10u));
+label.bot(btex \tt D3 etex, (4u,-10u));
 
 % row4
 circleit.circ_ast(btex * etex);
@@ -316,7 +316,7 @@ circD.c=circ_hash.c+right*2u;
 drawboxed(circD);
 draw circ_hash.c -- circD.c cutbefore bpath.circ_hash cutafter bpath.circD;
 draw circ_ast.c -- (1.5u,ypart(circ_ast.c)) cutbefore bpath.circ_ast -- (1.5u,-6.5u) -- (5u,-6.5u) -- (5u,-10u);
-label.bot(btex \tt PD7 etex, (5u,-10u));
+label.bot(btex \tt B2 etex, (5u,-10u));
 
 endfig;
 
@@ -345,7 +345,7 @@ circ_ast.c=origin+right*2.5u+down*5.25u;
 drawboxed(circ_ast);
 draw circ7.c -- circ_ast.c cutbefore bpath.circ7 cutafter bpath.circ_ast;
 draw circ_ast.c -- (xpart(circ_ast.c),-8u) cutbefore bpath.circ_ast -- (6u,-8u) -- (6u,-10u);
-label.bot(btex \tt PF4 etex, (6u,-10u));
+label.bot(btex \tt B7 etex, (6u,-10u));
 
 % col2
 circleit.circ2(btex 2 etex);
@@ -368,7 +368,7 @@ circ0.c=circ_ast.c+right*2u;
 drawboxed(circ0);
 draw circ8.c -- circ0.c cutbefore bpath.circ8 cutafter bpath.circ0;
 draw circ0.c -- (xpart(circ0.c),-7.5u) cutbefore bpath.circ0 -- (7u,-7.5u) -- (7u,-10u);
-label.bot(btex \tt PF5 etex, (7u,-10u));
+label.bot(btex \tt B6 etex, (7u,-10u));
 
 % col3
 circleit.circ3(btex 3 etex);
@@ -391,7 +391,7 @@ circ_hash.c=circ0.c+right*2u;
 drawboxed(circ_hash);
 draw circ9.c -- circ_hash.c cutbefore bpath.circ9 cutafter bpath.circ_hash;
 draw circ_hash.c -- (xpart(circ_hash.c),-7u) cutbefore bpath.circ_hash -- (8u,-7u) -- (8u,-10u);
-label.bot(btex \tt PF6 etex, (8u,-10u));
+label.bot(btex \tt B5 etex, (8u,-10u));
 
 % col4
 circleit.circA(btex A etex);
@@ -414,7 +414,7 @@ circD.c=circ_hash.c+right*2u;
 drawboxed(circD);
 draw circC.c -- circD.c cutbefore bpath.circC cutafter bpath.circD;
 draw circD.c -- (xpart(circD.c),-6.5u) cutbefore bpath.circD -- (9u,-6.5u) -- (9u,-10u);
-label.bot(btex \tt PF7 etex, (9u,-10u));
+label.bot(btex \tt B4 etex, (9u,-10u));
 
 endfig;
 
