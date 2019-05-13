@@ -364,7 +364,7 @@ PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Get button@>=
     for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
-      DDRB |= 1 << i;
+      DDRB |= 1 << i; /* output mode, low (i.e., ground) */
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
         previous column, wait
         for pullup of it to charge the stray capacitance\footnote\dag{mind that
@@ -416,7 +416,11 @@ PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
         done = 1;
         break;
       }
-      DDRB &= ~(1 << i);
+      DDRB &= ~(1 << i); /* input mode (i.e., Hi-Z)
+        FIXME: think if setting |PORTB| to high instead of hi-z could be done here,
+        and if yes, whether delay will be necessary; and if yes, then set PORTB to low above,
+        instead of DDRB to high */
+@^FIXME@>
     }
 
 @ @<Global variables@>=
