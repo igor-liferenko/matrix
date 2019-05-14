@@ -128,9 +128,12 @@ $62500\over100$ is 625. 625 $\notin [1,255]$.
 Let's try next prescaler, which is clk/1024.
 In 1 second there will be 15625 ticks.
 $15625\over100$ is 156.25. 156.25 $\in [1,255]$, so we use this prescaler.
+We can use only integer match value. Let's use 156. Let's calculate the exact period:
+Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
+.009984 seconds.
 
 @<Start debounce timer@>=
-  OCR0A = 156; /* $\approx$10ms */
+  OCR0A = 156; /* 9.984ms */
   TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
     is processed, it does not change anything, as the device is going to be reset;
     if USB RESET happens whiled this interrupt is processed, it also does not change
