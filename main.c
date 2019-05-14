@@ -7,7 +7,7 @@
 #include <avr/interrupt.h>
 #include "debounce.h"
 
-// Called at about 100Hz (122Hz)
+// Called at about 100Hz (122Hz, which is 8.197ms)
 ISR(TIMER0_COMPA_vect)
 {
     // Debounce buttons. debounce() is declared static inline
