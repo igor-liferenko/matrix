@@ -43,15 +43,7 @@ void main(void)
   @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it? */
 
-  OCR0A = 156; /* 10ms */
-  TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
-    is processed, it does not change anything, as the device is going to be reset;
-    if USB RESET happens whiled this interrupt is processed, it also does not change
-    anything, as USB RESET is repeated several times by USB host, so it is safe
-    that USB RESET interrupt is enabled (we cannot disable it because USB host
-    may be rebooted) */
-  TCCR0A |= 1 << WGM01;
-  TCCR0B |= 1 << CS02 | 1 << CS00;
+  @<Start debounce timer@>@;
 
   UENUM = EP1;
   while (1) {
@@ -115,6 +107,38 @@ void main(void)
     }
   }
 }
+
+@ Set the match value using the |OCR0A| register.
+Use CTC mode. This is like normal mode, but counter is automatically set to zero
+when match occurs. This way we create the period.
+
+With no prescaler, in 1 second there will be 16 million ticks.
+We need about 100Hz, i.e., 10ms period,
+which corresponds to 160000 ticks per second ($16MHz\over100$ or $16000000Hz\over100$).
+160000 $\notin [1,255]$.
+Let's try next prescaler, which is clk/8.
+In 1 second there will be 2 million ticks.
+$2000000\over100$ is 20000. 20000 $\notin [1,255]$.
+Let's try next prescaler, which is clk/64.
+In 1 second there will be 250 thousand ticks.
+$250000\over100$ is 2500. 2500 $\notin [1,255]$.
+Let's try next prescaler, which is clk/256.
+In 1 second there will be 62500 ticks.
+$62500\over100$ is 625. 625 $\notin [1,255]$.
+Let's try next prescaler, which is clk/1024.
+In 1 second there will be 15625 ticks.
+$15625\over100$ is 156.25. 156.25 $\in [1,255]$, so we use this prescaler.
+
+@<Start debounce timer@>=
+  OCR0A = 156; /* $\approx$10ms */
+  TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
+    is processed, it does not change anything, as the device is going to be reset;
+    if USB RESET happens whiled this interrupt is processed, it also does not change
+    anything, as USB RESET is repeated several times by USB host, so it is safe
+    that USB RESET interrupt is enabled (we cannot disable it because USB host
+    may be rebooted) */
+  TCCR0A |= 1 << WGM01; /* CTC mode */
+  TCCR0B |= 1 << CS02 | 1 << CS00; /* use 1024 prescaler and start timer */
 
 @ We clear all buttons, not only |button4_down|, to ensure that any key must not be pressed
 in ``off-line'' state.
