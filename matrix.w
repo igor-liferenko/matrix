@@ -133,7 +133,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
 .009984 seconds.
 
 @<Start debounce timer@>=
-  OCR0A = 156; /* 9.984ms */
+  OCR0A = 156; /* 9.984ms FIXME: in debounce tutorial it was $1\over122$ or 8.197ms */
   TIMSK0 |= 1 << OCIE0A; /* turn on OCIE0A; if it happens while USB RESET interrupt
     is processed, it does not change anything, as the device is going to be reset;
     if USB RESET happens whiled this interrupt is processed, it also does not change
