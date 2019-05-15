@@ -56,7 +56,7 @@ void main(void)
     if (button4_down) {
       @<Clear all buttons@>@;
       sei();
-      if (dtr_rts) {
+      if (dtr_rts && !on_line) {
         on_line = 1;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
@@ -72,8 +72,8 @@ void main(void)
     if (button8_down) {
       button8_down = 0;
       sei();
-      on_line = 0;
-      if (dtr_rts) {
+      if (on_line) {
+        on_line = 0;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
@@ -81,8 +81,8 @@ void main(void)
           with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
           automatically as consequence of off-hook)) */
         UEINTX &= ~(1 << FIFOCON);
+        PORTD &= ~(1 << PD5);
       }
-      PORTD &= ~(1 << PD5);
     }
     else sei();
 
