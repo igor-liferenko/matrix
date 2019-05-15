@@ -1,6 +1,3 @@
-% TODO: do via 'A' and 'B', as on handset (i.e., no toggle 'A') - HINT: see end of commit
-% b65ef593babdf4636def49ed4f527bee8bd7d3e7 in avrtel repo
-
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \let\lheader\rheader
@@ -56,31 +53,36 @@ void main(void)
     }
 
     cli();
-    if (button4_down) { /* \vb{A} is special button, which does not use
-                           indicator led on |PC7| --- it has its own on |PD5| */
+    if (button4_down) {
       @<Clear all buttons@>@;
       sei();
       if (dtr_rts) {
-        on_line = !on_line;
-        if (on_line) {
-          while (!(UEINTX & 1 << TXINI)) ;
-          UEINTX &= ~(1 << TXINI);
-          UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
-            \.{tel}---to put it to initial state */
-          UEINTX &= ~(1 << FIFOCON);
-          PORTD |= 1 << PD5;
-        }
-        else {
-          while (!(UEINTX & 1 << TXINI)) ;
-          UEINTX &= ~(1 << TXINI);
-          UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
-            timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
-            with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
-            automatically as consequence of off-hook)) */
-          UEINTX &= ~(1 << FIFOCON);
-          PORTD &= ~(1 << PD5);
-        }
+        on_line = 1;
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
+          \.{tel}---to put it to initial state */
+        UEINTX &= ~(1 << FIFOCON);
+        PORTD |= 1 << PD5;
       }
+    }
+    else sei();
+
+    cli();
+    if (button8_down) {
+      button8_down = 0;
+      sei();
+      on_line = 0;
+      if (dtr_rts) {
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
+          timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
+          with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
+          automatically as consequence of off-hook)) */
+        UEINTX &= ~(1 << FIFOCON);
+      }
+      PORTD &= ~(1 << PD5);
     }
     else sei();
 
