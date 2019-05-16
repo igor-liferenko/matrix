@@ -1,5 +1,3 @@
-% TODO: in avrtel, tel.w and here change @@ and % to A and B
-
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \let\lheader\rheader
@@ -62,7 +60,7 @@ void main(void)
         on_line = 1;
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
-        UEDATX = '@@'; /* for on-line indication we send `\.@@' character to
+        UEDATX = 'A'; /* for on-line indication we send `\.A' character to
           \.{tel}---to put it to initial state */
         UEINTX &= ~(1 << FIFOCON);
         PORTD |= 1 << PD5;
@@ -317,7 +315,7 @@ else sei();
       on_line = 0;
       while (!(UEINTX & 1 << TXINI)) ;
       UEINTX &= ~(1 << TXINI);
-      UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
+      UEDATX = 'B'; /* for off-line indication we send `\.B' character to \.{tel}---to disable
         timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
         with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
         automatically as consequence of off-hook)) */
