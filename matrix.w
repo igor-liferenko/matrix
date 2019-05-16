@@ -68,24 +68,6 @@ void main(void)
     }
     else sei();
 
-    cli();
-    if (button8_down) {
-      button8_down = 0;
-      sei();
-      if (on_line) {
-        on_line = 0;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
-          timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
-          with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
-          automatically as consequence of off-hook)) */
-        UEINTX &= ~(1 << FIFOCON);
-        PORTD &= ~(1 << PD5);
-      }
-    }
-    else sei();
-
     if (on_line) { /* (buttons are not sent if not on-line); note, that |dtr_rts| is
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
       sending (and turning on the LED) TODO: ensure by reading the code that it is
@@ -102,6 +84,7 @@ void main(void)
       @<Check \vb{*}; turn on LED and send if pressed@>@;
       @<Check \vb{0}; turn on LED and send if pressed@>@;
       @<Check \vb{\#}; turn on LED and send if pressed@>@;
+      @<Check \vb{B}; send `\.\%' if pressed and turn off |PD5|@>@;
     }
   }
 }
@@ -323,6 +306,23 @@ if (button15_down) {
   UEINTX &= ~(1 << FIFOCON);
 }
 else sei();
+
+@ @<Check \vb{B}; send `\.\%' if pressed and turn off |PD5|@>=    
+    cli();
+    if (button8_down) {
+      button8_down = 0;
+      sei();
+      on_line = 0;
+      while (!(UEINTX & 1 << TXINI)) ;
+      UEINTX &= ~(1 << TXINI);
+      UEDATX = '%'; /* for off-line indication we send `\.\%' character to \.{tel}---to disable
+        timeout signal handler (it is used for \.{avrtel} to put handset off-hook; in contrast
+        with \.{avrtel}, here it is only used to go off-line (in \.{avrtel} it happens
+        automatically as consequence of off-hook)) */
+      UEINTX &= ~(1 << FIFOCON);
+      PORTD &= ~(1 << PD5);
+    }
+    else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
