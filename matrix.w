@@ -1,4 +1,4 @@
-% TODO: in avrtel and here change @@ and % to A and B
+% TODO: in avrtel, tel.w and here change @@ and % to A and B
 
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
@@ -74,19 +74,19 @@ void main(void)
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
       sending (and turning on the LED) TODO: ensure by reading the code that it is
       really so */
-      @<Check \vb{1}; turn on LED and send if pressed@>@;
-      @<Check \vb{2}; turn on LED and send if pressed@>@;
-      @<Check \vb{3}; turn on LED and send if pressed@>@;
-      @<Check \vb{4}; turn on LED and send if pressed@>@;
-      @<Check \vb{5}; turn on LED and send if pressed@>@;
-      @<Check \vb{6}; turn on LED and send if pressed@>@;
-      @<Check \vb{7}; turn on LED and send if pressed@>@;
-      @<Check \vb{8}; turn on LED and send if pressed@>@;
-      @<Check \vb{9}; turn on LED and send if pressed@>@;
-      @<Check \vb{*}; turn on LED and send if pressed@>@;
-      @<Check \vb{0}; turn on LED and send if pressed@>@;
-      @<Check \vb{\#}; turn on LED and send if pressed@>@;
-      @<Check \vb{B}; send `\.\%' if pressed and turn off \.{D5}@>@;
+      @<Check \vb{1}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{2}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{3}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{4}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{5}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{6}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{7}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{8}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{9}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{*}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{0}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{\#}; turn on \.{C7} and send if pressed@>@;
+      @<Check \vb{B}; send if pressed and turn off \.{D5}@>@;
     }
   }
 }
@@ -153,7 +153,7 @@ button14_down = 0;
 button15_down = 0;
 button16_down = 0;
 
-@ @<Check \vb{1}; turn on LED and send if pressed@>=
+@ @<Check \vb{1}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button1_down) {
   button1_down = 0;
@@ -166,7 +166,7 @@ if (button1_down) {
 }
 else sei();
 
-@ @<Check \vb{2}; turn on LED and send if pressed@>=
+@ @<Check \vb{2}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button2_down) {
   button2_down = 0;
@@ -179,7 +179,7 @@ if (button2_down) {
 }
 else sei();
 
-@ @<Check \vb{3}; turn on LED and send if pressed@>=
+@ @<Check \vb{3}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button3_down) {
   button3_down = 0;
@@ -192,7 +192,7 @@ if (button3_down) {
 }
 else sei();
 
-@ @<Check \vb{4}; turn on LED and send if pressed@>=
+@ @<Check \vb{4}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button5_down) {
   button5_down = 0;
@@ -205,7 +205,7 @@ if (button5_down) {
 }
 else sei();
 
-@ @<Check \vb{5}; turn on LED and send if pressed@>=
+@ @<Check \vb{5}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button6_down) {
   button6_down = 0;
@@ -218,7 +218,7 @@ if (button6_down) {
 }
 else sei();
 
-@ @<Check \vb{6}; turn on LED and send if pressed@>=
+@ @<Check \vb{6}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button7_down) {
   button7_down = 0;
@@ -231,7 +231,7 @@ if (button7_down) {
 }
 else sei();
 
-@ @<Check \vb{7}; turn on LED and send if pressed@>=
+@ @<Check \vb{7}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button9_down) {
   button9_down = 0;
@@ -244,7 +244,7 @@ if (button9_down) {
 }
 else sei();
 
-@ @<Check \vb{8}; turn on LED and send if pressed@>=
+@ @<Check \vb{8}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button10_down) {
   button10_down = 0;
@@ -257,7 +257,7 @@ if (button10_down) {
 }
 else sei();
 
-@ @<Check \vb{9}; turn on LED and send if pressed@>=
+@ @<Check \vb{9}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button11_down) {
   button11_down = 0;
@@ -270,7 +270,7 @@ if (button11_down) {
 }
 else sei();
 
-@ @<Check \vb{*}; turn on LED and send if pressed@>=
+@ @<Check \vb{*}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button13_down) {
   button13_down = 0;
@@ -283,7 +283,7 @@ if (button13_down) {
 }
 else sei();
 
-@ @<Check \vb{0}; turn on LED and send if pressed@>=
+@ @<Check \vb{0}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button14_down) {
   button14_down = 0;
@@ -296,7 +296,7 @@ if (button14_down) {
 }
 else sei();
 
-@ @<Check \vb{\#}; turn on LED and send if pressed@>=
+@ @<Check \vb{\#}; turn on \.{C7} and send if pressed@>=
 cli();
 if (button15_down) {
   button15_down = 0;
@@ -309,7 +309,7 @@ if (button15_down) {
 }
 else sei();
 
-@ @<Check \vb{B}; send `\.\%' if pressed and turn off |PD5|@>=    
+@ @<Check \vb{B}; send if pressed and turn off \.{D5}@>=    
     cli();
     if (button8_down) {
       button8_down = 0;
