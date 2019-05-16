@@ -1,3 +1,5 @@
+% TODO: in avrtel and here change @@ and % to A and B
+
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \let\lheader\rheader
