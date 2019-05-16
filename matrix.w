@@ -86,7 +86,7 @@ void main(void)
       @<Check \vb{*}; turn on LED and send if pressed@>@;
       @<Check \vb{0}; turn on LED and send if pressed@>@;
       @<Check \vb{\#}; turn on LED and send if pressed@>@;
-      @<Check \vb{B}; send `\.\%' if pressed and turn off |PD5|@>@;
+      @<Check \vb{B}; send `\.\%' if pressed and turn off \.{D5}@>@;
     }
   }
 }
