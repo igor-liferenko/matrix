@@ -49,24 +49,10 @@ void main(void)
         on_line = 0; /* if DTR/RTS is not `on', we are always off-line */
         PORTD &= ~(1 << PD5);
       }
-      PORTB |= 1 << PB0; /* DTR/RTS is off */
+      PORTB |= 1 << PB0; /* DTR/RTS is off FIXME: can this be moved inside `|if|'? */
     }
 
-    cli();
-    if (button4_down) {
-      @<Clear all buttons@>@;
-      sei();
-      if (dtr_rts && !on_line) {
-        on_line = 1;
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = 'A'; /* for on-line indication we send \.A to
-          \.{tel}---to put it to initial state */
-        UEINTX &= ~(1 << FIFOCON);
-        PORTD |= 1 << PD5;
-      }
-    }
-    else sei();
+    @<Check \vb{A}; send if pressed and turn on \.{D5}, set |on_line| to 1@>@;
 
     if (on_line) { /* (buttons are not sent if not on-line); note, that |dtr_rts| is
       necessarily `true' if |on_line| is `true', so we do not check |dtr_rts| before
@@ -84,7 +70,7 @@ void main(void)
       @<Check \vb{*}; turn on \.{C7} and send if pressed@>@;
       @<Check \vb{0}; turn on \.{C7} and send if pressed@>@;
       @<Check \vb{\#}; turn on \.{C7} and send if pressed@>@;
-      @<Check \vb{B}; send if pressed and turn off \.{D5}@>@;
+      @<Check \vb{B}; send if pressed and turn off \.{D5}, set |on_line| to 0@>@;
     }
   }
 }
@@ -123,6 +109,23 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
     may be rebooted) */
   TCCR0A |= 1 << WGM01; /* CTC mode */
   TCCR0B |= 1 << CS02 | 1 << CS00; /* use 1024 prescaler and start timer */
+
+@ @<Check \vb{A}; send if pressed and turn on \.{D5}, set |on_line| to 1@>=
+    cli();
+    if (button4_down) {
+      @<Clear all buttons@>@;
+      sei();
+      if (dtr_rts && !on_line) {
+        while (!(UEINTX & 1 << TXINI)) ;
+        UEINTX &= ~(1 << TXINI);
+        UEDATX = 'A'; /* for on-line indication we send \.A to
+          \.{tel}---to put it to initial state */
+        UEINTX &= ~(1 << FIFOCON);
+        PORTD |= 1 << PD5;
+        on_line = 1;
+      }
+    }
+    else sei();
 
 @ We clear all buttons, not only |button4_down|, to ensure that any key must not be pressed
 in ``off-line'' state.
@@ -307,12 +310,11 @@ if (button15_down) {
 }
 else sei();
 
-@ @<Check \vb{B}; send if pressed and turn off \.{D5}@>=    
+@ @<Check \vb{B}; send if pressed and turn off \.{D5}, set |on_line| to 0@>=    
     cli();
     if (button8_down) {
       button8_down = 0;
       sei();
-      on_line = 0;
       while (!(UEINTX & 1 << TXINI)) ;
       UEINTX &= ~(1 << TXINI);
       UEDATX = 'B'; /* for off-line indication we send \.B to \.{tel}---to disable
@@ -321,6 +323,7 @@ else sei();
         automatically as consequence of off-hook)) */
       UEINTX &= ~(1 << FIFOCON);
       PORTD &= ~(1 << PD5);
+      on_line = 0;
     }
     else sei();
 
