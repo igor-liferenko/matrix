@@ -106,7 +106,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
     if USB RESET happens whiled this interrupt is processed, it also does not change
     anything, as USB RESET is repeated several times by USB host, so it is safe
     that USB RESET interrupt is enabled (we cannot disable it because USB host
-    may be rebooted) FIXME: see also note in avr/TIPS */
+    may be rebooted) TODO: see also note in avr/TIPS */
   TCCR0A |= 1 << WGM01; /* CTC mode */
   TCCR0B |= 1 << CS02 | 1 << CS00; /* use 1024 prescaler and start timer */
 
