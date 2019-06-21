@@ -116,14 +116,15 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
     if (button4_down) {
       @<Clear all buttons@>@;
       sei();
-      if (dtr_rts && !(PORTD & 1 << PD5)) {
-        while (!(UEINTX & 1 << TXINI)) ;
-        UEINTX &= ~(1 << TXINI);
-        UEDATX = 'A'; /* for on-line indication we send \.A to
-          \.{tel}---to put it to initial state */
-        UEINTX &= ~(1 << FIFOCON);
-        PORTD |= 1 << PD5;
-      }
+      if (!(PORTD & 1 << PD5)) /* transition happened */
+        if (dtr_rts) { /* \.{tel} must not be closed */
+          while (!(UEINTX & 1 << TXINI)) ;
+          UEINTX &= ~(1 << TXINI);
+          UEDATX = 'A'; /* for on-line indication we send \.A to
+            \.{tel}---to put it to initial state */
+          UEINTX &= ~(1 << FIFOCON);
+          PORTD |= 1 << PD5;
+        }
     }
     else sei();
 
