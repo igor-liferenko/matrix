@@ -27,7 +27,7 @@ $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
 void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
-  int on_line = 0;
+
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
