@@ -56,9 +56,9 @@ void main(void)
     }
     UENUM = EP1; /* restore */
 
-    @<Check \vb{A}; send if pressed and turn on \.{D5}@>@;
+    @<Check \vb{A} ...@>@;
 
-    if (PORTD & 1 << PD5) { /* (buttons are not sent if not on-line) */
+    if (PORTD & 1 << PD5) {
       @<Check \vb{1}; turn on \.{C7} and send if pressed@>@;
       @<Check \vb{2}; turn on \.{C7} and send if pressed@>@;
       @<Check \vb{3}; turn on \.{C7} and send if pressed@>@;
@@ -111,12 +111,12 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
   TCCR0A |= 1 << WGM01; /* CTC mode */
   TCCR0B |= 1 << CS02 | 1 << CS00; /* use 1024 prescaler and start timer */
 
-@ @<Check \vb{A}; send if pressed and turn on \.{D5}@>=
+@ @<Check \vb{A} (responsible for sending \.A and turning on \.{D5})@>=
     cli();
     if (button4_down) {
       @<Clear all buttons@>@;
       sei();
-      if (dtr_rts && !(PORTD & 1 << PD5)) { /* \.{tel} is listening and transition happened */
+      if (dtr_rts && !(PORTD & 1 << PD5)) {
         while (!(UEINTX & 1 << TXINI)) ;
         UEINTX &= ~(1 << TXINI);
         UEDATX = 'A'; /* for on-line indication we send \.A to
