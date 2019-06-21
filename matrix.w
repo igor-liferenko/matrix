@@ -48,6 +48,14 @@ void main(void)
       PORTB |= 1 << PB0; /* DTR/RTS is off */
     }
 
+    UENUM = EP2; /* check if \\{write} was done from host */
+    if (UEINTX & 1 << RXOUTI) { /* go off-line */
+      UEINTX &= ~(1 << RXOUTI);
+      UEINTX &= ~(1 << FIFOCON);
+      PORTD &= ~(1 << PD5);
+    }
+    UENUM = EP1; /* restore */
+
     @<Check \vb{A}; send if pressed and turn on \.{D5}@>@;
 
     if (PORTD & 1 << PD5) { /* (buttons are not sent if not on-line) */
