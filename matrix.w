@@ -7,6 +7,8 @@
 
 @* Program.
 
+NOTE: This program uses DTR/RTS to ensure that \.A is sent before anything else can be sent.
+
 Take to consideration that:
 
 \item{1.} \\{ioctl} call blocks in application until it is
