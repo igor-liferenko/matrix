@@ -344,6 +344,7 @@ if (UEINTX & 1 << RXSTPI) {
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
   dtr_rts = wValue;
+  if (dtr_rts == 3) dtr_rts = 0;
 }
 UENUM = EP1; /* restore */
 
