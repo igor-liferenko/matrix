@@ -345,7 +345,7 @@ if (UEINTX & 1 << RXSTPI) {
   dtr_rts = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  if (dtr_rts == 3) dtr_rts = 0; /* set to `3' only by driver on \\{open} */
+  if (dtr_rts == 3) dtr_rts = 0; /* ignore */
 }
 UENUM = EP1; /* restore */
 
