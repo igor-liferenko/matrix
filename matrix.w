@@ -334,16 +334,15 @@ after connection is established.
 It is used by host to say the device not to send when DTR/RTS is not on.
 
 @<Global variables@>=
-U16 dtr = 0;
+int dtr = 0;
 
 @ @<Get |dtr|@>=
 UENUM = EP0;
 if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
-  wValue = UEDATX | UEDATX << 8;
+  dtr = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  dtr = wValue;
   if (dtr == 3) dtr = 0; /* set to `3' only by driver on \\{open} */
 }
 UENUM = EP1; /* restore */
