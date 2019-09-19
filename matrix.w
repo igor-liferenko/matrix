@@ -1,3 +1,5 @@
+% TODO: change dtr_rts to dtr
+
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \let\lheader\rheader
@@ -42,8 +44,8 @@ void main(void)
 
   UENUM = EP1;
   while (1) {
-    @<Get |dtr|@>@;
-    if (dtr)
+    @<Get |dtr_rts|@>@;
+    if (dtr_rts)
       PORTB &= ~(1 << PB0); /* DTR/RTS is on */      
     else {
       PORTD &= ~(1 << PD5); /* if DTR/RTS is not `on', we are always off-line */
@@ -119,7 +121,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       @<Clear all buttons@>@;
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (dtr) { /* \.{tel} must not be closed */
+        if (dtr_rts) { /* \.{tel} must not be closed */
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
@@ -334,16 +336,16 @@ after connection is established.
 It is used by host to say the device not to send when DTR/RTS is not on.
 
 @<Global variables@>=
-int dtr = 0;
+int dtr_rts = 0;
 
-@ @<Get |dtr|@>=
+@ @<Get |dtr_rts|@>=
 UENUM = EP0;
 if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
-  dtr = UEDATX | UEDATX << 8;
+  dtr_rts = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  if (dtr == 3) dtr = 0; /* set to `3' only by driver on \\{open} */
+  if (dtr_rts == 3) dtr_rts = 0; /* set to `3' only by driver on \\{open} */
 }
 UENUM = EP1; /* restore */
 
