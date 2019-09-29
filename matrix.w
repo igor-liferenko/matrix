@@ -12,7 +12,12 @@ has no effect (keypress led---\.{C7}---does not turn on)\footnote*{Not glowing o
 led---\.{D5}---makes it clear why.};
 and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
 on)\footnote{**}{We use \.{B0}
-led to make it clear why.} until DTR is set in \.{tel}.
+led to make it clear why.} until DTR is set to `1' in \.{tel} (not in tty
+driver\footnote\dag{All tty drivers automatically set DTR and RTS to `1' on \\{open}.
+We may distinguish the case when DTR is set to `1' in tty driver vs application
+due to CDC-ACM spec which makes DTR and RTS be sent together in one packet,
+and so in application we set DTR without RTS.}---see
+next paragraph).
 This way it is guaranteed that the first character that \.{tel} reads after start
 is \.A. This is to make the behavior of the menu deterministic in any case.
 
