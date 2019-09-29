@@ -14,7 +14,7 @@ and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
 on)\footnote{**}{We use \.{B0}
 led to make it clear why.} until DTR is set in \.{tel}.
 This way it is guaranteed that the first character that \.{tel} reads after start
-is \.A. This is to make deterministic behavior of the menu in any case.
+is \.A. This is to make the behavior of the menu deterministic in any case.
 
 This approach (i.e., using DTR) also allows us to disable canonical mode and echo on the tty
 in \.{tel}.
