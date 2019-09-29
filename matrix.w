@@ -17,7 +17,7 @@ This way it is guaranteed that the first character that \.{tel} reads after star
 is \.A. This is to make the behavior of the menu deterministic in any case.
 
 This approach (i.e., using DTR) also allows us to disable canonical mode and echo on the tty
-in \.{tel}.
+in \.{tel} before the device starts sending data.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
