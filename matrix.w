@@ -8,9 +8,10 @@
 @* Program.
 
 This program is written the way that until \vb{A} is pressed, pressing anything else
-has no effect (keypress led---\.{C7}---does not turn on);
+has no effect (keypress led---\.{C7}---does not turn on)\footnote*{Not glowing on-line
+led---\.{D5}---makes it clear why.};
 and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
-on)\footnote*{We use \.{B0}
+on)\footnote{**}{We use \.{B0}
 led to make it clear why.} until DTR is set in \.{tel}.
 This way it is guaranteed that the first character that \.{tel} reads after start
 is \.A. This is to make deterministic behavior of the menu in any case.
