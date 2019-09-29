@@ -8,7 +8,8 @@
 @* Program.
 
 This program is written the way that until \vb{A} is pressed, pressing anything else
-has no effect; and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
+has no effect (keypress led---\.{C7}---does not turn on);
+and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
 on)\footnote*{We use \.{B0}
 led to make it clear why.} until DTR is set in \.{tel}.
 This way it is guaranteed that the first character that \.{tel} reads after start
