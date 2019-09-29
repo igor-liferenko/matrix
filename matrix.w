@@ -16,7 +16,7 @@ led to make it clear why.} until DTR is set in \.{tel}.
 This way it is guaranteed that the first character that \.{tel} reads after start
 is \.A. This is to make deterministic behavior of the menu in any case.
 
-This approach also allows us to disable canonical mode and echo on the tty.
+This approach (i.e., using DTR) also allows us to disable canonical mode and echo on the tty.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
