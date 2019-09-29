@@ -35,7 +35,7 @@ void main(void)
 
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
   DDRB |= 1 << PB0; /* to show DTR state and to determine when transition happens */
-  PORTB |= 1 << PB0; /* on when DTR/RTS is off */
+  PORTB |= 1 << PB0; /* on when DTR is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   @<Pullup input pins@>@; /* must be before starting timer */
@@ -47,10 +47,10 @@ void main(void)
   while (1) {
     @<Get |dtr|@>@;
     if (dtr)
-      PORTB &= ~(1 << PB0); /* DTR/RTS is on */      
+      PORTB &= ~(1 << PB0); /* DTR is on */      
     else {
-      PORTD &= ~(1 << PD5); /* if DTR/RTS is not `on', we are always off-line */
-      PORTB |= 1 << PB0; /* DTR/RTS is off */
+      PORTD &= ~(1 << PD5); /* if DTR is not `on', we are always off-line */
+      PORTB |= 1 << PB0; /* DTR is off */
     }
 
     UENUM = EP2; /* check if \\{write} was done from host */
@@ -334,7 +334,7 @@ else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
-It is used by host to say the device not to send when DTR/RTS is not on.
+It is used by host to say the device not to send when DTR is not on.
 
 @<Global variables@>=
 int dtr = 0;
