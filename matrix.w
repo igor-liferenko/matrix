@@ -7,14 +7,14 @@
 
 @* Program.
 
-NOTE: This program uses DTR/RTS to ensure that \.A is sent before anything else can be sent.
+This program is written the way that until \vb{A} is pressed, pressing anything else
+has no effect; and pressing \vb{A} has no effect until DTR is set in \.{tel}.
+In the latter case, we use \.{B0} led to make it clear why pressing \vb{A} has no effect
+(on-line led---\.{D5}---does not turn on).
+This way it is guaranteed that the first character that \.{tel} reads after start
+is \.A.
 
-Take to consideration that:
-
-\item{1.} \\{ioctl} call blocks in application until it is
-read in this program
-\item{2.} data is read by USB host as soon as it is sent, even if \\{read}
-call has not been done in application yet (i.e., it is buffered)
+This approach also allows us to disable canonical mode and echo on the tty.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
@@ -31,7 +31,7 @@ void main(void)
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
 
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
-  DDRB |= 1 << PB0; /* to show DTR/RTS state and to determine when transition happens */
+  DDRB |= 1 << PB0; /* to show DTR state and to determine when transition happens */
   PORTB |= 1 << PB0; /* on when DTR/RTS is off */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
