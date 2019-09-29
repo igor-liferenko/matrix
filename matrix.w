@@ -15,7 +15,8 @@ on)\footnote{**}{We use \.{B0}
 led to make it clear why.} until DTR is set to `1' in \.{tel} (not in tty
 driver\footnote\dag{The tty driver automatically sets DTR and RTS to `1' on \\{open}.
 We may distinguish the case when DTR is set to `1' in tty driver vs application
-due to CDC-ACM spec which makes DTR and RTS be sent together in one packet,
+due to the fact that DTR and RTS are sent together in one packet (according to
+CDC-ACM spec),
 and so in application we set to `1' only DTR.}---see
 next paragraph).
 This way it is guaranteed that the first character that \.{tel} reads after start
