@@ -13,11 +13,12 @@ led---\.{D5}---makes it clear why.};
 and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
 on)\footnote{**}{We use \.{B0}
 led to make it clear why.} until DTR is set to `1' in \.{tel} (not in tty
-driver\footnote\dag{The tty driver automatically sets DTR and RTS to `1' on \\{open}.
+driver\footnote{***}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.
 We may distinguish the case when DTR is set to `1' in tty driver vs application
 due to the fact that DTR and RTS are sent together in one packet (according to
 CDC-ACM spec),
-and so in application we set to `1' only DTR.}---see
+and so in application we set to `1' only DTR. (The tty driver automatically sets DTR
+to `0' when \.{tel} closes.)}---see
 next paragraph).
 This way it is guaranteed that the first character that \.{tel} reads after start
 is \.A. This is to make the behavior of the menu deterministic in any case.
