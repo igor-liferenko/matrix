@@ -7,8 +7,8 @@
 
 @* Program.
 
-DTR is used to determine when tty driver (and hence \.{tel}) can receive data and to
-indicate this to the user: until \vb{A} is pressed, pressing anything else
+DTR is used to determine when connection with \.{tel} is established and to
+indicate it to the user: until \vb{A} is pressed, pressing anything else
 has no effect (keypress led---\.{C7}---does not turn on)\footnote*{Not glowing on-line
 led---\.{D5}---makes it clear why.};
 and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
