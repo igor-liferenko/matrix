@@ -7,7 +7,8 @@
 
 @* Program.
 
-This program is written the way that until \vb{A} is pressed, pressing anything else
+DTR is used to determine when tty driver is allowed to receive data and to
+indicate this to the user: until \vb{A} is pressed, pressing anything else
 has no effect (keypress led---\.{C7}---does not turn on)\footnote*{Not glowing on-line
 led---\.{D5}---makes it clear why.};
 and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
@@ -20,11 +21,9 @@ CDC-ACM spec),
 and so in application we set to `1' only DTR. (The tty driver automatically sets DTR
 to `0' when \.{tel} closes.)}---see
 next paragraph).
-This way it is guaranteed that the first character that \.{tel} reads after start
-is \.A. This is to make the behavior of the menu deterministic in any case.
 
-DTR is also used for disabling canonical mode and echo on the tty
-in \.{tel} before the device starts sending data.
+DTR is also used to determine when echo and canonical mode was disabled on the tty
+in \.{tel}.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
