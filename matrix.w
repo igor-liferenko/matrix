@@ -9,13 +9,13 @@
 
 DTR is used to determine when connection with \.{tel} is established and to
 indicate it to the user: until DTR is set to `1' in \.{tel} (not in tty
-driver\footnote{**}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.}---see
+driver\footnote{*}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.}---see
 next paragraph), \.{B0} led is glowing (when \.{tel} terminates,
 the tty driver automatically sets DTR
 to `0', and this is used to turn on \.{B0} back again).
 
 DTR is also used to determine when echo and canonical mode was disabled on the tty
-in \.{tel}\footnote{***}{We may distinguish the case when DTR is set to `1' in tty driver vs
+in \.{tel}\footnote{**}{We may distinguish the case when DTR is set to `1' in tty driver vs
 application
 due to the fact that DTR and RTS are sent together in one packet (according to
 CDC-ACM spec),
