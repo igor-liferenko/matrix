@@ -8,22 +8,18 @@
 @* Program.
 
 DTR is used to determine when connection with \.{tel} is established and to
-indicate it to the user: until \vb{A} is pressed, pressing anything else
-has no effect (keypress led---\.{C7}---does not turn on)\footnote*{Not glowing on-line
-led---\.{D5}---makes it clear why.};
-and pressing \vb{A} has no effect (on-line led---\.{D5}---does not turn
-on)\footnote{**}{We use \.{B0}
-led to make it clear why.} until DTR is set to `1' in \.{tel} (not in tty
-driver\footnote{***}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.
-We may distinguish the case when DTR is set to `1' in tty driver vs application
-due to the fact that DTR and RTS are sent together in one packet (according to
-CDC-ACM spec),
-and so in application we set to `1' only DTR. (The tty driver automatically sets DTR
-to `0' when \.{tel} closes.)}---see
-next paragraph).
+indicate it to the user: until DTR is set to `1' in \.{tel} (not in tty
+driver\footnote{**}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.}---see
+next paragraph), \.{B0} led is glowing (when \.{tel} terminates,
+the tty driver automatically sets DTR
+to `0', and this is used to turn on \.{B0} back again).
 
 DTR is also used to determine when echo and canonical mode was disabled on the tty
-in \.{tel}.
+in \.{tel}\footnote{***}{We may distinguish the case when DTR is set to `1' in tty driver vs
+application
+due to the fact that DTR and RTS are sent together in one packet (according to
+CDC-ACM spec),
+and so in application we set to `1' only DTR.}.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
