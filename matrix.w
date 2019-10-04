@@ -19,7 +19,7 @@ in \.{tel}\footnote{**}{We may distinguish the case when DTR is set to `1' in tt
 application
 due to the fact that DTR and RTS are sent together in one packet (according to
 CDC-ACM spec),
-and so in application we set to `1' only DTR.}.
+and so in application we set DTR to `1' and RTS to `0'.}.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
