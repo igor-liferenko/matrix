@@ -8,18 +8,9 @@
 @* Program.
 
 DTR is used to determine when connection with \.{tel} is established and to
-indicate it to the user: until DTR is set to `1' in \.{tel} (not in tty
-driver\footnote{*}{The tty driver automatically sets DTR and RTS to `1' on \\{open}.
-Also, the tty driver 
-automatically sets DTR and RTS to `0' on \\{close} (implicit or explicit).}---see
-next paragraph), \.{B0} led is glowing.
-
-DTR is also used to determine when echo and canonical mode was disabled on the tty
-in \.{tel}\footnote{**}{We may distinguish the case when DTR is set to `1' in tty driver vs
-application
-due to the fact that DTR and RTS are sent together in one packet (according to
-CDC-ACM spec),
-and so in application we set DTR to `1' and RTS to `0'.}.
+indicate it to the user: until DTR is set to `1' in \.{tel}
+(the tty driver 
+automatically sets DTR to `0' on explicit or implicit \\{close}), \.{B0} led is glowing.
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
