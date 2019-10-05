@@ -8,9 +8,8 @@
 @* Program.
 
 DTR is used to determine when connection with \.{tel} is established and to
-indicate it to the user: until DTR is set to `1' in \.{tel}
-(the tty driver 
-automatically sets DTR to `0' on explicit or implicit \\{close}), \.{B0} led is glowing.
+indicate it to the user: until DTR is set to `1' in \.{tel}, \.{B0} led is glowing
+(the tty driver automatically sets DTR back to `0' when \.{tel} terminates).
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
