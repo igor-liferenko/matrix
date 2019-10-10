@@ -11,7 +11,7 @@ DTR is used to determine when connection with \.{tel} is established and to
 indicate it to the user: until DTR is set to `1' in \.{tel}, \.{B0} led is glowing
 (the tty driver automatically sets DTR back to `0' when \.{tel} terminates).
 
-$$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=matrix.1
+$$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=../matrix/matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
 
 @c
@@ -345,13 +345,13 @@ UENUM = EP1; /* restore */
 @* Matrix.
 This is how keypad is connected:
 
-$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=matrix.2
+$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=../matrix/matrix.2
   clip llx=-1 lly=-208 urx=179 ury=11 rwi=1800}}\kern9.78cm
-  \vbox to7.72583333333333cm{\vfil\special{psfile=matrix.3
+  \vbox to7.72583333333333cm{\vfil\special{psfile=../matrix/matrix.3
   clip llx=39 lly=-208 urx=187 ury=11 rwi=1480}}\hfil}$$
 
 @ This is the working principle:
-$$\hbox to7cm{\vbox to4.2cm{\vfil\special{psfile=keypad.eps
+$$\hbox to7cm{\vbox to4.2cm{\vfil\special{psfile=../matrix/keypad.eps
   clip llx=0 lly=0 urx=240 ury=144 rwi=1984}}\hfil}$$
 
 A is input and  C1 ... Cn are outputs.
