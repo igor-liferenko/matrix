@@ -3,7 +3,7 @@
 \let\lheader\rheader
 %\datethis
 
-\input /home/user/usb/USB
+\input USB
 
 @* Program.
 
@@ -548,17 +548,17 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
         count14 = 0;
         count15 = 0;
         count16 = 0;
-        count1++; // Button state is about to be changed, increase counter
-      if (count1 >= 4) {
-        /* The button have not bounced for four checks, change state */
-        button1_state = current_state1;
-        /* tell main if button was released of pressed */
-        if (current_state1 == 0)
-          PORTC &= ~(1 << PC7);
-        else
-          button1_down = 1;
-        count1 = 0;
-      }
+	count1++; // Button state is about to be changed, increase counter
+	if (count1 >= 4) {
+ 	    // The button have not bounced for four checks, change state
+	    button1_state = current_state1;
+	    // tell main if button was released of pressed
+	    if (current_state1 == 0)
+              PORTC &= ~(1 << PC7);
+            else
+              button1_down = 1;
+	    count1 = 0;
+	}
     }
     else if (current_state2 != button2_state) {
         count1 = 0; // reset other counters
@@ -959,7 +959,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
         }
     }
     else {
-      @<Reset all counter{s}@>@;
+	@<Reset all counter{s}@>@;
     }
 }
 
@@ -1001,22 +1001,11 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 @i ../usb/IN-endpoint-management.w
 @i ../usb/USB.w
 
-@* Headers.
-
-\secpagedepth=1 % index on current page
+@ Program headers are in separate section from USB headers.
 
 @<Header files@>=
-#include <avr/boot.h> /* |@!boot_signature_byte_get| */
-#include <avr/interrupt.h> /* |@!@.ISR@>@t\.{ISR}@>|,
-  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!sei| */
-#include <avr/io.h> /* |@!ADDEN|, |@!ALLOC|, |@!DDRB|, |@!DETACH|, |@!EORSTE|, |@!EORSTI|,
-  |@!EPDIR|, |@!EPEN|, |@!EPSIZE1|, |@!EPTYPE0|, |@!EPTYPE1|, |@!FIFOCON|, |@!FRZCLK|,
-  |@!MCUSR|, |@!OTGPADE|, |@!PB0|, |@!PB2|, |@!PB6|, |@!PINDIV|,
-  |@!PLLCSR|, |@!PLLE|, |@!PLOCK|, |@!PORTB|, |@!RXOUTI|, |@!RXSTPI|,
-  |@!STALLRQ|, |@!TXINI|, |@!UDADDR|, |@!UDCON|, |@!UDIEN|,
-  |@!UDINT|, |@!UECFG0X|, |@!UECFG1X|, |@!UECONX|, |@!UEDATX|, |@!UEINTX|, |@!UENUM|,
-  |@!UHWCON|, |@!USBCON|, |@!USBE|, |@!UVREGE|, |@!WDCE|, |@!WDE|, |@!WDRF|, |@!WDTCSR| */
-#include <avr/pgmspace.h> /* |@!pgm_read_byte| */
-#include <util/delay.h> /* |@!_delay_us| */
+#include <avr/io.h>
+#include <avr/interrupt.h> /* |ISR|, |TIMER4_OVF_vect| */
+#include <util/delay.h> /* |_delay_us|, |_delay_ms| */
 
 @* Index.

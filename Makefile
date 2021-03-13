@@ -22,7 +22,7 @@ clean:
 	@git clean -X -d -f
 
 imgs:
-	@mpost matrix
+	@mp matrix
 	@perl -ne 'if (/^(.*\.eps): (.*)/) { system "convert $$2 $$1" }' Makefile
 
 .PHONY: $(wildcard *.eps)
