@@ -1001,7 +1001,9 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 @i ../usb/IN-endpoint-management.w
 @i ../usb/USB.w
 
-@ Program headers are in separate section from USB headers.
+@* Headers.
+
+\secpagedepth=1 % index on current page
 
 @<Header files@>=
 #include <avr/io.h>
