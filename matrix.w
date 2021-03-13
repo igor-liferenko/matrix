@@ -1006,8 +1006,10 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 \secpagedepth=1 % index on current page
 
 @<Header files@>=
-#include <avr/io.h>
+#include <avr/boot.h> /* |@!boot_signature_byte_get| */
+#include <avr/io.h> /* |@!ADDEN| */
 #include <avr/interrupt.h> /* |ISR|, |TIMER4_OVF_vect| */
+#include <avr/pgmspace.h> /* |@!pgm_read_byte| */
 #include <util/delay.h> /* |_delay_us|, |_delay_ms| */
 
 @* Index.
