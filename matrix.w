@@ -548,17 +548,17 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
         count14 = 0;
         count15 = 0;
         count16 = 0;
-	count1++; // Button state is about to be changed, increase counter
-	if (count1 >= 4) {
- 	    // The button have not bounced for four checks, change state
-	    button1_state = current_state1;
-	    // tell main if button was released of pressed
-	    if (current_state1 == 0)
+ count1++; // Button state is about to be changed, increase counter
+ if (count1 >= 4) {
+      // The button have not bounced for four checks, change state
+     button1_state = current_state1;
+     // tell main if button was released of pressed
+     if (current_state1 == 0)
               PORTC &= ~(1 << PC7);
             else
               button1_down = 1;
-	    count1 = 0;
-	}
+     count1 = 0;
+ }
     }
     else if (current_state2 != button2_state) {
         count1 = 0; // reset other counters
@@ -959,7 +959,7 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
         }
     }
     else {
-	@<Reset all counter{s}@>@;
+ @<Reset all counter{s}@>@;
     }
 }
 
