@@ -328,7 +328,9 @@ else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
-It is used by host to say the device not to send when DTR is not on.
+These are sent automatically by \\{open} and implicit \\{close}
+in \.{tel}. Also, such request is sent on demand via \\{ioctl} in \.{tel} to set DTR
+on---to say the device that it may start sending data.
 
 @<Global variables@>=
 int dtr = 0;
