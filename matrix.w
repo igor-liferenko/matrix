@@ -328,9 +328,8 @@ else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
-These are sent automatically by \\{open} and implicit \\{close}
-in \.{tel}. Also, such request is sent on demand via \\{ioctl} in \.{tel} to set DTR
-on---to say the device that it may start sending data.
+These are sent automatically by the driver when TTY is opened and closed,
+and manually via \\{ioctl}.
 
 @<Global variables@>=
 int dtr = 0;
