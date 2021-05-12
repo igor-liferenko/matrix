@@ -5,7 +5,7 @@
 
 \datethis
 
-\input ../usb/USB.tex
+\input ../usb/USB
 
 @* Program.
 
