@@ -1006,6 +1006,8 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 
 @* Headers.
 
+TODO: see index in matrix.pdf and get rid of underlined entries
+
 \secpagedepth=1 % index on current page
 
 @<Header files@>=
