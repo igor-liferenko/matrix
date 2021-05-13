@@ -3,9 +3,13 @@
 \pdfhorigin=3.5cm \hoffset=\pdfpagewidth \advance\hoffset-\hsize
   \advance\hoffset-2\pdfhorigin
 
+\nosecs
+
 \datethis
 
 \input ../usb/USB
+
+@s uint8_t int
 
 @* Program.
 
@@ -371,9 +375,9 @@ change the output pin which is connected to ground, so that always
 just one of them is set like that.
 
 To set output pin, do this:
-|DDRx.y = 1|.
-To unset output pin, do this;
-|DDRx.y = 0|.
+\.{DDRx.y = 1}.
+To unset output pin, do this:
+\.{DDRx.y = 0}.
 
 @ Note, that input pin A is pulled-up.
 The pull-up resistor is connected to the high voltage (5V).
@@ -392,7 +396,7 @@ PORTB |= 1 << PB2;
 PORTD |= 1 << PD3 | 1 << PD2 | 1 << PD1;
 
 @ @<Get button@>=
-    for (int i = PB4, done = 0; i <= PB7 && !done; i++) {
+    for (int i = PB4, @!done = 0; i <= PB7 && !done; i++) {
       DDRB |= 1 << i; /* output mode, low (i.e., ground) */
       _delay_us(1); /* before reading input pin for row which showed a LOW reading on
         previous column, wait
@@ -528,8 +532,10 @@ volatile uint8_t button16_down;
 @^TODO@>
 
 @<Create ISR for debounce timer@>=
-ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/test.w} that
-  this code does not exceed the period */
+@.ISR@>@t}\begingroup\def\vb#1{\.{#1}\endgroup@>@=ISR@>
+  (@.TIMER0\_COMPA\_vect@>@t}\begingroup\def\vb#1{\.{#1}\endgroup@>@=TIMER0_COMPA_vect@>)
+  /* TODO: when you will finish all, check via \.{\~/tcnt/test.w} that
+           this code does not exceed the period */
 {
   @<Local variables of ISR for debounce timer@>@;
 
@@ -1006,15 +1012,27 @@ ISR(TIMER0_COMPA_vect) /* TODO: when you will finish all, check via \.{\~/tcnt/t
 
 @* Headers.
 
-TODO: see index in matrix.pdf and get rid of underlined entries
-
 \secpagedepth=1 % index on current page
 
 @<Header files@>=
 #include <avr/boot.h> /* |@!boot_signature_byte_get| */
-#include <avr/io.h> /* |@!ADDEN|, |@!ALLOC|, |@!DDRB| */
+#include <avr/io.h> /* |@!ADDEN|, |@!ALLOC|, |@!CS00|, |@!CS02|, |@!DDRB|, |@!DDRC|, |@!DDRD|,
+  |@!DETACH|,
+  |@!EORSTE|, |@!EORSTI|,
+  |@!EPDIR|, |@!EPEN|, |@!EPSIZE1|, |@!EPTYPE0|, |@!EPTYPE1|, |@!FIFOCON|, |@!FRZCLK|,
+  |@!MCUSR|, |@!OCIE0A|, |@!OCR0A|,
+  |@!OTGPADE|, |@!PB0|, |@!PB2|, |@!PB4|, |@!PB5|, |@!PB6|, |@!PB7|, |@!PC7|, |@!PD1|,
+  |@!PD2|, |@!PD3|, |@!PD5|,
+  |@!PINB|, |@!PIND|, |@!PINDIV|,
+  |@!PLLCSR|, |@!PLLE|, |@!PLOCK|, |@!PORTB|, |@!PORTC|, |@!PORTD|, |@!RXOUTI|, |@!RXSTPI|,
+  |@!STALLRQ|, |@!TCCR0A|, |@!TCCR0B|, |@!TIMSK0|, |@!TXINI|, |@!UDADDR|, |@!UDCON|, |@!UDIEN|,
+  |@!UDINT|, |@!UECFG0X|, |@!UECFG1X|, |@!UECONX|, |@!UEDATX|, |@!UEINTX|, |@!UENUM|,
+  |@!UHWCON|, |@!USBCON|, |@!USBE|, |@!UVREGE|, |@!WDCE|, |@!WDE|, |@!WDRF|, |@!WDTCSR|,
+  |@!WGM01| */
+#include <avr/pgmspace.h> /* |@!pgm_read_byte| */
 #include <avr/interrupt.h> /* |@!@.ISR@>@t\.{ISR}@>|,
-  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!sei| */
+  |@!@.TIMER0\_COMPA\_vect@>@t\.{TIMER0\_COMPA\_vect}@>|,
+  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!cli|, |@!sei| */
 #include <avr/pgmspace.h> /* |@!pgm_read_byte| */
 #include <util/delay.h> /* |@!_delay_us| */
 
