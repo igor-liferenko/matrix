@@ -3,8 +3,6 @@
 \pdfhorigin=3.5cm \hoffset=\pdfpagewidth \advance\hoffset-\hsize
   \advance\hoffset-2\pdfhorigin
 
-\nosecs
-
 \datethis
 
 \input ../usb/USB
@@ -1016,6 +1014,9 @@ volatile uint8_t button16_down;
 
 @<Header files@>=
 #include <avr/boot.h> /* |@!boot_signature_byte_get| */
+#include <avr/interrupt.h> /* |@!@.ISR@>@t\.{ISR}@>|,
+  |@!@.TIMER0\_COMPA\_vect@>@t\.{TIMER0\_COMPA\_vect}@>|,
+  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!cli|, |@!sei| */
 #include <avr/io.h> /* |@!ADDEN|, |@!ALLOC|, |@!CS00|, |@!CS02|, |@!DDRB|, |@!DDRC|, |@!DDRD|,
   |@!DETACH|,
   |@!EORSTE|, |@!EORSTI|,
@@ -1029,10 +1030,6 @@ volatile uint8_t button16_down;
   |@!UDINT|, |@!UECFG0X|, |@!UECFG1X|, |@!UECONX|, |@!UEDATX|, |@!UEINTX|, |@!UENUM|,
   |@!UHWCON|, |@!USBCON|, |@!USBE|, |@!UVREGE|, |@!WDCE|, |@!WDE|, |@!WDRF|, |@!WDTCSR|,
   |@!WGM01| */
-#include <avr/pgmspace.h> /* |@!pgm_read_byte| */
-#include <avr/interrupt.h> /* |@!@.ISR@>@t\.{ISR}@>|,
-  |@!@.TIMER0\_COMPA\_vect@>@t\.{TIMER0\_COMPA\_vect}@>|,
-  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!cli|, |@!sei| */
 #include <avr/pgmspace.h> /* |@!pgm_read_byte| */
 #include <util/delay.h> /* |@!_delay_us| */
 
