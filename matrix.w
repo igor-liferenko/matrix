@@ -11,9 +11,11 @@
 
 @* Program.
 
-DTR is used to determine when connection with \.{tel} is established and to
-indicate it to the user: until DTR is set to `1' in \.{tel}, \.{B0} led is glowing
-(the tty driver automatically sets DTR back to `0' when \.{tel} terminates).
+The USB packet which contains the parameters DTR and RTS is used to determine when
+\.{tel} is ready to receive data and to
+indicate it to the user: until DTR is equal to RTS, \.{B0} led is glowing
+(the tty driver automatically sets DTR and RTS to `1' when the device is opened and to `0' when
+it is closed).
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=../matrix/matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
@@ -30,8 +32,8 @@ void main(void)
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
 
   DDRD |= 1 << PD5; /* to show on-line/off-line state */
-  DDRB |= 1 << PB0; /* to show DTR state and to determine when transition happens */
-  PORTB |= 1 << PB0; /* on when DTR is off */
+  DDRB |= 1 << PB0; /* to show |dtr_rts| state and to determine when transition happens */
+  PORTB |= 1 << PB0; /* on when DTR is equal to RTS */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   @<Pullup input pins@>@; /* must be before starting timer */
@@ -41,12 +43,12 @@ void main(void)
 
   UENUM = EP1;
   while (1) {
-    @<Get |dtr|@>@;
-    if (dtr)
-      PORTB &= ~(1 << PB0); /* DTR is on */      
+    @<Get |dtr_rts|@>@;
+    if (dtr_rts)
+      PORTB &= ~(1 << PB0); /* DTR is not equal to RTS */      
     else {
-      PORTD &= ~(1 << PD5); /* if DTR is not `on', we are always off-line */
-      PORTB |= 1 << PB0; /* DTR is off */
+      PORTD &= ~(1 << PD5); /* if DTR is equal to RTS, we are always off-line */
+      PORTB |= 1 << PB0; /* DTR is equal to RTS */
     }
 
     UENUM = EP2; /* check if \\{write} was done from host */
@@ -118,7 +120,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       @<Clear all buttons@>@;
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (dtr) { /* \.{tel} must not be closed */
+        if (dtr_rts) { /* \.{tel} must not be closed */
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
@@ -334,16 +336,16 @@ These are sent automatically by the driver when TTY is opened and closed,
 and manually via \\{ioctl}.
 
 @<Global variables@>=
-int dtr = 0;
+int dtr_rts = 0;
 
-@ @<Get |dtr|@>=
+@ @<Get |dtr_rts|@>=
 UENUM = EP0;
 if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
   wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  dtr = wValue == 1;
+  dtr_rts = ((wValue != 0) && (wValue != 3));
 }
 UENUM = EP1; /* restore */
 
