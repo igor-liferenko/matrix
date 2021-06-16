@@ -11,11 +11,12 @@
 
 @* Program.
 
-The USB packet which contains the parameters DTR and RTS is used to determine when
-\.{tel} is ready to receive data and to
-indicate it to the user: until DTR is equal to RTS, \.{B0} led is glowing
-(the tty driver automatically sets DTR and RTS to `1' when the device is opened and to `0' when
-it is closed).
+USB packet which contains the parameters DTR and RTS is used to determine when
+\.{tel} is ready to receive data: DTR must not be equal to RTS\footnote*{The
+tty driver automatically sets DTR and RTS to `1' when the device is opened and to `0' when
+it is closed.}
+(we use the convention that DTR is `1' in such case). This fact is also
+indicated to the user via \.{B0} led (inverted).
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=../matrix/matrix.1
   clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
@@ -345,7 +346,7 @@ if (UEINTX & 1 << RXSTPI) {
   wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  dtr_rts = ((wValue != 0) && (wValue != 3));
+  dtr_rts = wValue == 1;
 }
 UENUM = EP1; /* restore */
 
