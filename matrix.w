@@ -15,7 +15,7 @@ USB packet which contains the parameters DTR and RTS is used to determine when
 \.{tel} is ready to receive data: DTR must not be equal to RTS\footnote*{The
 tty driver automatically sets DTR and RTS to `1' when the device is opened and to `0' when
 it is closed.}
-(we use the convention that DTR is `1' in such case). This fact is also
+(we use the convention that RTS is `0' in such case). This fact is also
 indicated to the user via \.{B0} led (inverted).
 
 $$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=../matrix/matrix.1
