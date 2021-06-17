@@ -27,7 +27,7 @@ void main(void)
 
   DDRD |= 1 << PD5; /* to show on-line/off-line state and to determine if transition happened */
   DDRB |= 1 << PB0; /* to indicate connection state */
-  PORTB |= 1 << PB0; /* glowing when not connected (DTR is equal to RTS) */
+  PORTB |= 1 << PB0; /* glowing when not connected */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   @<Pullup input pins@>@; /* must be before starting timer */
@@ -39,18 +39,17 @@ void main(void)
     UENUM = EP0;
     if (UEINTX & 1 << RXSTPI) { /* \\{open}, \\{ioctl} or \\{close} was done from host */
       @<Get |dtr_rts|@>@;
-      if (dtr_rts.DTR != dtr_rts.RTS) /* connection established */
+      if (dtr_rts.DTR != dtr_rts.RTS)
         PORTB &= ~(1 << PB0);      
-      else { /* connection lost */
-        PORTD &= ~(1 << PD5);
+      else {
         PORTB |= 1 << PB0;
+        PORTD &= ~(1 << PD5); /* go off-line */
       }
     }
 @#
     UENUM = EP2;
     if (UEINTX & 1 << RXOUTI) { /* \\{write} was done from host */
-      UEINTX &= ~(1 << RXOUTI);
-      UEINTX &= ~(1 << FIFOCON);
+      @<Ignore received data@>@;
       PORTD &= ~(1 << PD5); /* go off-line */
     }
 @#
@@ -75,6 +74,10 @@ void main(void)
     }
   }
 }
+
+@ @<Ignore received data@>=
+UEINTX &= ~(1 << RXOUTI);
+UEINTX &= ~(1 << FIFOCON);
 
 @ Set the match value using the |OCR0A| register.
 Use CTC mode. This is like normal mode, but counter is automatically set to zero
