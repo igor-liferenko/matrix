@@ -47,7 +47,8 @@ void main(void)
       }
     }
 @#
-    UENUM = EP2;
+    UENUM = EP2; /* TODO: instead of \\{write} try to use \\{ioctl} for DTR=1 RTS=0 (now
+      dtr_rts is used with DTR=0 RTS=1) */
     if (UEINTX & 1 << RXOUTI) { /* \\{write} was done from host */
       @<Ignore received data@>@;
       PORTD &= ~(1 << PD5); /* go off-line */
