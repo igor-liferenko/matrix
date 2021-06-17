@@ -38,8 +38,8 @@ void main(void)
   while (1) {
     UENUM = EP0;
     if (UEINTX & 1 << RXSTPI) { /* \\{open}, \\{ioctl} or \\{close} was done from host */
-      @<Read DTR/RTS into |wValue|@>@;
-      if (((wValue >> 0) & 1) != ((wValue >> 1) & 1))
+      @<Read |dtr_rts|@>@;
+      if (dtr_rts)
         PORTB &= ~(1 << PB0);      
       else {
         PORTB |= 1 << PB0;
@@ -335,7 +335,9 @@ after connection is established.
 These are sent automatically by the driver when TTY is opened and closed,
 and manually via \\{ioctl}.
 
-@<Read DTR/RTS into |wValue|@>=
+@d dtr_rts ((wValue >> 0) & 1) != ((wValue >> 1) & 1)
+
+@<Read |dtr_rts|@>=
 (void) UEDATX; @+ (void) UEDATX;
 wValue = UEDATX | UEDATX << 8;
 UEINTX &= ~(1 << RXSTPI);
