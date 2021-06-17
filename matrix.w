@@ -121,6 +121,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
         if (dtr_rts.DTR != dtr_rts.RTS) { /* \.{tel} must not be closed */
+/* (we could check PORTB PB0 instead) */
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
