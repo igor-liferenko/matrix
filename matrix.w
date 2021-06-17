@@ -38,8 +38,8 @@ void main(void)
   while (1) {
     UENUM = EP0;
     if (UEINTX & 1 << RXSTPI) { /* \\{open}, \\{ioctl} or \\{close} was done from host */
-      @<Get |dtr_rts|@>@;
-      if (dtr_rts.DTR != dtr_rts.RTS)
+      @<Read DTR/RTS into |wValue|@>@;
+      if (((wValue >> 0) & 1) != ((wValue >> 1) & 1))
         PORTB &= ~(1 << PB0);      
       else {
         PORTB |= 1 << PB0;
@@ -120,8 +120,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       @<Clear all buttons@>@;
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (dtr_rts.DTR != dtr_rts.RTS) { /* \.{tel} must not be closed */
-/* (we could check PORTB PB0 instead) */
+        if (!(PORTB & 1 << PB0)) { /* \.{tel} must not be closed */
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
@@ -336,22 +335,11 @@ after connection is established.
 These are sent automatically by the driver when TTY is opened and closed,
 and manually via \\{ioctl}.
 
-@<Global variables@>=
-union {
-  U16 all;
-  struct {
-    U16 DTR:1;
-    U16 RTS:1;
-    U16 unused:14;
-  };
-} dtr_rts;
-
-@ @<Get |dtr_rts|@>=
-  (void) UEDATX; @+ (void) UEDATX;
-  wValue = UEDATX | UEDATX << 8;
-  UEINTX &= ~(1 << RXSTPI);
-  UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  dtr_rts.all = wValue;
+@<Read DTR/RTS into |wValue|@>=
+(void) UEDATX; @+ (void) UEDATX;
+wValue = UEDATX | UEDATX << 8;
+UEINTX &= ~(1 << RXSTPI);
+UEINTX &= ~(1 << TXINI); /* STATUS stage */
 
 @* Matrix.
 This is how keypad is connected:
