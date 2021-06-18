@@ -47,10 +47,7 @@ void main(void)
       }
     }
 @#
-    UENUM = EP2; /* TODO: instead of \\{write} try to use \\{ioctl} for DTR=1 RTS=0 (now
-      dtr_rts is used with DTR=0 RTS=1) When such packet arrives, PB0 must not be glowing.
-      if dtr_rts && RTS=0 then don't do what is done now in `if (dtr_rts) ... else ...' but
-      instead do what is here (go off-line) And then you will need to change tel-agi.sed */
+    UENUM = EP2;
     if (UEINTX & 1 << RXOUTI) { /* \\{write} was done from host */
       @<Ignore received data@>@;
       PORTD &= ~(1 << PD5); /* go off-line */
