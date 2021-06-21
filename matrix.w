@@ -27,7 +27,7 @@ void main(void)
 
   DDRD |= 1 << PD5; /* on-line/off-line state */
   DDRB |= 1 << PB0; /* connection state */
-  PORTB |= 1 << PB0; /* on until connected */
+  PORTB |= 1 << PB0; /* `1' by default */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   @<Pullup input pins@>@; /* must be before starting timer */
@@ -316,9 +316,8 @@ Only first two bits of the first byte are used.
 When TTY is opened, driver automatically sends request where boths bits are `1';
 when TTY is closed, driver automatically sends request where boths bits are `0'.
 DTR/RTS signal (when the two bits are not equal to each other) is sent manually via \\{ioctl}.
-First DTR/RTS signal indicates establishment of connection with \.{tel}.
-This is indicated by the |PB0| led:
-when connection is established, it becomes off.
+First DTR/RTS signal indicates establishment of connection with \.{tel} (|PB0|
+is used to store the connection state and to indicate it to the user).
 Subsequent DTR/RTS signals force off-line mode.
 
 @<Handle {\caps set control line state}@>=
