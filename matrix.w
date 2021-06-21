@@ -25,9 +25,9 @@ void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
 
-  DDRD |= 1 << PD5; /* to show on-line/off-line state and to determine if transition happened */
-  DDRB |= 1 << PB0; /* to indicate connection state */
-  PORTB |= 1 << PB0; /* glowing when not connected */
+  DDRD |= 1 << PD5; /* on-line/off-line state */
+  DDRB |= 1 << PB0; /* connection state */
+  PORTB |= 1 << PB0; /* on until connected */
   DDRC |= 1 << PC7; /* indicate that key was pressed */
 
   @<Pullup input pins@>@; /* must be before starting timer */
@@ -49,14 +49,8 @@ void main(void)
         PORTD &= ~(1 << PD5); /* go off-line */
       }
     }
-@#
-    UENUM = EP2;
-    if (UEINTX & 1 << RXOUTI) { /* \\{write} was done from host */
-      @<Ignore received data@>@;
-      PORTD &= ~(1 << PD5); /* go off-line */
-    }
-@#
-    UENUM = EP1; /* for sending data to host */
+
+    UENUM = EP1;
 
     @<Check \vb{A} ...@>@;
 
@@ -77,10 +71,6 @@ void main(void)
     }
   }
 }
-
-@ @<Ignore received data@>=
-UEINTX &= ~(1 << RXOUTI);
-UEINTX &= ~(1 << FIFOCON);
 
 @ Set the match value using the |OCR0A| register.
 Use CTC mode. This is like normal mode, but counter is automatically set to zero
@@ -339,7 +329,8 @@ Only first two bits of the first byte are used.
 When TTY is opened, driver automatically sends request where boths bits are `1';
 when TTY is closed, driver automatically sends request where boths bits are `0'.
 DTR/RTS signal (when the two bits are not equal to each other) is sent manually via \\{ioctl}.
-First DTR/RTS signal indicates connection establishment. This is indicated by the |PB0| led:
+First DTR/RTS signal indicates establishment of connection with \.{tel}.
+This is indicated by the |PB0| led:
 when connection is established, it becomes off.
 Subsequent DTR/RTS signals force off-line mode.
 
