@@ -35,22 +35,9 @@ void main(void)
 
   @<Start debounce timer@>@;
 
+  UENUM = EP1; /* for writing to host */
   while (1) {
-    UENUM = EP0;
-    if (UEINTX & 1 << RXSTPI) {
-      @<Get |dtr_rts|@>@;
-      if (dtr_rts == 2 || dtr_rts == 1) /* DTR/RTS signal */
-        if (PORTB & 1 << PB0) /* first DTR/RTS signal */
-          PORTB &= ~(1 << PB0);
-        else
-          PORTD &= ~(1 << PD5); /* go off-line */
-      if (dtr_rts == 0) {
-        PORTB |= 1 << PB0;
-        PORTD &= ~(1 << PD5); /* go off-line */
-      }
-    }
-
-    UENUM = EP1;
+    @<Handle {\caps set control line state}@>@;
 
     @<Check \vb{A} ...@>@;
 
@@ -334,11 +321,25 @@ This is indicated by the |PB0| led:
 when connection is established, it becomes off.
 Subsequent DTR/RTS signals force off-line mode.
 
-@<Get |dtr_rts|@>=
-(void) UEDATX; @+ (void) UEDATX;
-int dtr_rts = UEDATX | UEDATX << 8;
-UEINTX &= ~(1 << RXSTPI);
-UEINTX &= ~(1 << TXINI); /* STATUS stage */
+@<Handle {\caps set control line state}@>=
+UENUM = EP0;
+if (UEINTX & 1 << RXSTPI) {
+  (void) UEDATX; @+ (void) UEDATX;
+  int dtr_rts = UEDATX | UEDATX << 8;
+  UEINTX &= ~(1 << RXSTPI);
+  UEINTX &= ~(1 << TXINI); /* STATUS stage */
+
+  if (dtr_rts == 2 || dtr_rts == 1) /* DTR/RTS signal */
+    if (PORTB & 1 << PB0) /* first DTR/RTS signal */
+      PORTB &= ~(1 << PB0);
+    else
+      PORTD &= ~(1 << PD5); /* go off-line */
+  if (dtr_rts == 0) {
+    PORTB |= 1 << PB0;
+    PORTD &= ~(1 << PD5); /* go off-line */
+  }
+}
+UENUM = EP1; /* restore */
 
 @* Matrix.
 This is how keypad is connected:
