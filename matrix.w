@@ -37,11 +37,14 @@ void main(void)
 
   while (1) {
     UENUM = EP0;
-    if (UEINTX & 1 << RXSTPI) { /* \\{open}, \\{ioctl} or \\{close} was done from host */
-      @<Read |dtr_rts|@>@;
-      if (dtr_rts)
-        PORTB &= ~(1 << PB0);      
-      else {
+    if (UEINTX & 1 << RXSTPI) {
+      @<Get |dtr_rts|@>@;
+      if (dtr_rts == 2 || dtr_rts == 1) /* DTR/RTS signal */
+        if (PORTB & 1 << PB0) /* first DTR/RTS signal */
+          PORTB &= ~(1 << PB0);
+        else
+          PORTD &= ~(1 << PD5); /* go off-line */
+      if (dtr_rts == 0) {
         PORTB |= 1 << PB0;
         PORTD &= ~(1 << PD5); /* go off-line */
       }
@@ -332,14 +335,17 @@ else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
-These are sent automatically by the driver when TTY is opened and closed,
-and manually via \\{ioctl}.
+Only first two bits of the first byte are used.
+When TTY is opened, driver automatically sends request where boths bits are `1';
+when TTY is closed, driver automatically sends request where boths bits are `0'.
+DTR/RTS signal (when the two bits are not equal to each other) is sent manually via \\{ioctl}.
+First DTR/RTS signal indicates connection establishment. This is indicated by the |PB0| led:
+when connection is established, it becomes off.
+Subsequent DTR/RTS signals force off-line mode.
 
-@d dtr_rts ((wValue >> 0) & 1) != ((wValue >> 1) & 1)
-
-@<Read |dtr_rts|@>=
+@<Get |dtr_rts|@>=
 (void) UEDATX; @+ (void) UEDATX;
-wValue = UEDATX | UEDATX << 8;
+int dtr_rts = UEDATX | UEDATX << 8;
 UEINTX &= ~(1 << RXSTPI);
 UEINTX &= ~(1 << TXINI); /* STATUS stage */
 
