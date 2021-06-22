@@ -100,7 +100,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       @<Clear all buttons@>@;
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (!(PORTB & 1 << PB0)) { /* \.{tel} must not be closed */
+        if (!(PORTB & 1 << PB0)) { /* connection with \.{tel} must be established */
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
