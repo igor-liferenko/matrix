@@ -25,10 +25,9 @@ void main(void)
 {
   @<Connect to USB host (must be called first; |sei| is called here)@>@;
 
-  DDRD |= 1 << PD5; /* on-line/off-line state */
-  DDRB |= 1 << PB0; /* connection state */
-  PORTB |= 1 << PB0; /* `1' by default */
+  DDRB |= 1 << PB0; @+ PORTB |= 1 << PB0;
   DDRC |= 1 << PC7; /* indicate that key was pressed */
+  DDRD |= 1 << PD5; /* on-line/off-line state */
 
   @<Pullup input pins@>@; /* must be before starting timer */
   _delay_us(1); /* FIXME: do we need it? */
@@ -100,7 +99,7 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
       @<Clear all buttons@>@;
       sei();
       if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (!(PORTB & 1 << PB0)) { /* connection with \.{tel} must be established */
+        if (!(PORTB & 1 << PB0)) {
           while (!(UEINTX & 1 << TXINI)) ;
           UEINTX &= ~(1 << TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
@@ -311,14 +310,13 @@ else sei();
     else sei();
 
 @ No other requests except {\caps set control line state} come
-after connection is established.
+after USB connection is established.
 Only first two bits of the first byte are used.
 When TTY is opened, driver automatically sends request where boths bits are `1';
 when TTY is closed, driver automatically sends request where boths bits are `0'.
 DTR/RTS signal (when the two bits are not equal to each other) is sent manually via \\{ioctl}.
-First DTR/RTS signal indicates establishment of connection with \.{tel} (|PB0|
-is used to store the connection state and to indicate it to the user).
-Subsequent DTR/RTS signals force off-line mode.
+First DTR/RTS signal is used as RTR signal,
+subsequent DTR/RTS signals force off-line mode (|PB0| is used to determine if it is the first).
 
 @<Handle {\caps set control line state}@>=
 UENUM = EP0;
