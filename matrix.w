@@ -310,7 +310,7 @@ else sei();
     else sei();
 
 @ No other requests except {\caps set control line state} come
-after USB connection is established.
+after connection is established.
 Only first two bits of the first byte are used.
 When TTY is opened, driver automatically sends request where boths bits are `1';
 when TTY is closed, driver automatically sends request where boths bits are `0'.
