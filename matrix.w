@@ -311,12 +311,6 @@ else sei();
 
 @ No other requests except {\caps set control line state} come
 after connection is established.
-Only first two bits of the first byte are used.
-When TTY is opened, driver automatically sends request where boths bits are `1';
-when TTY is closed, driver automatically sends request where boths bits are `0'.
-DTR/RTS signal (when the two bits are not equal to each other) is sent manually via \\{ioctl}.
-First DTR/RTS signal is used as RTR signal,
-subsequent DTR/RTS signals force off-line mode (|PB0| is used to determine if it is the first).
 
 @<Handle {\caps set control line state}@>=
 UENUM = EP0;
@@ -326,14 +320,16 @@ if (UEINTX & 1 << RXSTPI) {
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
 
-  if (dtr_rts == 2 || dtr_rts == 1) /* DTR/RTS signal */
-    if (PORTB & 1 << PB0) /* first DTR/RTS signal */
-      PORTB &= ~(1 << PB0);
+  if (dtr_rts & 1 << 1)
+    if (dtr_rts & 1)
+      if (PORTB & 1 << PB0) ;
+      else PORTD &= ~(1 << PD5); /* go off-line */
     else
+      if (PORTB & 1 << PB0) PORTB &= ~(1 << PB0);
+      else PORTD &= ~(1 << PD5); /* go off-line */
+  else {
+      PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
-  if (dtr_rts == 0) {
-    PORTB |= 1 << PB0;
-    PORTD &= ~(1 << PD5); /* go off-line */
   }
 }
 UENUM = EP1; /* restore */
