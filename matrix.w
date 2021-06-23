@@ -322,12 +322,12 @@ if (UEINTX & 1 << RXSTPI) {
 
   if (dtr_rts & 1 << 1)
     if (dtr_rts & 1)
-      if (PORTB & 1 << PB0) ;
+      if (PORTB & 1 << PB0) ; /* ignore \\{open} */
       else PORTD &= ~(1 << PD5); /* go off-line */
     else
-      if (PORTB & 1 << PB0) PORTB &= ~(1 << PB0);
+      if (PORTB & 1 << PB0) PORTB &= ~(1 << PB0); /* ``echo'' disabled */
       else PORTD &= ~(1 << PD5); /* go off-line */
-  else {
+  else { /* \.{tel} exited */
       PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
   }
