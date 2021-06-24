@@ -310,7 +310,10 @@ else sei();
     else sei();
 
 @ No other requests except {\caps set control line state} come
-after connection is established.
+after connection is established. These are sent automatically by the driver when
+TTY is opened and closed, and manually via \\{ioctl}.
+
+See \S6.2.14 in CDC spec.
 
 @<Handle {\caps set control line state}@>=
 UENUM = EP0;
