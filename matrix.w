@@ -1,8 +1,5 @@
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
-\pdfhorigin=3.5cm \hoffset=\pdfpagewidth \advance\hoffset-\hsize
-  \advance\hoffset-2\pdfhorigin
-
 \datethis
 
 \input ../usb/USB
