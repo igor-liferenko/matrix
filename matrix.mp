@@ -122,7 +122,7 @@ boxit.arduino.D5_box(btex \smallss D5 etex);
 arduino.D5_box.n=arduino.C7_box.s+down*.5mm;
 arduino.D5_box.ne=arduino.D5_box.sw+right*6pt+up*4pt;
 drawboxed(arduino.D5_box); % TODO: do the rest like this (variable name + box dimensions)
-label.top(btex \smallss 11 etex, arduino.B7);
+label.top(btex \smallss 11 etex, arduino.B7); label.top(btex \smallss 12 etex, arduino.B7+right*7pt);
 rboxit.arduino.B7.box(btex \smallss B7 etex);
 arduino.B7.box.c=arduino.B7+up*3mm;
 arduino.B7.box.sw=arduino.B7.box.c+down*2pt+left*3pt;
