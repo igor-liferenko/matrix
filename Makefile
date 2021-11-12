@@ -23,10 +23,10 @@ clean:
 
 imgs:
 	@mpost matrix
-	@perl -ne 'if (/^(.*\.eps): (.*)/) { system "convert $$2 $$1" }' Makefile
+	@perl -ne 'if (/^(.*\.eps): (.*)/) { system "convert $$2 eps2:$$1" }' Makefile
 
 .PHONY: $(wildcard *.eps)
 
 keypad.eps: keypad.png
-	@convert $< $@
+	@convert $< eps2:$@
 	@imgsize $@ 7 -
