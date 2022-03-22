@@ -1,8 +1,5 @@
 all:
 	ctangle matrix
-	make fw.hex
-
-fw.hex: matrix.c
 	@avr-gcc -mmcu=atmega32u4 -DF_CPU=16000000UL -g -Os -o fw.elf matrix.c
 	@avr-objcopy -O ihex fw.elf fw.hex
 
