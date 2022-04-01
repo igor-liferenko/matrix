@@ -1,7 +1,6 @@
 *.elf
 *.hex
 *.c
-*.arg
 *.dvi
 *.pdf
 *.idx
