@@ -1,15 +1,14 @@
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \datethis
-
+\input epsf
 \input ../usb/USB
 
 @s uint8_t int
 
 @* Program.
 
-$$\hbox to10cm{\vbox to6.92cm{\vfil\special{psfile=../matrix/matrix.1
-  clip llx=-142 lly=-58 urx=-28 ury=21 rwi=2834}}\hfil}$$
+$$\epsfxsize 10cm \epsfbox{matrix.1}$$
 
 @c
 @<Header files@>@;
@@ -337,14 +336,10 @@ UENUM = EP1; /* restore */
 @* Matrix.
 This is how keypad is connected:
 
-$$\hbox to15cm{\vbox to7.72583333333333cm{\vfil\special{psfile=../matrix/matrix.2
-  clip llx=-1 lly=-208 urx=179 ury=11 rwi=1800}}\kern9.78cm
-  \vbox to7.72583333333333cm{\vfil\special{psfile=../matrix/matrix.3
-  clip llx=39 lly=-208 urx=187 ury=11 rwi=1480}}\hfil}$$
+$$\hbox to 15cm{\epsfbox{matrix.2}\hfill \epsfbox{matrix.3}}$$
 
 @ This is the working principle:
-$$\hbox to7cm{\vbox to4.2cm{\vfil\special{psfile=../matrix/keypad.eps
-  clip llx=0 lly=0 urx=240 ury=144 rwi=1984}}\hfil}$$
+$$\epsfxsize 7cm \epsfbox{keypad.eps}$$
 
 A is input and  C1 ... Cn are outputs.
 We "turn on" one of C1, C2, ... Cn at a time by connecting it to ground inside the chip
