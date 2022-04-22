@@ -9,6 +9,7 @@ flash:
 eps:
 	@mpost -interaction batchmode matrix >/dev/null
 	@make --no-print-directory `grep -o '^\S*\.eps' Makefile`
+	@make --no-print-directory -C ../usb eps
 
 .PHONY: $(wildcard *.eps)
 
