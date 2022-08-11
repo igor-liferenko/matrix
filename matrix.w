@@ -8,7 +8,7 @@
 
 @* Program.
 
-$$\epsfxsize 10cm \epsfbox{matrix.1}$$
+$$\epsfxsize 10cm \epsfbox{matrix-1.eps}$$
 
 @c
 @<Header files@>@;
@@ -336,7 +336,7 @@ UENUM = EP1; /* restore */
 @* Matrix.
 This is how keypad is connected:
 
-$$\hbox to 15cm{\epsfbox{matrix.2}\hfill \epsfbox{matrix.3}}$$
+$$\hbox to 15cm{\epsfbox{matrix-2.eps}\hfill \epsfbox{matrix-3.eps}}$$
 
 @ This is the working principle:
 $$\epsfxsize 7cm \epsfbox{keypad.eps}$$
