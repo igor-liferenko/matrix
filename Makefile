@@ -16,4 +16,4 @@ eps:
 .PHONY: $(wildcard *.eps)
 
 keypad.eps:
-	@convert keypad.png eps2:$@
+	@convert keypad.png $@
