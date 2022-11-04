@@ -3,6 +3,7 @@
 *.c
 *.dvi
 *.pdf
+*.ps
 *.idx
 *.log
 *.ps
@@ -10,5 +11,3 @@
 *.tex
 *.toc
 *.eps
-*.[0-9]
-*.mpx
