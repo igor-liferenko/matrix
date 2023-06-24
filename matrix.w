@@ -1014,5 +1014,3 @@ volatile uint8_t button16_down;
   |@!WGM01| */
 #include <avr/pgmspace.h> /* |@!pgm_read_byte| */
 #include <util/delay.h> /* |@!_delay_us| */
-
-@* Index.
