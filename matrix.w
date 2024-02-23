@@ -30,10 +30,18 @@ void main(void)
 
   @<Start debounce timer@>@;
 
-  UENUM = EP1; /* for writing to host */
+  UENUM = 1; /* for writing to host */
   while (1) {
-    @<Handle {\caps set control line state}@>@;
-
+    UENUM = 0;
+    if (UEINTX & _BV(RXSTPI)) {
+      if ((UEDATX | UEDATX << 8) == 0x2021) {
+        @<Handle {\caps set line coding}@>@;
+      }
+      else {
+        @<Handle {\caps set control line state}@>@;
+      }
+    }
+    UENUM = 1;
     @<Check \vb{A} ...@>@;
 
     if (PORTD & 1 << PD5) {
@@ -305,33 +313,31 @@ else sei();
     }
     else sei();
 
-@ No other requests except {\caps set control line state} come
-after connection is established. These are sent automatically by the driver when
+@ @<Handle {\caps set line coding}@>=
+  UEINTX &= ~_BV(RXSTPI);
+  while (!(UEINTX & _BV(RXOUTI))) { }
+  int speed = UEDATX | UEDATX << 8;
+  UEINTX &= ~_BV(RXOUTI);
+  UEINTX &= ~_BV(TXINI);
+  if (speed == 50 || speed == 75)
+    PORTD &= ~(1 << PD5); /* go off-line */
+  if (speed == 9600) { }
+
+@ These requests are sent automatically by the driver when
 TTY is opened and closed, and manually via \\{ioctl}.
 
 See \S6.2.14 in CDC spec.
 
 @<Handle {\caps set control line state}@>=
-UENUM = EP0;
-if (UEINTX & 1 << RXSTPI) {
-  (void) UEDATX; @+ (void) UEDATX;
   int dtr_rts = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-
-  if (dtr_rts & 1 << 1)
-    if (dtr_rts & 1)
-      if (PORTB & 1 << PB0) ; /* ignore \\{open} */
-      else PORTD &= ~(1 << PD5); /* go off-line */
-    else
-      if (PORTB & 1 << PB0) PORTB &= ~(1 << PB0); /* ``echo'' disabled--ready to receive data */
-      else PORTD &= ~(1 << PD5); /* go off-line */
-  else { /* \.{tel} exited */
+  if (dtr_rts == 1)
+    PORTB &= ~(1 << PB0); /* data TX channel established */
+  if (dtr_rts == 0) { /* \.{tel} exited */
       PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
   }
-}
-UENUM = EP1; /* restore */
 
 @* Matrix.
 This is how keypad is connected:
