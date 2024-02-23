@@ -321,7 +321,7 @@ else sei();
   UEINTX &= ~_BV(TXINI);
   if (speed == 50 || speed == 75)
     PORTD &= ~(1 << PD5); /* go off-line */
-  if (speed == 9600) { }
+  if (speed == 9600) { } /* automatically set by driver when device is connected (on some kernels) */
 
 @ These requests are sent automatically by the driver when
 TTY is opened and closed, and manually via \\{ioctl}.
