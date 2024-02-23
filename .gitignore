@@ -1,0 +1,13 @@
+*.elf
+*.hex
+*.c
+*.dvi
+*.pdf
+*.ps
+*.idx
+*.log
+*.ps
+*.scn
+*.tex
+*.toc
+*.eps
