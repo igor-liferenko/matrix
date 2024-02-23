@@ -1,3 +1,5 @@
+% TODO: get rid of 'connected = 1' and WDT
+
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
 \datethis
