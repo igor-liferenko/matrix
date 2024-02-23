@@ -992,25 +992,9 @@ volatile uint8_t button16_down;
 
 @* Headers.
 
-\secpagedepth=1 % index on current page
-
 @<Header files@>=
-#include <avr/boot.h> /* |@!boot_signature_byte_get| */
-#include <avr/interrupt.h> /* |@!@.ISR@>@t\.{ISR}@>|,
-  |@!@.TIMER0\_COMPA\_vect@>@t\.{TIMER0\_COMPA\_vect}@>|,
-  |@!@.USB\_GEN\_vect@>@t\.{USB\_GEN\_vect}@>|, |@!cli|, |@!sei| */
-#include <avr/io.h> /* |@!ADDEN|, |@!ALLOC|, |@!CS00|, |@!CS02|, |@!DDRB|, |@!DDRC|, |@!DDRD|,
-  |@!DETACH|,
-  |@!EORSTE|, |@!EORSTI|,
-  |@!EPDIR|, |@!EPEN|, |@!EPSIZE1|, |@!EPTYPE0|, |@!EPTYPE1|, |@!FIFOCON|, |@!FRZCLK|,
-  |@!MCUSR|, |@!OCIE0A|, |@!OCR0A|,
-  |@!OTGPADE|, |@!PB0|, |@!PB2|, |@!PB4|, |@!PB5|, |@!PB6|, |@!PB7|, |@!PC7|, |@!PD1|,
-  |@!PD2|, |@!PD3|, |@!PD5|,
-  |@!PINB|, |@!PIND|, |@!PINDIV|,
-  |@!PLLCSR|, |@!PLLE|, |@!PLOCK|, |@!PORTB|, |@!PORTC|, |@!PORTD|, |@!RXOUTI|, |@!RXSTPI|,
-  |@!STALLRQ|, |@!TCCR0A|, |@!TCCR0B|, |@!TIMSK0|, |@!TXINI|, |@!UDADDR|, |@!UDCON|, |@!UDIEN|,
-  |@!UDINT|, |@!UECFG0X|, |@!UECFG1X|, |@!UECONX|, |@!UEDATX|, |@!UEINTX|, |@!UENUM|,
-  |@!UHWCON|, |@!USBCON|, |@!USBE|, |@!UVREGE|, |@!WDCE|, |@!WDE|, |@!WDRF|, |@!WDTCSR|,
-  |@!WGM01| */
-#include <avr/pgmspace.h> /* |@!pgm_read_byte| */
-#include <util/delay.h> /* |@!_delay_us| */
+#include <avr/boot.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <util/delay.h>
