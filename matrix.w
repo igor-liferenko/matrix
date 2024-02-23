@@ -30,17 +30,10 @@ void main(void)
 
   @<Start debounce timer@>@;
 
-  UENUM = 1; /* for writing to host */
   while (1) {
     UENUM = 0;
-    if (UEINTX & _BV(RXSTPI)) {
-      if ((UEDATX | UEDATX << 8) == 0x2021) {
-        @<Handle {\caps set line coding}@>@;
-      }
-      else {
-        @<Handle {\caps set control line state}@>@;
-      }
-    }
+    @<Handle {\caps set control line state}@>@;
+
     UENUM = 1;
     @<Check \vb{A} ...@>@;
 
@@ -313,21 +306,14 @@ else sei();
     }
     else sei();
 
-@ @<Handle {\caps set line coding}@>=
-  UEINTX &= ~_BV(RXSTPI);
-  while (!(UEINTX & _BV(RXOUTI))) { }
-  int speed = UEDATX | UEDATX << 8;
-  UEINTX &= ~_BV(RXOUTI);
-  UEINTX &= ~_BV(TXINI);
-  if (speed == 50 || speed == 75)
-    PORTD &= ~(1 << PD5); /* go off-line */
-
 @ These requests are sent automatically by the driver when
 TTY is opened and closed, and manually via \\{ioctl}.
 
 See \S6.2.14 in CDC spec.
 
 @<Handle {\caps set control line state}@>=
+if (UEINTX & 1 << RXSTPI) {
+  (void) UEDATX; @+ (void) UEDATX;
   int dtr_rts = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
@@ -337,6 +323,7 @@ See \S6.2.14 in CDC spec.
       PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
   }
+}
 
 @* Matrix.
 This is how keypad is connected:
