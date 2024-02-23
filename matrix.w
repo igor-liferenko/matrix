@@ -1,4 +1,5 @@
-% TODO: get rid of 'connected = 1' and WDT
+% TODO: get rid of 'connected = 1' and WDT (while testing, temporarily delete perl commands
+% in the end of mytex/ctangle)
 
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 
