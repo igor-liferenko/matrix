@@ -2,10 +2,13 @@
 % in the end of mytex/ctangle)
 
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
+% TODO: search SOF in demo and demo-comments repos and use sof for debounce - not timer
+% (and search sof in matrix repo too via git log -p)
 
 \datethis
 \input epsf
-\input ../usb/USB
+
+\font\caps=cmcsc10 at 9pt
 
 @s uint8_t int
 
