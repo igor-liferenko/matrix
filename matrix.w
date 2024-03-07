@@ -325,7 +325,7 @@ if (UEINTX & 1 << RXSTPI) {
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
   if (wValue == 1)
-    PORTB &= ~(1 << PB0); /* data TX channel established */
+    PORTB &= ~(1 << PB0); /* echo disabled on host */
   if (wValue == 0) { /* \.{tel} exited */
       PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
