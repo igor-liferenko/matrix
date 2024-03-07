@@ -327,8 +327,8 @@ if (UEINTX & 1 << RXSTPI) {
   if (wValue == 1)
     PORTB &= ~(1 << PB0); /* echo disabled on host */
   if (wValue == 0) { /* \.{tel} exited */
-      PORTB |= 1 << PB0;
-      PORTD &= ~(1 << PD5); /* go off-line */
+      PORTB |= 1 << PB0; /* LED on */
+      PORTD &= ~(1 << PD5); /* LED off */
   }
 }
 
