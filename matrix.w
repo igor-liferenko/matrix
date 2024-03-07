@@ -321,12 +321,12 @@ See \S6.2.14 in CDC spec.
 @<Handle {\caps set control line state}@>=
 if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
-  int dtr_rts = UEDATX | UEDATX << 8;
+  wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI); /* STATUS stage */
-  if (dtr_rts == 1)
+  if (wValue == 1)
     PORTB &= ~(1 << PB0); /* data TX channel established */
-  if (dtr_rts == 0) { /* \.{tel} exited */
+  if (wValue == 0) { /* \.{tel} exited */
       PORTB |= 1 << PB0;
       PORTD &= ~(1 << PD5); /* go off-line */
   }
