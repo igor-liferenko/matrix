@@ -4,6 +4,7 @@
 % a good summary of how debounce works: https://electronics.stackexchange.com/questions/355641/
 % TODO: search SOF in demo and demo-comments repos and use sof for debounce - not timer
 % (and search sof in matrix repo too via git log -p)
+% (when SOF arrives, USB_RESET is not done, and vice versa, so these two interrupts won't clash)
 
 \datethis
 \input epsf
