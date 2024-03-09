@@ -102,14 +102,14 @@ Duration of one tick is $1\over15625$ or 0.000064 seconds. 156 ticks is then
     if (button4_down) {
       @<Clear all buttons@>@;
       sei();
-      if (!(PORTD & 1 << PD5)) /* transition happened */
-        if (!(PORTB & 1 << PB0)) {
-          while (!(UEINTX & 1 << TXINI)) ;
-          UEINTX &= ~(1 << TXINI);
+      if (!(PORTD & _BV(PD5))) /* transition happened */
+        if (!(PORTB & _BV(PB0))) { /* LED off */
+          while (!(UEINTX & _BV(TXINI))) { }
+          UEINTX &= ~_BV(TXINI);
           UEDATX = 'A'; /* for on-line indication we send \.A to
             \.{tel}---to put it to initial state */
-          UEINTX &= ~(1 << FIFOCON);
-          PORTD |= 1 << PD5;
+          UEINTX &= ~_BV(FIFOCON);
+          PORTD |= _BV(PD5); /* turn LED on */
         }
     }
     else sei();
@@ -323,12 +323,12 @@ if (UEINTX & 1 << RXSTPI) {
   (void) UEDATX; @+ (void) UEDATX;
   wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
-  UEINTX &= ~(1 << TXINI); /* STATUS stage */
+  UEINTX &= ~(1 << TXINI);
   if (wValue == 1)
-    PORTB &= ~(1 << PB0); /* echo disabled on host */
+    PORTB &= ~_BV(PB0); /* echo disabled on host */
   if (wValue == 0) { /* \.{tel} exited */
-      PORTB |= 1 << PB0; /* LED on */
-      PORTD &= ~(1 << PD5); /* LED off */
+      PORTB |= _BV(PB0); /* turn LED on */
+      PORTD &= ~_BV(PD5); /* turn LED off */
   }
 }
 
