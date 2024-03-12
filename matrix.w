@@ -6,6 +6,12 @@
 % (and search sof in matrix repo too via git log -p)
 % (when SOF arrives, USB_RESET is not done, and vice versa, so these two interrupts won't clash)
 
+% In matrix.w do not read set_line_coding and in signal.ch process it, and move OUT endpoint to rxout.ch and use notification.ch like in time/ (try if usb will work without rxout.ch, first changing EP3 to EP2 in notification.ch)
+%
+% In tel.w instead of cfsetospeed use INPCK or PARENB (the one which sets third parameter in set_line_coding to 2)
+%
+% in signal.ch instead of dwDTERate check bParityType == 2
+
 \datethis
 \input epsf
 
