@@ -332,9 +332,9 @@ if (UEINTX & 1 << RXSTPI) {
   wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI);
-  if (wValue == 1)
-    PORTB &= ~_BV(PB0); /* echo disabled on host */
-  if (wValue == 0) { /* \.{tel} exited */
+  if (wValue == 3)
+    PORTB &= ~_BV(PB0); /* \.{tel} started */
+  else { /* \.{tel} exited */
       PORTB |= _BV(PB0); /* turn LED on */
       PORTD &= ~_BV(PD5); /* turn LED off */
   }
