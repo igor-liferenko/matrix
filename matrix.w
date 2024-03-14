@@ -332,7 +332,7 @@ if (UEINTX & 1 << RXSTPI) {
   wValue = UEDATX | UEDATX << 8;
   UEINTX &= ~(1 << RXSTPI);
   UEINTX &= ~(1 << TXINI);
-  if (wValue == 3)
+  if (wValue)
     PORTB &= ~_BV(PB0); /* \.{tel} started */
   else { /* \.{tel} exited */
       PORTB |= _BV(PB0); /* turn LED on */
