@@ -6,8 +6,9 @@
 % (and search sof in matrix repo too via git log -p)
 % (when SOF arrives, USB_RESET is not done, and vice versa, so these two interrupts won't clash)
 
-% TODO: move OUT endpoint to rxout.ch and do via notification.ch like in time/ (try if usb will
-% work without rxout.ch, first changing EP3 to EP2 in notification.ch)
+% TODO: move set_control_line_state and set_line_coding to control.ch with 1 << 1 (like in
+% time/mode.ch) and move OUT endpoint to rxout.ch and do via notification.ch like in time/
+% (try if usb will work without rxout.ch, first changing EP3 to EP2 in notification.ch)
 
 % NOTE: echo need not be disabled because we do not use OUT packets
 
