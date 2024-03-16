@@ -7,7 +7,7 @@
 % (when SOF arrives, USB_RESET is not done, and vice versa, so these two interrupts won't clash)
 
 % TODO: move set_control_line_state and set_line_coding to control.ch with 1 << 1 (like in
-% time/mode.ch) and move OUT endpoint to rxout.ch and do via notification.ch like in time/
+% time/mode.ch) and move EP2 to rxout.ch and move EP3 to notification.ch
 % (try if usb will work without rxout.ch, first changing EP3 to EP2 in notification.ch)
 
 % NOTE: echo need not be disabled because we do not use OUT packets
