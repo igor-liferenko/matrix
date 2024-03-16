@@ -6,9 +6,13 @@
 % (and search sof in matrix repo too via git log -p)
 % (when SOF arrives, USB_RESET is not done, and vice versa, so these two interrupts won't clash)
 
-% TODO:
-%
-% In matrix.w do not read set_line_coding and in signal.ch process it, and move OUT endpoint to rxout.ch and do via notification.ch like in time/ (try if usb will work without rxout.ch, first changing EP3 to EP2 in notification.ch)
+% TODO: move OUT endpoint to rxout.ch and do via notification.ch like in time/ (try if usb will
+% work without rxout.ch, first changing EP3 to EP2 in notification.ch)
+
+% NOTE: echo need not be disabled because we do not use OUT packets
+
+% NOTE: instead of using PB0 use dtr_rts global variable and use PB0 for what PC7 is
+% now - then we may use pro-micro
 
 \datethis
 \input epsf
