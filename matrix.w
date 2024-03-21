@@ -16,7 +16,7 @@
 % now - then we may use pro-micro
 
 % TODO: try to check FIFOCON instead of TXINI, and delete clearing TXINI; think why TXINI alone
-% is not enough - why FIFOCON was created?
+% is not enough - why FIFOCON was invented?
 
 \datethis
 \input epsf
