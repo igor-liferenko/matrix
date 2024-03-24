@@ -15,9 +15,6 @@
 % NOTE: instead of using PB0 use dtr_rts global variable and use PB0 for what PC7 is
 % now - then we may use pro-micro
 
-% TODO: try to check FIFOCON instead of TXINI, and delete clearing TXINI; think why TXINI alone
-% is not enough - why FIFOCON was invented?
-
 \datethis
 \input epsf
 
