@@ -11,7 +11,6 @@ eps:
 	@inkscape --export-type=eps --export-ps-level=2 --export-filename=matrix-2.eps --export-text-to-path matrix-2.svg 2>/dev/null || inkscape -E matrix-2.eps --export-ps-level=2 --export-text-to-path matrix-2.svg 2>/dev/null || inkscape -E matrix-2.eps --export-text-to-path matrix-2.svg
 	@inkscape --export-type=eps --export-ps-level=2 --export-filename=matrix-3.eps --export-text-to-path matrix-3.svg 2>/dev/null || inkscape -E matrix-3.eps --export-ps-level=2 --export-text-to-path matrix-3.svg 2>/dev/null || inkscape -E matrix-3.eps --export-text-to-path matrix-3.svg
 	@make --no-print-directory `grep -o '^\S*\.eps' Makefile`
-	@make --no-print-directory -C ../usb eps
 
 .PHONY: $(wildcard *.eps)
 
