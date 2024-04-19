@@ -995,7 +995,7 @@ volatile uint8_t button16_down;
         count15 = 0;
         count16 = 0;
 
-@i ../usb/USB.w
+@i USB.w
 
 @* Headers.
 
